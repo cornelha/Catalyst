@@ -1,0 +1,66 @@
+# Catalyst
+
+A library of orchestration patterns for coding agents working tickets — from GitHub Issues, Jira, Azure DevOps, or any other tracker — fan out, reduce, verify, synthesize — written as plain markdown, not code.
+
+## The Problem
+
+Point an LLM coding agent at a ticket and left to its own devices it usually does one of two things: reads the description and starts editing files immediately, or runs a pile of unfocused searches and drowns in its own results before it finds the actual root cause. Either way, verification gets skipped — the agent implements against its first guess instead of checking whether that guess is even correct.
+
+The fix for this isn't a new framework, SDK, or orchestration engine to install. It's a thinking pattern: decompose the ticket into independent investigation tasks, run them, consolidate what comes back, skeptically re-check each finding against the actual code before trusting it, and only then write an implementation plan. Every mainstream agent tool (Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode) can already do this — they just need to be told to, in their own configuration format.
+
+## The Goal
+
+Give developers copy-pasteable instructions and reference material for applying a fan-out/reduce/verify/synthesize pattern to recurring ticket types, in whatever agent tool they already use — without adopting a new dependency, package, or workflow runner.
+
+Explicitly out of scope: this is not a TypeScript/C#/Python library, not an executable orchestration engine, and not a workflow config format. There is no code to install. Everything here is markdown meant to be read by a human, pasted into an agent's instruction file, or handed to an agent as a prompt.
+
+Target audience: developers and teams using AI coding agents against a ticket-based workflow — GitHub Issues, Jira, Azure DevOps, Linear, or anything else — who want more reliable, verified output instead of first-guess implementations.
+
+## Key Features
+
+- **`ORCHESTRATION-PROMPT.md`** — the core fan-out/reduce/verify/synthesize pattern, with node types (Agent/Verifier/Implementation), safety rules, and anti-patterns to avoid.
+- **`catalyst-skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
+- **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in six agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, and OpenCode. Each covers exact config file locations, the literal instruction text to paste, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase.
+- **`examples/`** — standalone, realistic ticket walkthroughs showing the full four-phase pattern applied end to end, independent of any specific agent tool.
+- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/add-skill`, `/add-template` for Cursor, Cline, GitHub Copilot, OpenCode, and Codex CLI, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
+- **`SUBAGENT-ARCHITECTURE.md`** — an optional layer on top of the core pattern: splits FAN OUT/VERIFY/SYNTHESIZE into named, purpose-built subagents (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`) coordinated by an orchestrator, so each phase can run in an isolated context on a model sized to its job — cheap/fast for fan-out, high-capability for verify/synthesize — cutting both token cost and context rot versus running the whole pattern in one growing session.
+- **`agent-subagents/`** — ready-to-copy subagent definitions implementing that architecture for Claude Code, Cursor, OpenCode, GitHub Copilot, and Codex CLI (each in that tool's real agent-definition format — markdown+frontmatter for most, TOML for Codex), plus a guidance doc for Cline, which has no native per-role agent file format.
+- **`docs/`** — one getting-started guide per tool, walking through installing the pattern, the commands, and (where supported) the subagents together, end to end.
+- Every file is standalone by design — open one skill file and one template file, point an agent at a ticket, and it works without cross-referencing anything else in the repo.
+
+## Getting Started
+
+There's nothing to install. This is a markdown reference library.
+
+```bash
+git clone <this-repo>
+cd catalyst
+```
+
+Then open the getting-started guide for your tool in `docs/` — it walks through installing the core pattern, the commands, and (where supported) the subagents, together, with a first ticket to try it on. Or, to wire things up manually: copy the relevant instruction block from a file in `catalyst-templates/` into your agent's config location (e.g. `CLAUDE.md`, `.cursor/rules/*.mdc`, `.clinerules`, `AGENTS.md`, `.github/copilot-instructions.md`, or `opencode.json`).
+
+## Usage
+
+**Applying the pattern live in a Claude Code session**, using the bundled slash command:
+
+```
+/catalyst Fix login timeout handling — https://dev.azure.com/org/project/_workitems/edit/4521
+```
+
+This runs the four phases in order — stating fan-out tasks before executing them, consolidating findings, verifying each one against real code, and stopping at a plan for your confirmation before any file is touched.
+
+**Adding a new ticket-type skill** to the library:
+
+```
+/add-skill performance-regression
+```
+
+This reads the existing skill files to match structure and tone, then writes a new standalone `catalyst-skills/performance-regression.md`.
+
+**Wiring the pattern into a different tool** not yet covered:
+
+```
+/add-template windsurf
+```
+
+This researches the tool's actual configuration mechanism (not guessed syntax) and writes a new `catalyst-templates/windsurf.md` following the same six-part structure as the existing templates.
