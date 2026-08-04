@@ -10,7 +10,7 @@ If a matching skill exists in catalyst-skills/, use it. Otherwise apply the gene
 Execute in order, showing your work at each phase:
 
 PHASE 1 — FAN OUT
-State the independent analysis tasks you'll run. List them before running them. Then actually run them (search the codebase, read files, check git history, check related issues, etc.).
+State the independent analysis tasks you'll run. List them before running them. Then actually run them (search the codebase, read files, check git history, check related issues, etc.). For this phase, the orchestrator must delegate investigation work to subagents whenever possible rather than doing all analysis inline in the main session.
 
 PHASE 2 — REDUCE
 Consolidate what you found. Remove duplicates and noise. State the root cause or core finding in one or two sentences.

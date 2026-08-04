@@ -31,7 +31,7 @@ mkdir -p .github/agents
 cp agent-subagents/github-copilot/*.agent.md .github/agents/
 ```
 
-This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. Standard Copilot Chat subagents run sequentially within one session — for true parallel execution during FAN OUT, use Copilot CLI **Fleet mode** instead.
+This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. The orchestrator should use subagents for the FAN OUT phase; standard Copilot Chat execution remains sequential within one session, so use Copilot CLI **Fleet mode** (or equivalent subagent delegation) when you want true parallel fan-out.
 
 ## Try it
 

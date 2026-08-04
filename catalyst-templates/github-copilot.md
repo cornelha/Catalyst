@@ -21,7 +21,8 @@ When asked to address a work item or ticket — a GitHub issue, or one mirrored 
 
 1. Analysis (fan out): Identify the independent things that need investigating — related code locations,
    existing tests, related/duplicate issues, relevant docs, recent history of the affected files. List them,
-   then look at each one.
+   then look at each one. For this phase, use subagents or delegated agents when available rather than
+   handling every investigation inline in the main session.
 
 2. Consolidate: Summarize findings into a short list, removing repeats and irrelevant matches. State the
    most likely root cause or the concrete requirement in one or two sentences.
@@ -35,18 +36,20 @@ When asked to address a work item or ticket — a GitHub issue, or one mirrored 
 
 ## How Copilot Handles Parallel Task Execution
 
-GitHub Copilot Chat and Copilot Workspace process one request at a time in a single conversational thread; there is no native mechanism for issuing multiple simultaneous searches or reads in parallel the way an agentic CLI tool can. Copilot's underlying retrieval (workspace indexing, `@workspace` context) happens automatically when you reference `@workspace` in a query, but you don't control or observe it as discrete parallel "tasks."
+In GitHub Copilot's agent-driven workflows, parallel work is often handled by subagents rather than by the user manually launching multiple chat turns. When a task has several independent investigation paths — such as code search, tests, docs, or recent history — Copilot can fan out to subagents to review those areas in parallel and then consolidate the findings.
 
-**Workaround for FAN OUT:** Structure a single Copilot Chat message as a multi-part question, explicitly using `@workspace` to trigger its retrieval across the whole indexed repo in one pass, rather than issuing four separate chat turns:
+This means the right mental model is not "one sequential chat turn only," but rather "the agent may delegate work to subagents to investigate multiple angles concurrently." You generally do not control the exact subagent scheduling or inspect each one directly, but you can still encourage effective fan-out by asking for a structured multi-part analysis up front.
+
+**Recommended pattern for FAN OUT:** Ask Copilot to investigate several independent angles in a single request and explicitly require a consolidated summary before proposing a fix:
 
 ```
-@workspace For the ticket "Fix login timeout handling": (1) find where timeout durations are
-configured, (2) find tests referencing timeout/session expiry, (3) find any docs describing the
-intended timeout policy, (4) summarize recent changes to the relevant file(s). Answer all four
-before proposing anything.
+For the ticket "Fix login timeout handling": (1) find where timeout durations are configured,
+(2) find tests referencing timeout/session expiry, (3) find any docs describing the intended
+timeout policy, and (4) summarize recent changes to the relevant file(s). Investigate these areas
+and return a consolidated summary before proposing any code changes.
 ```
 
-This leans on Copilot's own internal retrieval doing the equivalent of parallel lookups in one indexing pass, even though you can't inspect or control that internal parallelism directly.
+This takes advantage of Copilot's subagent-based execution model, while still keeping the workflow explicit and reviewable.
 
 ## Worked Example
 
@@ -60,7 +63,7 @@ This leans on Copilot's own internal retrieval doing the equivalent of parallel 
 
 ## Known Limitations
 
-- No user-controllable parallel execution — everything is effectively sequential turns, and Copilot's internal retrieval parallelism is opaque, so you can't verify it actually searched all four things distinctly (it may blend them into one pass).
+- Parallel execution is delegated to subagents or agentic runtimes when available, but you do not directly control the exact scheduling or inspect each subagent individually; the workflow still needs explicit consolidation and verification steps to make the results reviewable.
 - Copilot Workspace's automatic plan generation can jump straight from issue-reading to a proposed diff without an explicit intermediate verification step — you must inject the VERIFY step manually as a separate prompt, it won't happen on its own.
 - Repository custom instructions apply to Copilot Chat and Workspace, but not necessarily to every Copilot surface (e.g. inline code completions ignore `.github/copilot-instructions.md` — this pattern is only relevant to chat/workspace-driven ticket work, not autocomplete).
 - If the ticket lives in a non-GitHub tracker (Jira, Azure DevOps, Linear), Copilot has no native connector for it — you must be working from a GitHub issue/PR that mirrors the ticket, or paste the ticket content manually into chat. GitHub Issues themselves are natively available via `@workspace`/Copilot's repo context without any extra setup.
