@@ -109,6 +109,20 @@ Write-DeployNote $d @"
 "@
 Build-Zip "opencode" $d
 
+# --- pi ---
+$d = Join-Path $Stage "pi"
+New-Dirs @("$d\.pi\prompts", "$d\_manual")
+Copy-Item (Join-Path $Root "catalyst-templates\pi.md") "$d\_manual\AGENTS.md.append.md"
+Copy-Item (Join-Path $Root "agent-commands\pi\*.md") "$d\.pi\prompts\"
+Copy-Item (Join-Path $Root "agent-subagents\pi.md") "$d\pi-subagent-guidance.md"
+Copy-Skills $d
+Write-DeployNote $d @"
+- Append ``_manual/AGENTS.md.append.md`` to your project's ``AGENTS.md`` (or ``~/.pi/agent/AGENTS.md`` globally) -- create it if it doesn't exist yet. Pi concatenates every ``AGENTS.md`` it finds, so global and project-level files both apply.
+- ``.pi/prompts/*.md`` is already in place for ``/catalyst``, ``/add-skill``, ``/add-template`` -- restart your pi session and mark the project trusted if the commands don't show up in autocomplete.
+- Pi has no native per-role subagent file format. Read ``pi-subagent-guidance.md`` for the extension-based or CLI-spawn alternatives.
+"@
+Build-Zip "pi" $d
+
 # --- github-copilot ---
 $d = Join-Path $Stage "github-copilot"
 New-Dirs @("$d\.github\skills\bug-fix", "$d\.github\skills\code-review", "$d\.github\skills\feature-implementation", "$d\.github\prompts", "$d\.github\agents", "$d\_manual")

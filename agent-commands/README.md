@@ -10,6 +10,7 @@ Copy/paste command counterparts of Catalyst's three Claude Code slash commands (
 | **GitHub Copilot** | `agent-commands/github-copilot/` | `.github/prompts/` in your repo | `/catalyst` in Copilot Chat (VS Code / Visual Studio / JetBrains) — prompts for the ticket input |
 | **OpenCode** | `agent-commands/opencode/` | `.opencode/commands/` in your repo (or `~/.config/opencode/commands/` for global) | `/catalyst <ticket>` |
 | **Codex CLI** | `agent-commands/codex/` | `~/.codex/prompts/` (top-level files only, no subfolders) | `/catalyst <ticket>` — **see deprecation note below** |
+| **Pi** | `agent-commands/pi/` | `.pi/prompts/` in your repo (or `~/.pi/agent/prompts/` for global) | `/catalyst <ticket>` |
 
 ## Notes per tool (verified)
 
@@ -18,6 +19,7 @@ Copy/paste command counterparts of Catalyst's three Claude Code slash commands (
 - **GitHub Copilot**: `.prompt.md` files in `.github/prompts/`, with YAML frontmatter (`agent`, `description`) and `${input:name:placeholder}` variable syntax — Copilot Chat prompts you to fill these in when you run `/catalyst`, rather than requiring inline arguments. Available in VS Code, Visual Studio, and JetBrains IDEs.
 - **OpenCode**: markdown files in `.opencode/commands/` (project, note the plural "commands") or `~/.config/opencode/commands/` (global). Frontmatter supports `description`, `agent`, `model`, `subtask`. Body supports `$ARGUMENTS` (all args as one string), `$1`/`$2`/etc. (positional args), `` !`shell command` `` (inject shell output), and `@file` (include a file's contents). Commands are loaded at startup — restart the session after adding new files.
 - **Codex CLI — ⚠️ deprecated mechanism**: custom prompts under `~/.codex/prompts/` still work as of this writing (filename → `/name`, with `$1`–`$9`, `$ARGUMENTS`, named `KEY=value` placeholders, and `$$` for a literal `$`), but OpenAI's own docs mark this feature **deprecated** in favor of "Skills" (reusable instructions Codex can invoke explicitly *or* implicitly, shareable via the repo rather than living only in `~/.codex`). The files in `agent-commands/codex/` will work today but are not the forward-looking approach — if you're setting this up fresh, check `developers.openai.com/codex/custom-prompts` for the current Skills-based equivalent before committing to this folder long-term.
+- **Pi**: markdown "prompt templates" under `.pi/prompts/` (project) or `~/.pi/agent/prompts/` (global). Optional YAML frontmatter (`description`, `argument-hint`); body syntax is `$1`/`$2` for positional args, `$@`/`$ARGUMENTS` for all args, `${1:-default}`/`${@:-default}` for fallbacks, `${@:N}`/`${@:N:L}` for slicing — close to OpenCode's convention. Filename minus `.md` becomes `/name`. Project-level `.pi/prompts/*.md` files only load once the project has been marked trusted (check `/settings` or `~/.pi/agent/trust.json`); this doesn't apply to the global `~/.pi/agent/prompts/` location.
 
 ## A note on how Impeccable actually does this
 
@@ -27,6 +29,6 @@ Impeccable (referenced as the model for this structure) doesn't ship per-command
 
 Every path and syntax detail above was checked against each tool's current official documentation (or, for Codex, OpenAI's developer docs) rather than assumed. Tool config surfaces move fast — if a path below 404s in your installed version, that's the tool having moved on since this was verified, not a guess we made up.
 
-## Adding a seventh tool
+## Adding an eighth tool
 
 Run `/add-template <tool-name>` (from Claude Code, using the reference command) to generate `catalyst-templates/<tool-name>.md` first — that file should research and document the tool's actual configuration mechanism using live web search, not recalled training data. Once confirmed, add a matching `agent-commands/<tool-name>/` folder with the three command files reformatted to that mechanism, and add a row to the table above.

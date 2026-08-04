@@ -116,6 +116,18 @@ deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`A
 - Known upstream bug: subagents invoked via the Task tool may ignore their own \`model:\` frontmatter — verify on your installed version before relying on the cost/quality split."
 zip_it "opencode" "$d"
 
+# --- pi ---
+d="$STAGE/pi"
+mkdir -p "$d/.pi/prompts" "$d/_manual"
+cp "$ROOT/catalyst-templates/pi.md" "$d/_manual/AGENTS.md.append.md"
+cp "$ROOT"/agent-commands/pi/*.md "$d/.pi/prompts/"
+cp "$ROOT/agent-subagents/pi.md" "$d/pi-subagent-guidance.md"
+stage_common "$d"
+deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` (or \`~/.pi/agent/AGENTS.md\` globally) — create it if it doesn't exist yet. Pi concatenates every \`AGENTS.md\` it finds, so global and project-level files both apply.
+- \`.pi/prompts/*.md\` is already in place for \`/catalyst\`, \`/add-skill\`, \`/add-template\` — restart your pi session and mark the project trusted if the commands don't show up in autocomplete.
+- Pi has no native per-role subagent file format. Read \`pi-subagent-guidance.md\` for the extension-based or CLI-spawn alternatives."
+zip_it "pi" "$d"
+
 # --- github-copilot ---
 d="$STAGE/github-copilot"
 mkdir -p "$d/.github/skills/bug-fix" "$d/.github/skills/code-review" "$d/.github/skills/feature-implementation" "$d/.github/prompts" "$d/.github/agents" "$d/_manual"

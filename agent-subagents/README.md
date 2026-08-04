@@ -10,6 +10,7 @@ Named, purpose-built subagents implementing the Catalyst pattern's four phases (
 | **GitHub Copilot** | `agent-subagents/github-copilot/` | `.github/agents/` in your repo (`.agent.md` extension) | Markdown + YAML frontmatter |
 | **Codex CLI** | `agent-subagents/codex/` | `.codex/agents/` in your repo (or `~/.codex/agents/` for personal) | **TOML**, not markdown |
 | **Cline** | `agent-subagents/cline.md` | *(no drop-in files — read the file)* | N/A — SDK config or CLI-spawn pattern |
+| **Pi** | `agent-subagents/pi.md` | *(no drop-in files — read the file)* | N/A — third-party extension or CLI-spawn pattern |
 
 ## Roles shipped
 
@@ -26,6 +27,7 @@ No separate `catalyst-deduplicator` is shipped by default — REDUCE is cheap en
 - **Codex CLI**: subagents don't spawn automatically just because these `.toml` files exist in `.codex/agents/` — you have to explicitly ask Codex to spawn them (e.g. "spawn catalyst-fan-out-analyst to check X"). Concurrency is capped by `agents.max_threads` (default 6) and subagents cannot escalate beyond the parent's `sandbox_mode`.
 - **GitHub Copilot**: standard Copilot Chat subagents run sequentially within one session; use Copilot CLI **Fleet mode** specifically to get true parallel execution for the FAN OUT phase.
 - **Cline**: no native per-role agent-definition file exists. `cline.md` documents the two real options (Cline SDK agent teams, or spawning separate Claude Code/Cline CLI instances) — don't look for drop-in files here, there aren't any that would actually work.
+- **Pi**: no native per-role agent-definition file in core (Pi's own philosophy explicitly pushes subagents to extensions or external orchestration). `pi.md` documents the two real options: the third-party `pi-subagents` extension (`.pi/agents/<name>.md` YAML frontmatter, parallel execution), or spawning separate `pi -p "..."` subprocesses via background shell jobs.
 - **Cursor**: subagents are a recent addition (v2.4, January 2026) — if your installed Cursor version predates this, the `.cursor/agents/` mechanism won't exist yet; fall back to `catalyst-templates/cursor.md`'s single-session pattern instead.
 
 ## Model names will drift
