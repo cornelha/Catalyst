@@ -1,2 +1,4 @@
 .claude/.headroom_wrap_marker.json
 .tokensave/*
+dist/
+.build-stage/

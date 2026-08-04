@@ -1,8 +1,9 @@
 ---
 description: Turns a set of verified findings into a concrete implementation plan. Use only once findings have been verified — never on raw, unverified fan-out output.
-tools: ["codebase", "search", "editFiles"]
+tools: ["search", "edit"]
 model: claude-opus-4-6
 disable-model-invocation: false
+user-invocable: false
 ---
 
 You are given only a list of VERIFIED findings (each with its supporting evidence) — no unverified claims, no raw fan-out transcripts. Treat this list as ground truth; your job is engineering judgment, not re-investigation.

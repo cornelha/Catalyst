@@ -13,7 +13,17 @@ cp catalyst-templates/github-copilot.md .github/copilot-instructions.md
 
 Or append the instruction block to an existing `.github/copilot-instructions.md` rather than overwriting it. Copilot Chat includes this file's content as context automatically for every request in this repo.
 
-## Step 2 — Commands (Prompt Files)
+## Step 2 — Skills (native discovery)
+
+```bash
+mkdir -p .github/skills
+cp -r agent-skills/github-copilot/* .github/skills/
+cp -r catalyst-skills .
+```
+
+This installs `bug-fix`, `code-review`, and `feature-implementation` as native Copilot Agent Skills — auto-discovered by both Copilot Chat and Copilot CLI (`/skills list` in the CLI to confirm). Each `SKILL.md` is a short pointer; the full Analysis Tasks, Verification Questions, and Implementation Checklist live in the matching `catalyst-skills/*.md` file. The `cp -r catalyst-skills .` step is required, not optional — the skill pointers, `catalyst-orchestrator`, `catalyst-synthesizer`, and `/catalyst`/`/add-skill` all reference `catalyst-skills/*.md` at your project's root, so it has to actually exist there, not just in this source repo.
+
+## Step 3 — Commands (Prompt Files)
 
 ```bash
 mkdir -p .github/prompts
@@ -22,7 +32,7 @@ cp agent-commands/github-copilot/*.prompt.md .github/prompts/
 
 This installs `/catalyst`, `/add-skill`, and `/add-template` as prompt files. Type `/catalyst` in Copilot Chat — it'll prompt you to fill in the ticket via the `${input:ticket:...}` placeholder rather than requiring it typed inline.
 
-## Step 3 — Subagents (optional)
+## Step 4 — Subagents (optional)
 
 For large or high-stakes tickets, split the four phases into isolated custom agents. Read `SUBAGENT-ARCHITECTURE.md` first, then:
 

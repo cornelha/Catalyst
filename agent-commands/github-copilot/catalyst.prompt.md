@@ -7,6 +7,11 @@ Apply the Catalyst orchestration pattern to this ticket: ${input:ticket:Paste th
 Reference: Read ORCHESTRATION-PROMPT.md for the pattern.
 If a matching skill exists in catalyst-skills/, use it. Otherwise apply the general pattern from ORCHESTRATION-PROMPT.md directly.
 
+Before FAN OUT: if the ticket was given as a bare ID (e.g. #4521 or 4521, not a URL or pasted
+description), resolve it to full ticket content first — pass the numeric ID only (strip any `#`
+or URL wrapper) to the tracker's configured MCP tool. Do this before decomposing into FAN OUT
+tasks below.
+
 Execute in order, showing your work at each phase:
 
 PHASE 1 — FAN OUT
