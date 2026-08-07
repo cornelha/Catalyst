@@ -20,3 +20,5 @@ PHASE 4 — SYNTHESIZE
 Only using verified findings, produce a concrete implementation plan: files to change, tests to add, risks to check.
 
 Do not use write/edit tools until the plan has been presented and confirmed.
+
+WORKTREES (after confirmation): if the repo uses git worktrees and this is a bug/feature ticket (not a code review), propose creating one at `../<repo>-<ticketid>` on branch `{feature|bug}/{ticketid}_{summary-slug}` (prefix from the skill used; slug = lowercase title, non-alphanumerics → `-`, truncate to 40 chars) and do the implementation inside it — see WORKTREE-WORKFLOW.md. Cleanup is user-triggered after the PR merges.

@@ -35,6 +35,10 @@ cp agent-subagents/cursor/*.md .cursor/agents/
 
 This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. In Agent Mode, describe the ticket and use Cursor's "Parallelize" flow, or just ask Cursor to use `catalyst-orchestrator` directly.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), opened as its own Cursor window. The rule and commands you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 In Agent/Composer chat:

@@ -53,6 +53,8 @@ Since code review's output is feedback, not code, "implementation" here means pr
 - [ ] If requesting changes, list them as an ordered checklist the author can work through
 - [ ] Do not restate false-positive findings from verification in the final review — they were dropped for a reason
 
+**Worktrees don't apply here.** This skill is read-only — it reviews a PR/diff/branch wherever that code lives. Unlike `bug-fix.md` and `feature-implementation.md`, it never creates a worktree (see `WORKTREE-WORKFLOW.md`). Tracker-agnostic: nothing here depends on which tracker the ticket came from.
+
 ## Worked Example
 
 **Ticket:** "Review PR #892: add rate limiting to /api/upload"

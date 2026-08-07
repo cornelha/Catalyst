@@ -26,6 +26,7 @@ function Copy-Skills {
     New-Item -ItemType Directory -Path (Join-Path $Dir "catalyst-skills") -Force | Out-Null
     Copy-Item (Join-Path $Root "catalyst-skills\*.md") (Join-Path $Dir "catalyst-skills")
     Copy-Item (Join-Path $Root "SUBAGENT-ARCHITECTURE.md") $Dir
+    Copy-Item (Join-Path $Root "WORKTREE-WORKFLOW.md") $Dir
 }
 
 function Write-DeployNote {

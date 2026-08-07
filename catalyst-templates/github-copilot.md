@@ -61,6 +61,10 @@ This takes advantage of Copilot's subagent-based execution model, while still ke
 4. **VERIFY** — send a second, explicit message: "Open `AuthService.cs` directly and confirm line 142 sets the timeout to 300 seconds — don't rely on your earlier summary." This forces Copilot to re-ground in the literal file content rather than its own paraphrase.
 5. **SYNTHESIZE** — ask Copilot Workspace to generate its implementation plan; review the proposed file changes before accepting them (Workspace stages changes for review, it doesn't auto-commit).
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Copilot, create the worktree from a terminal (`git worktree add ../<repo>-<ticketid> -b <branch>`) at the Plan stage, then open the worktree as its own folder/workspace in your IDE — `.github/copilot-instructions.md`, `.github/skills/`, and `.github/prompts/` live in the repo and travel with the branch, so the instructions and skills apply in the worktree with no reinstallation. Keep the main checkout read-only during analysis and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - Parallel execution is delegated to subagents or agentic runtimes when available, but you do not directly control the exact scheduling or inspect each subagent individually; the workflow still needs explicit consolidation and verification steps to make the results reviewable.

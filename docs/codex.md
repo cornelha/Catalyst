@@ -33,6 +33,10 @@ cp agent-subagents/codex/*.toml .codex/agents/
 
 This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer` as custom agents. Codex doesn't spawn them automatically just because the files exist — ask explicitly, e.g. "spawn catalyst-fan-out-analyst to check X." Concurrency is capped by `agents.max_threads` (default 6), and subagents can't escalate beyond the parent's `sandbox_mode`.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), running Codex from inside the worktree directory. `AGENTS.md` lives in the repo, so it travels with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 ```bash

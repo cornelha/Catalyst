@@ -53,6 +53,10 @@ Cline executes tool calls **one at a time, sequentially**, waiting for each resu
 4. **VERIFY** — Cline re-opens `AuthService.cs:142` directly (not relying on the grep snippet) and re-reads the revert commit message in full to check the stated reason still applies.
 5. **SYNTHESIZE** — Cline proposes a plan as a numbered list and stops, per the instruction, without invoking `write_to_file` or `replace_in_file` yet.
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Cline, create the worktree from a terminal (`git worktree add ../<repo>-<ticketid> -b <branch>`) at SYNTHESIZE, then open the worktree directory as its own VS Code window — `.clinerules` lives in the repo and travels with the branch, so the rules apply in the worktree with no reinstallation. Keep the main checkout window read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - No native parallel tool execution — fan-out is sequential in practice, just organized to feel batch-like. On repos with many files to search, this is noticeably slower than Claude Code's concurrent tool calls.

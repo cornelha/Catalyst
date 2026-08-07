@@ -21,6 +21,7 @@ stage_common() {
   mkdir -p "$dir/catalyst-skills"
   cp "$ROOT"/catalyst-skills/*.md "$dir/catalyst-skills/"
   cp "$ROOT/SUBAGENT-ARCHITECTURE.md" "$dir/"
+  cp "$ROOT/WORKTREE-WORKFLOW.md" "$dir/"
 }
 
 deploy_note() {

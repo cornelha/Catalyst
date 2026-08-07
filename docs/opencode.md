@@ -35,6 +35,10 @@ This installs `catalyst-orchestrator` (a primary agent you can switch to directl
 
 **Known caveat**: there's a currently open upstream bug where subagents invoked via the Task tool ignore their own `model:` frontmatter and inherit the parent's model instead. The model assignments in these files are correct as written — confirm they're actually being honored in your installed version before relying on the cost/quality split between roles.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), starting an OpenCode session from inside the worktree directory. `AGENTS.md`, `opencode.json`, and the commands you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 ```

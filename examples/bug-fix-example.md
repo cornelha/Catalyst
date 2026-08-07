@@ -44,6 +44,8 @@ All findings verified — no false positives.
 
 **Problem (verified):** The perf-motivated 10s timeout on activity endpoints applies to `/api/activity/export`, which legitimately needs longer for large ranges; when it times out, the controller's broad exception handler swallows the error and returns an empty success response, so the frontend shows nothing.
 
+**Working in a git worktree:** this is a bug-fix ticket (`bug-fix.md` skill), so after the plan is confirmed, create a worktree on `bug/5190_export-button-silently-fails-for-large` (title slugified and truncated per `WORKTREE-WORKFLOW.md`) and do all the implementation below inside it — the main checkout stays clean until the PR merges, then the worktree is removed.
+
 **Implementation Checklist:**
 - [ ] Add a failing test: request a 65+ day export against seeded data, assert either a real error response or successful completion — not an empty 200
 - [ ] Give the export endpoint its own longer timeout (e.g. 60s) separate from the shared activity-endpoint timeout, so the original perf protection for other endpoints is untouched

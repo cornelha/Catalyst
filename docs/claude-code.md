@@ -23,6 +23,10 @@ cp agent-subagents/claude-code/*.md .claude/agents/
 
 This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. Restart your Claude Code session afterward — subagent files are loaded at session start, so edits on disk won't be picked up until you do.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). The commands/agents you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 Point `/catalyst` at a real ticket:

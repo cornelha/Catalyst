@@ -2,6 +2,8 @@
 
 **Use this prompt structure in Claude Code, OpenCode, Cline, or GitHub Copilot to orchestrate work on tickets from any tracker — GitHub Issues, Jira, Azure DevOps, Linear, etc. — following graph engineering patterns.**
 
+**Optional working-mode layer:** `WORKTREE-WORKFLOW.md` describes doing each ticket's implementation in a dedicated git worktree (one worktree per ticket, branch named `{feature|bug}/{ticketid}_{summary-slug}`) so `main` stays clean and parallel tickets don't conflict. It's tracker-agnostic, like this prompt. Read it if you want the SYNTHESIZE phase to include creating an implementation worktree.
+
 ---
 
 ## How to Use
@@ -148,6 +150,8 @@ From verified findings, create **actionable implementation steps**:
 - Review: 30 min
 ```
 
+**If working in a git worktree (see `WORKTREE-WORKFLOW.md`):** once this plan is confirmed, create a worktree for this ticket — branch `{feature|bug}/{ticketid}_{summary-slug}` (prefix from the selected skill), path `../<repo>-<ticketid>` — and do all implementation, tests, and PR work inside it, leaving the main checkout untouched.
+
 ---
 
 ## Node Types (How to Reason About Work)
@@ -188,6 +192,7 @@ When you see work to do, ask: **What kind of node is this?**
 
 1. **Never implement based on unverified findings**
    - Analysis → Verify → Only then implement
+   - If using worktrees, this maps to: fan-out and verify run read-only in the main checkout; create the implementation worktree only after the plan is confirmed (see `WORKTREE-WORKFLOW.md`).
 
 2. **Parallel tasks must be independent**
    - If Task B needs output of Task A, make B depend on A (run sequentially)

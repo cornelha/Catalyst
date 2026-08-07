@@ -28,6 +28,10 @@ Or copy to `~/.pi/agent/prompts/` instead for a global install available in ever
 
 Pi has no native subagent format in core — its own philosophy pushes this to extensions or external orchestration. Read `SUBAGENT-ARCHITECTURE.md` first, then `agent-subagents/pi.md` for the two real options: installing the third-party `pi-subagents` extension (Claude-Code-style `.pi/agents/<name>.md` definitions, parallel execution), or spawning separate `pi -p "..."` subprocesses yourself via background shell jobs. There are no drop-in files to copy here — `agent-subagents/pi.md` is a guidance doc, not a template folder.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), running Pi from inside the worktree directory. `AGENTS.md` and any prompts live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 ```bash

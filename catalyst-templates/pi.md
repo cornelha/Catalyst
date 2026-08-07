@@ -65,6 +65,10 @@ Instruct Pi explicitly, either in the `AGENTS.md` block above or in the prompt, 
 4. **VERIFY** — Pi uses its `read` tool to re-read the exact line directly, and `bash` (`git show <revert-commit>`) to re-read the full revert reason, rather than trusting its own REDUCE summary.
 5. **SYNTHESIZE** — Pi writes out the implementation plan as text and stops, waiting for confirmation before using `edit`/`write` to apply any change.
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Pi, this is a plain `bash` step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then run Pi from inside the worktree directory. `AGENTS.md` and `.pi/prompts/` live in the repo and travel with the branch, so the pattern and commands apply in the worktree with no reinstallation. Keep the main checkout read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - No native parallel command execution — genuine fan-out concurrency isn't possible in core Pi; the "combined bash call" workaround only simulates a single fan-out pass, and very broad fan-out in one invocation can produce output that's hard for the model to parse cleanly.

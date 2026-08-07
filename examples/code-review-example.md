@@ -47,6 +47,8 @@ Analysis tasks (independent):
 
 ## PHASE 4 — SYNTHESIZE (Review Output)
 
+**No worktree used:** this is a code-review ticket (`code-review.md` skill), so unlike the bug-fix/feature examples no worktree is created — reviewing is read-only, done wherever the target branch's code lives (see `WORKTREE-WORKFLOW.md`).
+
 **Blocking:**
 - `InventoryService.cs:88` — `DeleteMany` must return a per-item success/failure result (e.g. `Dictionary<int, bool>` or a result-per-ID list), not a single bool. Criterion (c) in ticket #7201 is unmet.
 - `InventoryController.cs` (new `BulkDelete` action) — add a cap check rejecting requests with more than 500 IDs before calling `DeleteMany`, following the pattern in `BulkArchiveController.cs`. Criterion (d) is unmet, and unbounded ID lists are a real performance/query-size risk.

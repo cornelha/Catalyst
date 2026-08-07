@@ -51,6 +51,8 @@ Drop any finding that fails its question. Keep only VALID verdicts with cited ev
 - [ ] Update docs/comments only if they described the now-incorrect behavior
 - [ ] Note in the PR/commit message which root cause was fixed and which verification evidence confirmed it
 
+**Working in a git worktree?** (See `WORKTREE-WORKFLOW.md`.) This skill yields the `bug/` branch prefix. Create the worktree at `../<repo>-<ticketid>` on branch `bug/{ticketid}_{summary-slug}` once the plan is confirmed, and do the implementation/tests/PR inside it. Tracker-agnostic: nothing here depends on which tracker the ticket came from.
+
 ## Worked Example
 
 **Ticket:** "Login times out after 5 minutes instead of the documented 30 minutes"

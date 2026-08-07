@@ -54,6 +54,10 @@ OpenCode's agent loop supports issuing multiple tool calls within a single model
 4. **VERIFY** — OpenCode re-reads `AuthService.cs:142` directly and re-reads the revert commit message in full, confirming both independently rather than trusting the REDUCE summary.
 5. **SYNTHESIZE** — OpenCode outputs a numbered implementation plan and stops for confirmation before invoking any file-write tool.
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In OpenCode, this is a plain shell step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then start an OpenCode session from inside the worktree directory. `AGENTS.md`, `opencode.json`, and `.opencode/commands/` live in the repo and travel with the branch, so the pattern and commands apply in the worktree with no reinstallation. Keep the main checkout read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - Parallel tool-call support is model-dependent, not a guaranteed OpenCode feature — behavior will differ across configured providers (some emit one tool call per turn regardless of instruction).

@@ -32,6 +32,10 @@ Cline has no native "one markdown file per named subagent" mechanism like the ot
 
 Both map the same four roles (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`) from `SUBAGENT-ARCHITECTURE.md` onto Cline's actual mechanisms — read that file first for the role definitions to reuse.
 
+## Step 4 — Git worktrees (optional)
+
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), opened as its own VS Code window. The rules you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+
 ## Try it
 
 In chat:

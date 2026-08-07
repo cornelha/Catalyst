@@ -49,6 +49,8 @@ All findings verified; one implementation gap identified (dynamic job registrati
 
 **Feature (verified):** A `ReportSchedule` entity, created/cancelled per user, driving `JobScheduler.cs` via new dynamic register/deregister support, delivering reports through the existing `EmailService`. UI adds create/list/cancel on the Reports page. Must handle report-deletion and email-change edge cases explicitly, and enforce the 5-schedule cap server-side.
 
+**Working in a git worktree:** this is a feature ticket (`feature-implementation.md` skill), so after the plan is confirmed, create a worktree on `feature/6034_allow-users-to-schedule-recurring-report` (title slugified and truncated per `WORKTREE-WORKFLOW.md`) and do all the implementation below inside it — the main checkout stays clean until the PR merges, then the worktree is removed.
+
 **Implementation Checklist:**
 - [ ] Tests: create schedule succeeds (daily/weekly/monthly), create fails at 6th schedule (cap), cancel removes schedule and stops future sends, listing shows only the user's own schedules, schedule referencing a deleted report is cancelled or errors gracefully, email delivered to *current* account email even if changed after schedule creation
 - [ ] Extend `JobScheduler.cs` with dynamic register/deregister methods (additive, doesn't touch existing static job registrations)

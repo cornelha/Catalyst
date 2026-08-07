@@ -64,6 +64,10 @@ Instruct Codex explicitly to batch fan-out lookups into one combined command (or
 4. **VERIFY** — Codex runs `cat -n AuthService.cs | sed -n '135,150p'` (or equivalent) to re-read the exact line directly, and `git show <revert-commit>` to re-read the full revert reason, rather than trusting its own REDUCE summary.
 5. **SYNTHESIZE** — Codex writes out the implementation plan as text and stops, waiting for approval before applying any patch — unless the session was started in an auto-approval mode, in which case it proceeds to apply the patch and run tests.
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Codex CLI, this is a plain shell step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then run Codex from inside the worktree directory. `AGENTS.md` lives in the repo and travels with the branch, so the pattern applies in the worktree with no reinstallation. Keep the main checkout read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - No native parallel command execution — genuine fan-out concurrency isn't possible; the "combined command" workaround only simulates a single fan-out pass, and very broad fan-out (5+ distinct lookups) in one shell invocation can produce a wall of output that's hard for the model to parse cleanly.

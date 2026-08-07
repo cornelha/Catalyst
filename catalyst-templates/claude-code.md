@@ -56,6 +56,10 @@ Verification (PHASE 3) benefits from literally invoking a fresh sub-agent for th
 4. **VERIFY** — either continues inline or spawns an `Explore` sub-agent with the prompt "Assume this finding is false: verify `AuthService.cs:142` actually sets 300 and check what `RefreshMiddleware.cs` does with that value." Sub-agent returns confirmation plus the previously-missed refresh-loop risk.
 5. **SYNTHESIZE** — produces a numbered implementation plan and stops, asking "Should I proceed with these changes?"
 
+## Git Worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Claude Code, this is just a `Bash` step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then work inside that directory. `CLAUDE.md`, `.claude/commands/`, and `.claude/agents/` all live in the repo and therefore travel with the branch into the worktree — the pattern, commands, and subagents keep working there with no reinstallation. Open the worktree as its own session/window; the main checkout session stays read-only during the ticket's FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+
 ## Known Limitations
 
 - Claude Code has no built-in ticket-tracker connector by default — fan-out queries against a tracker (GitHub, Jira, Azure DevOps, etc.) require an MCP server configured for it (e.g. the GitHub MCP server), or manually pasting ticket content/links into the conversation.

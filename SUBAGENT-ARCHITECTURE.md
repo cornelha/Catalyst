@@ -2,6 +2,8 @@
 
 Everything in `ORCHESTRATION-PROMPT.md` and `catalyst-skills/` can be run inline, in one session — a single agent walking through FAN OUT → REDUCE → VERIFY → SYNTHESIZE itself. That works fine for small, contained tickets. This document describes the alternative: splitting each phase into a **named, purpose-built subagent**, coordinated by an **orchestrator**, so you can control cost, model choice, and context isolation per phase instead of running the whole pattern in one ever-growing context window.
 
+**Composes with `WORKTREE-WORKFLOW.md`:** that file gives physical isolation per ticket (one git worktree per ticket, main checkout untouched); this file gives logical isolation per phase. Together: one ticket = one worktree = one orchestrator run, with all implementation happening inside the ticket's worktree.
+
 ## Why split phases into subagents at all
 
 Two problems show up as a single-session pattern scales up:
@@ -54,3 +56,7 @@ Run inline (single session, no subagents) when:
 ## Where to find ready-to-copy definitions
 
 See `agent-subagents/<tool>/` for each tool's actual agent-definition format, or `agent-subagents/cline.md` for Cline's SDK/CLI-based alternative (Cline has no native per-role agent-definition file). Each file is scoped to one role and references the relevant phase instructions in `ORCHESTRATION-PROMPT.md` and `catalyst-skills/` rather than duplicating them, so updates to the core pattern don't require touching every agent definition.
+
+## If you also use git worktrees
+
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic companion to this file: one worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), created at SYNTHESIZE once the orchestrator's plan is confirmed, all implementation happening inside it. FAN OUT/VERIFY subagents read the main checkout; only implementation moves into the worktree. Review tickets (`code-review.md`) stay read-only and never create a worktree.

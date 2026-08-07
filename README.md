@@ -19,6 +19,7 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 ## Key Features
 
 - **`ORCHESTRATION-PROMPT.md`** — the core fan-out/reduce/verify/synthesize pattern, with node types (Agent/Verifier/Implementation), safety rules, and anti-patterns to avoid.
+- **`WORKTREE-WORKFLOW.md`** — an optional working-mode layer: doing each ticket's implementation in a dedicated git worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, main checkout untouched, cleanup after the PR merges), so parallel tickets never conflict. Tracker-agnostic, like everything else.
 - **`catalyst-skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
 - **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in seven agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, and Pi. Each covers exact config file locations, the literal instruction text to paste, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase.
 - **`examples/`** — standalone, realistic ticket walkthroughs showing the full four-phase pattern applied end to end, independent of any specific agent tool.
