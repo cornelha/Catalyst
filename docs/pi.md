@@ -20,7 +20,7 @@ mkdir -p .pi/prompts
 cp agent-commands/pi/*.md .pi/prompts/
 ```
 
-Or copy to `~/.pi/agent/prompts/` instead for a global install available in every project. Filename minus `.md` becomes the slash command (`/catalyst`, `/add-skill`, `/add-template`), with `$ARGUMENTS` in the body expanding to whatever you type after the command name.
+Or copy to `~/.pi/agent/prompts/` instead for a global install available in every project. Filename minus `.md` becomes the slash command (`/catalyst`, `/add-skill`, `/add-template`, `/learn`), with `$ARGUMENTS` in the body expanding to whatever you type after the command name.
 
 **Caveat**: project-level `.pi/prompts/*.md` files only load once the project has been marked trusted — check `/settings` or `~/.pi/agent/trust.json` if a command doesn't show up in autocomplete.
 
@@ -46,4 +46,5 @@ Pi will state its fan-out tasks, run a batched read-only `bash` call, consolidat
 
 - Check `catalyst-skills/` for a playbook matching your ticket type.
 - Adapt `agent-commands/pi/add-skill.md`'s pattern to add new prompts for recurring ticket types.
+- Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.

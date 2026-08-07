@@ -62,7 +62,7 @@ zip_it() {
 # --- claude-code ---
 d="$STAGE/claude-code"
 mkdir -p "$d/.claude/commands" "$d/.claude/agents" "$d/_manual"
-cp "$ROOT"/.claude/commands/{catalyst,add-skill,add-template}.md "$d/.claude/commands/"
+cp "$ROOT"/.claude/commands/{catalyst,add-skill,add-template,learn}.md "$d/.claude/commands/"
 cp "$ROOT"/agent-subagents/claude-code/*.md "$d/.claude/agents/"
 cp "$ROOT/catalyst-templates/claude-code.md" "$d/_manual/CLAUDE.md.append.md"
 stage_common "$d"

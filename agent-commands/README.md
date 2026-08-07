@@ -1,16 +1,18 @@
 # Agent Commands
 
-Copy/paste command counterparts of Catalyst's three Claude Code slash commands (`/catalyst`, `/add-skill`, `/add-template`), reformatted for each agent tool's actual custom-command mechanism, verified against each tool's official docs. Pick the folder for your tool and drop its files into the path shown below.
+Copy/paste command counterparts of Catalyst's four Claude Code slash commands (`/catalyst`, `/add-skill`, `/add-template`, `/learn`), reformatted for each agent tool's actual custom-command mechanism, verified against each tool's official docs. Pick the folder for your tool and drop its files into the path shown below.
 
 | Tool | Source folder | Copy files to | Invoke with |
 |---|---|---|---|
-| **Claude Code** | `.claude/commands/` (already at repo root — nothing to copy) | *(n/a — already installed)* | `/catalyst`, `/add-skill`, `/add-template` |
+| **Claude Code** | `.claude/commands/` (already at repo root — nothing to copy) | *(n/a — already installed)* | `/catalyst`, `/add-skill`, `/add-template`, `/learn` |
 | **Cursor** | `agent-commands/cursor/` | `.cursor/commands/` in your repo (or `~/.cursor/commands/` for global) | `/catalyst <ticket>` in Agent/Composer chat |
 | **Cline** | `agent-commands/cline/` | `.clinerules/workflows/` in your repo | `/catalyst.md <ticket>` in chat |
 | **GitHub Copilot** | `agent-commands/github-copilot/` | `.github/prompts/` in your repo | `/catalyst` in Copilot Chat (VS Code / Visual Studio / JetBrains) — prompts for the ticket input |
 | **OpenCode** | `agent-commands/opencode/` | `.opencode/commands/` in your repo (or `~/.config/opencode/commands/` for global) | `/catalyst <ticket>` |
 | **Codex CLI** | `agent-commands/codex/` | `~/.codex/prompts/` (top-level files only, no subfolders) | `/catalyst <ticket>` — **see deprecation note below** |
 | **Pi** | `agent-commands/pi/` | `.pi/prompts/` in your repo (or `~/.pi/agent/prompts/` for global) | `/catalyst <ticket>` |
+
+`/learn` (available in every tool above) is the self-improvement loop: run it at the end of a session to review what you learned about the repo and turn durable lessons into new or updated files in `catalyst-skills/`. It proposes a plan (new skills + edits to existing skills) and waits for your approval before writing anything.
 
 ## Notes per tool (verified)
 
@@ -31,4 +33,4 @@ Every path and syntax detail above was checked against each tool's current offic
 
 ## Adding an eighth tool
 
-Run `/add-template <tool-name>` (from Claude Code, using the reference command) to generate `catalyst-templates/<tool-name>.md` first — that file should research and document the tool's actual configuration mechanism using live web search, not recalled training data. Once confirmed, add a matching `agent-commands/<tool-name>/` folder with the three command files reformatted to that mechanism, and add a row to the table above.
+Run `/add-template <tool-name>` (from Claude Code, using the reference command) to generate `catalyst-templates/<tool-name>.md` first — that file should research and document the tool's actual configuration mechanism using live web search, not recalled training data. Once confirmed, add a matching `agent-commands/<tool-name>/` folder with the four command files reformatted to that mechanism, and add a row to the table above.

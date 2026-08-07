@@ -30,7 +30,7 @@ mkdir -p .github/prompts
 cp agent-commands/github-copilot/*.prompt.md .github/prompts/
 ```
 
-This installs `/catalyst`, `/add-skill`, and `/add-template` as prompt files. Type `/catalyst` in Copilot Chat — it'll prompt you to fill in the ticket via the `${input:ticket:...}` placeholder rather than requiring it typed inline.
+This installs `/catalyst`, `/add-skill`, `/add-template`, and `/learn` as prompt files. Type `/catalyst` in Copilot Chat — it'll prompt you to fill in the ticket via the `${input:ticket:...}` placeholder rather than requiring it typed inline.
 
 ## Step 4 — Subagents (optional)
 
@@ -61,4 +61,5 @@ Fill in the ticket when prompted (a GitHub issue URL or pasted description). Cop
 
 - Check `catalyst-skills/` for a playbook matching your ticket type.
 - Copy `agent-commands/github-copilot/add-skill.prompt.md`'s pattern to add new prompt files as needed.
+- Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.

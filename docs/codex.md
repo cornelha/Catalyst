@@ -51,4 +51,5 @@ Codex will state its fan-out tasks, run batched read-only shell commands, consol
 
 - Check `catalyst-skills/` for a playbook matching your ticket type.
 - Adapt `agent-commands/codex/add-skill.md`'s pattern to add new prompts for recurring ticket types — or look at Codex's newer Skills system as the more future-proof equivalent.
+- Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.

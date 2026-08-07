@@ -22,7 +22,7 @@ mkdir -p .cursor/commands
 cp agent-commands/cursor/*.md .cursor/commands/
 ```
 
-This gives you `/catalyst`, `/add-skill`, and `/add-template` in Agent/Composer chat. Type `/` to see them listed alongside any other commands you already have.
+This gives you `/catalyst`, `/add-skill`, `/add-template`, and `/learn` in Agent/Composer chat. Type `/` to see them listed alongside any other commands you already have.
 
 ## Step 3 — Subagents (optional, requires Cursor v2.4+)
 
@@ -53,4 +53,5 @@ Watch it state its fan-out tasks, run them (codebase search, file reads, termina
 
 - Check `catalyst-skills/` for a playbook matching your ticket type.
 - Run `/add-skill <name>` to add a new one.
+- Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` for a tool not yet covered.

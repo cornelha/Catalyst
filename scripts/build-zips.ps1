@@ -45,7 +45,7 @@ function Build-Zip {
 # --- claude-code ---
 $d = Join-Path $Stage "claude-code"
 New-Dirs @("$d\.claude\commands", "$d\.claude\agents", "$d\_manual")
-Copy-Item (Join-Path $Root ".claude\commands\catalyst.md"), (Join-Path $Root ".claude\commands\add-skill.md"), (Join-Path $Root ".claude\commands\add-template.md") "$d\.claude\commands\"
+Copy-Item (Join-Path $Root ".claude\commands\catalyst.md"), (Join-Path $Root ".claude\commands\add-skill.md"), (Join-Path $Root ".claude\commands\add-template.md"), (Join-Path $Root ".claude\commands\learn.md") "$d\.claude\commands\"
 Copy-Item (Join-Path $Root "agent-subagents\claude-code\*.md") "$d\.claude\agents\"
 Copy-Item (Join-Path $Root "catalyst-templates\claude-code.md") "$d\_manual\CLAUDE.md.append.md"
 Copy-Skills $d

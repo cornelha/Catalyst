@@ -23,7 +23,7 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 - **`catalyst-skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
 - **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in seven agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, and Pi. Each covers exact config file locations, the literal instruction text to paste, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase.
 - **`examples/`** — standalone, realistic ticket walkthroughs showing the full four-phase pattern applied end to end, independent of any specific agent tool.
-- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/add-skill`, `/add-template` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
+- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/add-skill`, `/add-template`, `/learn` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
 - **`SUBAGENT-ARCHITECTURE.md`** — an optional layer on top of the core pattern: splits FAN OUT/VERIFY/SYNTHESIZE into named, purpose-built subagents (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`) coordinated by an orchestrator, so each phase can run in an isolated context on a model sized to its job — cheap/fast for fan-out, high-capability for verify/synthesize — cutting both token cost and context rot versus running the whole pattern in one growing session.
 - **`agent-subagents/`** — ready-to-copy subagent definitions implementing that architecture for Claude Code, Cursor, OpenCode, GitHub Copilot, and Codex CLI (each in that tool's real agent-definition format — markdown+frontmatter for most, TOML for Codex), plus guidance docs for Cline and Pi, neither of which has a native per-role agent file format in core.
 - **`agent-skills/`** — native skill-discovery wrappers for tools that support one (currently GitHub Copilot's `SKILL.md`/`.github/skills/<name>/` format), pointing at the matching `catalyst-skills/*.md` file for the full pattern content.
@@ -66,3 +66,11 @@ This reads the existing skill files to match structure and tone, then writes a n
 ```
 
 This researches the tool's actual configuration mechanism (not guessed syntax) and writes a new `catalyst-templates/windsurf.md` following the same six-part structure as the existing templates.
+
+**Turning session lessons into new skills**, at the end of a working session:
+
+```
+/learn
+```
+
+This reviews what the session taught you about the repo, distills the durable, repo-specific lessons into proposed new `catalyst-skills/*.md` files (or edits to existing ones), and waits for your confirmation before writing anything. Run it again later and it respects what's already been recorded — only genuinely new lessons get proposed.

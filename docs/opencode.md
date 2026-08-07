@@ -20,7 +20,7 @@ mkdir -p .opencode/commands
 cp agent-commands/opencode/*.md .opencode/commands/
 ```
 
-This installs `/catalyst`, `/add-skill`, and `/add-template`. Commands are loaded at startup — restart your OpenCode session after adding these files before they'll appear.
+This installs `/catalyst`, `/add-skill`, `/add-template`, and `/learn`. Commands are loaded at startup — restart your OpenCode session after adding these files before they'll appear.
 
 ## Step 3 — Subagents (optional)
 
@@ -51,4 +51,5 @@ Watch it state its fan-out tasks, batch them together rather than interleaving w
 
 - Check `catalyst-skills/` for a playbook matching your ticket type.
 - Adapt `agent-commands/opencode/add-skill.md`'s pattern to add new commands as needed.
+- Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.
