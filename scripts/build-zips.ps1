@@ -20,11 +20,16 @@ function New-Dirs {
 }
 
 function Copy-Skills {
-    # catalyst-skills/ and SUBAGENT-ARCHITECTURE.md are referenced by every
-    # tool's agents/commands, so every bundle ships them.
+    # Meta files referenced by every tool's agents/commands, so every bundle
+    # ships them so Catalyst can evolve in-place: ORCHESTRATION-PROMPT.md is the
+    # core pattern definition, catalyst-templates/ feeds /add-template, and
+    # catalyst-skills/ feeds /add-skill and /learn.
     param([string]$Dir)
     New-Item -ItemType Directory -Path (Join-Path $Dir "catalyst-skills") -Force | Out-Null
+    New-Item -ItemType Directory -Path (Join-Path $Dir "catalyst-templates") -Force | Out-Null
     Copy-Item (Join-Path $Root "catalyst-skills\*.md") (Join-Path $Dir "catalyst-skills")
+    Copy-Item (Join-Path $Root "catalyst-templates\*.md") (Join-Path $Dir "catalyst-templates")
+    Copy-Item (Join-Path $Root "ORCHESTRATION-PROMPT.md") $Dir
     Copy-Item (Join-Path $Root "SUBAGENT-ARCHITECTURE.md") $Dir
     Copy-Item (Join-Path $Root "WORKTREE-WORKFLOW.md") $Dir
 }
@@ -53,6 +58,7 @@ Write-DeployNote $d @"
 - **Optional, recommended:** append ``_manual/CLAUDE.md.append.md`` to your project's ``CLAUDE.md`` (or ``~/.claude/CLAUDE.md`` for every repo) so the pattern applies automatically, not just via ``/catalyst``.
 - ``/catalyst``, ``/add-skill``, ``/add-template`` work immediately, no restart needed.
 - Restart Claude Code after unzipping so it picks up ``.claude/agents/*``.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "claude-code" $d
 
@@ -66,6 +72,7 @@ Copy-Skills $d
 Write-DeployNote $d @"
 - Reload the Cursor window after unzipping so it picks up the new rule, commands, and agents.
 - Requires Cursor v2.4+ for ``.cursor/agents/`` to work as subagents; everything else works on any recent version.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "cursor" $d
 
@@ -79,6 +86,7 @@ Copy-Skills $d
 Write-DeployNote $d @"
 - Cline has no native per-role subagent file format. Read ``cline-subagent-guidance.md`` for the Cline SDK / spawned-CLI alternatives.
 - Invoke workflows with the extension included: ``/catalyst.md``, ``/add-skill.md``, ``/add-template.md``.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "cline" $d
 
@@ -93,6 +101,7 @@ Write-DeployNote $d @"
 - Append ``_manual/AGENTS.md.append.md`` to your project's ``AGENTS.md`` (or ``~/.codex/AGENTS.md`` globally) -- create it if it doesn't exist yet.
 - Copy ``_manual/codex-prompts/*.md`` into ``~/.codex/prompts/`` (a home-directory path, so it can't be pre-placed by this zip) to get ``/catalyst``, ``/add-skill``, ``/add-template``.
 - ``.codex/agents/*.toml`` is already in place for subagents, but Codex won't spawn them without being asked explicitly.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "codex" $d
 
@@ -107,6 +116,7 @@ Write-DeployNote $d @"
 - Append ``_manual/AGENTS.md.append.md`` to your project's ``AGENTS.md`` -- create it if it doesn't exist yet.
 - Restart your OpenCode session after unzipping so it picks up the commands/agents.
 - Known upstream bug: subagents invoked via the Task tool may ignore their own ``model:`` frontmatter -- verify on your installed version before relying on the cost/quality split.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "opencode" $d
 
@@ -121,6 +131,7 @@ Write-DeployNote $d @"
 - Append ``_manual/AGENTS.md.append.md`` to your project's ``AGENTS.md`` (or ``~/.pi/agent/AGENTS.md`` globally) -- create it if it doesn't exist yet. Pi concatenates every ``AGENTS.md`` it finds, so global and project-level files both apply.
 - ``.pi/prompts/*.md`` is already in place for ``/catalyst``, ``/add-skill``, ``/add-template`` -- restart your pi session and mark the project trusted if the commands don't show up in autocomplete.
 - Pi has no native per-role subagent file format. Read ``pi-subagent-guidance.md`` for the extension-based or CLI-spawn alternatives.
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "pi" $d
 
@@ -138,6 +149,7 @@ Write-DeployNote $d @"
 - Append ``_manual/copilot-instructions.md.append.md`` to ``.github/copilot-instructions.md`` -- create it if it doesn't exist yet.
 - ``/catalyst``, ``/add-skill``, ``/add-template`` prompt files only work in Copilot Chat (VS Code, Visual Studio, JetBrains) -- Copilot CLI has no ``.prompt.md`` support yet. On CLI, invoke ``catalyst-orchestrator`` directly as a custom agent instead.
 - Skills and agents are auto-discovered by both Copilot Chat and Copilot CLI (``/skills list`` in the CLI to confirm).
+- The bundle ships the meta library (``ORCHESTRATION-PROMPT.md``, ``catalyst-templates/``, ``catalyst-skills/``) so ``/add-skill``, ``/add-template``, and ``/learn`` can grow Catalyst in-place.
 "@
 Build-Zip "github-copilot" $d
 
