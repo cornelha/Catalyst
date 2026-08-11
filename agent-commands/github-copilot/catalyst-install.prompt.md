@@ -1,21 +1,14 @@
 ---
 agent: 'agent'
-description: Install the Catalyst orchestration pattern into .github/copilot-instructions.md if it isn't there yet
+description: Install the Catalyst orchestration pattern into this project's always-loaded instructions
 ---
-Install the Catalyst orchestration pattern into this repo's `.github/copilot-instructions.md` so it applies automatically (idempotent — safe to re-run).
+Install the Catalyst orchestration pattern into this project's always-loaded instructions so it applies automatically in every request, not just via `/catalyst`.
 
-Steps:
-1. Read `catalyst-templates/github-copilot.md` and find the "Instruction Text to Paste" section. Copy the content *inside* the ```markdown fence (not the fence itself).
-2. Read `.github/copilot-instructions.md` (create the `.github` directory and file if they don't exist).
-3. If it already contains the sentinel `<!-- catalyst-orchestration -->`, do nothing and report "Catalyst pattern already installed."
-4. Otherwise append this block to the end of the file:
+1. Check that `.catalyst/install.md` exists in this repo. If it does not, tell the user to copy the `.catalyst/` folder from the Catalyst library into the project root first, then re-run this command.
+2. Read `.catalyst/install.md` — it contains the canonical instruction block, delimited by `<!-- catalyst:start -->` and `<!-- catalyst:end -->` markers. The file is exactly that block — no explanatory header — so append its full content (markers included, for idempotency).
+3. Read the project's `.github/copilot-instructions.md` (create it if it doesn't exist).
+4. If `.github/copilot-instructions.md` already contains the block between the markers, make no changes and report that Catalyst is already installed.
+5. Otherwise append the block from step 2 (markers included) to `.github/copilot-instructions.md`, preserving any existing content above it.
+6. Report exactly what you changed and where. Do not modify any other files.
 
-```markdown
-<!-- catalyst-orchestration -->
-
-(the Instruction Text to Paste content you copied from catalyst-templates/github-copilot.md goes here)
-```
-
-5. Confirm the marker and pattern are now present.
-
-Do not modify any other files and do not rewrite the rest of copilot-instructions.md.
+${input:extra:Any additional context or preferences (optional; leave blank to proceed as described)}

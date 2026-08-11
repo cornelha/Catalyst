@@ -10,29 +10,19 @@ GitHub Copilot (in VS Code / Visual Studio / JetBrains, and Copilot Chat/Workspa
 
 For this pattern, use `.github/copilot-instructions.md` since the orchestration approach should apply repo-wide, not to specific file types.
 
-## Instruction Text to Paste
+## Installing the Pattern
 
-Into `.github/copilot-instructions.md`:
+The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers. Do not copy a per-tool copy — there isn't one.
 
-```markdown
-# Ticket Handling Instructions
+- **Recommended:** run `/catalyst-install` (from `agent-commands/github-copilot/catalyst-install.prompt.md`,
+  installed to `.github/prompts/`). It appends the block from `.catalyst/install.md` into
+  `.github/copilot-instructions.md` automatically, idempotently, and reports what it changed.
+- **Manual:** append the full content of `.catalyst/install.md` to `.github/copilot-instructions.md`,
+  preserving any existing content above it.
 
-When asked to address a work item or ticket — a GitHub issue, or one mirrored from Jira/Azure DevOps/another tracker — follow this process before proposing code:
-
-1. Analysis (fan out): Identify the independent things that need investigating — related code locations,
-   existing tests, related/duplicate issues, relevant docs, recent history of the affected files. List them,
-   then look at each one. For this phase, use subagents or delegated agents when available rather than
-   handling every investigation inline in the main session.
-
-2. Consolidate: Summarize findings into a short list, removing repeats and irrelevant matches. State the
-   most likely root cause or the concrete requirement in one or two sentences.
-
-3. Verify: For each notable finding, double-check it against the real file or test content — don't just
-   restate the summary. Explicitly say whether each finding held up or turned out to be a false lead.
-
-4. Plan: Based only on findings that held up, describe the specific files and changes needed, and the tests
-   to add or run. Present this as a plan before writing the actual code changes.
-```
+`.catalyst/orchestration.md` is the on-demand reference the block points at for depth (node types, safety
+rules, anti-patterns, worked example).
 
 ## How Copilot Handles Parallel Task Execution
 

@@ -1,6 +1,6 @@
 # Subagent Architecture
 
-Everything in `ORCHESTRATION-PROMPT.md` and `catalyst-skills/` can be run inline, in one session — a single agent walking through FAN OUT → REDUCE → VERIFY → SYNTHESIZE itself. That works fine for small, contained tickets. This document describes the alternative: splitting each phase into a **named, purpose-built subagent**, coordinated by an **orchestrator**, so you can control cost, model choice, and context isolation per phase instead of running the whole pattern in one ever-growing context window.
+Everything in `.catalyst/orchestration.md` and `.catalyst/skills/` can be run inline, in one session — a single agent walking through FAN OUT → REDUCE → VERIFY → SYNTHESIZE itself. That works fine for small, contained tickets. This document describes the alternative: splitting each phase into a **named, purpose-built subagent**, coordinated by an **orchestrator**, so you can control cost, model choice, and context isolation per phase instead of running the whole pattern in one ever-growing context window.
 
 **Composes with `WORKTREE-WORKFLOW.md`:** that file gives physical isolation per ticket (one git worktree per ticket, main checkout untouched); this file gives logical isolation per phase. Together: one ticket = one worktree = one orchestrator run, with all implementation happening inside the ticket's worktree.
 
@@ -33,7 +33,7 @@ Prefix every Catalyst-managed agent with `catalyst-` (`catalyst-orchestrator`, `
 To keep the isolation benefit real (not just theoretical), be deliberate about the handoff:
 
 - **To a fan-out analyst**: the single task description, nothing else. Not the whole ticket, not other analysts' findings.
-- **To the verifier**: the finding plus the specific skeptical question from the relevant `catalyst-skills/*.md` file's Verification Questions section — not the analyst's reasoning, not the REDUCE summary's framing, just "here's a claim, here's how to check it."
+- **To the verifier**: the finding plus the specific skeptical question from the relevant `.catalyst/skills/*.md` file's Verification Questions section — not the analyst's reasoning, not the REDUCE summary's framing, just "here's a claim, here's how to check it."
 - **To the synthesizer**: only the list of verified findings (VALID verdicts with their evidence), never the false positives, never the raw fan-out transcripts.
 - **Back from every subagent**: a short structured result (finding + evidence, or verdict + citation, or a plan) — never the subagent's full internal transcript. If a subagent's output is bloating the orchestrator's context, that's a sign it's over-returning, not that the pattern isn't working.
 
@@ -55,7 +55,7 @@ Run inline (single session, no subagents) when:
 
 ## Where to find ready-to-copy definitions
 
-See `agent-subagents/<tool>/` for each tool's actual agent-definition format, or `agent-subagents/cline.md` for Cline's SDK/CLI-based alternative (Cline has no native per-role agent-definition file). Each file is scoped to one role and references the relevant phase instructions in `ORCHESTRATION-PROMPT.md` and `catalyst-skills/` rather than duplicating them, so updates to the core pattern don't require touching every agent definition.
+See `agent-subagents/<tool>/` for each tool's actual agent-definition format, or `agent-subagents/cline.md` for Cline's SDK/CLI-based alternative (Cline has no native per-role agent-definition file). Each file is scoped to one role and references the relevant phase instructions in `.catalyst/orchestration.md` and `.catalyst/skills/` rather than duplicating them, so updates to the core pattern don't require touching every agent definition.
 
 ## If you also use git worktrees
 

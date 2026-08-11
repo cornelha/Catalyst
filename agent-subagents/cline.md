@@ -21,7 +21,7 @@ Cline (via its CLI, or via the IDE extension acting as a coordinator) can spawn 
 
 This maps onto Catalyst's roles more manually:
 
-- Run the **orchestrator** role in your main Cline IDE session, using `ORCHESTRATION-PROMPT.md` and the relevant `catalyst-skills/*.md` file directly.
+- Run the **orchestrator** role in your main Cline IDE session, using `.catalyst/orchestration.md` and the relevant `.catalyst/skills/*.md` file directly.
 - For each FAN OUT task, spawn a separate CLI instance (`claude -p "..."` or the Cline CLI equivalent) scoped to read-only tools, with a low `--max-turns`, running the fan-out analyst's instructions from `agent-subagents/claude-code/catalyst-fan-out-analyst.md`. Run these in parallel using background shell jobs, then `wait` for all to finish before REDUCE.
 - For VERIFY, spawn one CLI instance per finding with the verifier's instructions and only that finding as input.
 - For SYNTHESIZE, spawn one CLI instance with the synthesizer's instructions and only the verified findings list as input.

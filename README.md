@@ -18,15 +18,17 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 
 ## Key Features
 
-- **`ORCHESTRATION-PROMPT.md`** — the core fan-out/reduce/verify/synthesize pattern, with node types (Agent/Verifier/Implementation), safety rules, and anti-patterns to avoid.
+- **`.catalyst/install.md`** — the single canonical instruction block (delimited by `<!-- catalyst:start -->` / `<!-- catalyst:end -->` markers). This is the *only* text that ever gets pasted into an agent's always-loaded instruction file — small enough to read on every message without taxing the context window.
+- **`.catalyst/orchestration.md`** — the full fan-out/reduce/verify/synthesize pattern, with node types (Agent/Verifier/Implementation), safety rules, and anti-patterns. Read on demand by commands and agents, never loaded by default.
 - **`WORKTREE-WORKFLOW.md`** — an optional working-mode layer: doing each ticket's implementation in a dedicated git worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, main checkout untouched, cleanup after the PR merges), so parallel tickets never conflict. Tracker-agnostic, like everything else.
-- **`catalyst-skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
-- **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in seven agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, and Pi. Each covers exact config file locations, the literal instruction text to paste, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase.
+- **`.catalyst/skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
+- **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in seven agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, and Pi. Each covers exact config file locations, how to install via `/catalyst-install`, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase. The instruction text itself is *not* duplicated here — it lives once in `.catalyst/install.md`.
 - **`examples/`** — standalone, realistic ticket walkthroughs showing the full four-phase pattern applied end to end, independent of any specific agent tool.
-- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/add-skill`, `/add-template`, `/learn` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
+- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
 - **`SUBAGENT-ARCHITECTURE.md`** — an optional layer on top of the core pattern: splits FAN OUT/VERIFY/SYNTHESIZE into named, purpose-built subagents (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`) coordinated by an orchestrator, so each phase can run in an isolated context on a model sized to its job — cheap/fast for fan-out, high-capability for verify/synthesize — cutting both token cost and context rot versus running the whole pattern in one growing session.
 - **`agent-subagents/`** — ready-to-copy subagent definitions implementing that architecture for Claude Code, Cursor, OpenCode, GitHub Copilot, and Codex CLI (each in that tool's real agent-definition format — markdown+frontmatter for most, TOML for Codex), plus guidance docs for Cline and Pi, neither of which has a native per-role agent file format in core.
-- **`agent-skills/`** — native skill-discovery wrappers for tools that support one (currently GitHub Copilot's `SKILL.md`/`.github/skills/<name>/` format), pointing at the matching `catalyst-skills/*.md` file for the full pattern content.
+- **`agent-skills/`** — native skill-discovery wrappers for tools that support one (currently GitHub Copilot's `SKILL.md`/`.github/skills/<name>/` format). Each Copilot skill is **self-contained** per the agentskills.io specification (its `SKILL.md` carries the full playbook instructions), generated from the canonical `.catalyst/skills/*.md` files by `scripts/generate-copilot-skills.ps1`/`.sh` — so you evolve the canonical playbook once and regenerate the native skills.
+- **`scripts/`** — build helpers: `build-zips.*` packages each tool's files into deployable zips under `dist/`, and `generate-copilot-skills.*` regenerates the self-contained Copilot `SKILL.md` files from the canonical playbooks.
 - **`docs/`** — one getting-started guide per tool, walking through installing the pattern, the commands, and (where supported) the subagents together, end to end.
 - Every file is standalone by design — open one skill file and one template file, point an agent at a ticket, and it works without cross-referencing anything else in the repo.
 
@@ -39,11 +41,19 @@ git clone <this-repo>
 cd catalyst
 ```
 
-Then open the getting-started guide for your tool in `docs/` — it walks through installing the core pattern, the commands, and (where supported) the subagents, together, with a first ticket to try it on. Or, to wire things up manually: copy the relevant instruction block from a file in `catalyst-templates/` into your agent's config location (e.g. `CLAUDE.md`, `.cursor/rules/*.mdc`, `.clinerules`, `AGENTS.md`, `.github/copilot-instructions.md`, or `opencode.json`).
+Then open the getting-started guide for your tool in `docs/` — it walks through installing the core pattern, the commands, and (where supported) the subagents, together, with a first ticket to try it on. In short: run the tool's `/catalyst-install` command (or manually append `.catalyst/install.md` to your agent's instruction file), copy the commands for your tool from `agent-commands/`, and you're set.
 
 ## Usage
 
-**Applying the pattern live in a Claude Code session**, using the bundled slash command:
+**Installing the pattern into a Claude Code session**, once per repo:
+
+```
+/catalyst-install
+```
+
+This appends the canonical block from `.catalyst/install.md` into `CLAUDE.md` (or `~/.claude/CLAUDE.md`) — idempotently, so re-running it never duplicates the block. The equivalent command exists for every tool in `agent-commands/`.
+
+**Applying the pattern live**, using the bundled slash command:
 
 ```
 /catalyst Fix login timeout handling — https://dev.azure.com/org/project/_workitems/edit/4521
@@ -57,7 +67,7 @@ This runs the four phases in order — stating fan-out tasks before executing th
 /add-skill performance-regression
 ```
 
-This reads the existing skill files to match structure and tone, then writes a new standalone `catalyst-skills/performance-regression.md`.
+This reads the existing skill files to match structure and tone, then writes a new standalone `.catalyst/skills/performance-regression.md`.
 
 **Wiring the pattern into a different tool** not yet covered:
 
@@ -65,7 +75,7 @@ This reads the existing skill files to match structure and tone, then writes a n
 /add-template windsurf
 ```
 
-This researches the tool's actual configuration mechanism (not guessed syntax) and writes a new `catalyst-templates/windsurf.md` following the same six-part structure as the existing templates.
+This researches the tool's actual configuration mechanism (not guessed syntax) and writes a new `catalyst-templates/windsurf.md` following the same structure as the existing templates.
 
 **Turning session lessons into new skills**, at the end of a working session:
 
@@ -73,4 +83,4 @@ This researches the tool's actual configuration mechanism (not guessed syntax) a
 /learn
 ```
 
-This reviews what the session taught you about the repo, distills the durable, repo-specific lessons into proposed new `catalyst-skills/*.md` files (or edits to existing ones), and waits for your confirmation before writing anything. Run it again later and it respects what's already been recorded — only genuinely new lessons get proposed.
+This reviews what the session taught you about the repo, distills the durable, repo-specific lessons into proposed new `.catalyst/skills/*.md` files (or edits to existing ones), and waits for your confirmation before writing anything. Run it again later and it respects what's already been recorded — only genuinely new lessons get proposed.

@@ -8,10 +8,10 @@
 ## Step 1 — Install the core pattern
 
 ```bash
-cp catalyst-templates/codex.md AGENTS.md
+cp .catalyst/install.md AGENTS.md
 ```
 
-Or, if you already have an `AGENTS.md`, append `catalyst-templates/codex.md`'s instruction block to it rather than overwriting. `AGENTS.md` at your project root is loaded automatically every session; `~/.codex/AGENTS.md` applies it globally across every repo.
+Or, if you already have an `AGENTS.md`, append `.catalyst/install.md`'s content to it rather than overwriting. `AGENTS.md` at your project root is loaded automatically every session; `~/.codex/AGENTS.md` applies it globally across every repo. Or run `/catalyst-install` (after Step 2) and it will append the same block for you, idempotently.
 
 ## Step 2 — Commands
 
@@ -21,7 +21,6 @@ cp agent-commands/codex/*.md ~/.codex/prompts/
 ```
 
 **Caveat**: OpenAI has deprecated Codex CLI custom prompts (this mechanism) in favor of "Skills." These files work today — filename minus `.md` becomes `/name` — but check `developers.openai.com/codex/custom-prompts` before building long-term workflows on this specifically. Only top-level `.md` files in `~/.codex/prompts/` are scanned, not subfolders.
-
 ## Step 3 — Subagents (optional)
 
 Codex CLI's subagent system (GA'd March 2026) uses a genuinely different format from the other tools — TOML, not markdown. Read `SUBAGENT-ARCHITECTURE.md` first, then:
@@ -49,7 +48,7 @@ Codex will state its fan-out tasks, run batched read-only shell commands, consol
 
 ## Next steps
 
-- Check `catalyst-skills/` for a playbook matching your ticket type.
+- Check `.catalyst/skills/` for a playbook matching your ticket type.
 - Adapt `agent-commands/codex/add-skill.md`'s pattern to add new prompts for recurring ticket types — or look at Codex's newer Skills system as the more future-proof equivalent.
 - Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.

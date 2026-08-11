@@ -8,10 +8,10 @@
 ## Step 1 — Install the core pattern
 
 ```bash
-cp catalyst-templates/pi.md AGENTS.md
+cp .catalyst/install.md AGENTS.md
 ```
 
-Or, if you already have an `AGENTS.md`, append `catalyst-templates/pi.md`'s instruction block to it rather than overwriting. Unlike some other tools, Pi **concatenates** every `AGENTS.md` it finds (global, then each parent directory, then cwd) — it doesn't just take the closest one — so a project-root file and a `~/.pi/agent/AGENTS.md` both apply together if you have both.
+Or, if you already have an `AGENTS.md`, append `.catalyst/install.md`'s content to it rather than overwriting. Unlike some other tools, Pi **concatenates** every `AGENTS.md` it finds (global, then each parent directory, then cwd) — it doesn't just take the closest one — so a project-root file and a `~/.pi/agent/AGENTS.md` both apply together if you have both. Or run `/catalyst-install` (after Step 2) and it will append the same block for you, idempotently.
 
 ## Step 2 — Commands
 
@@ -20,7 +20,7 @@ mkdir -p .pi/prompts
 cp agent-commands/pi/*.md .pi/prompts/
 ```
 
-Or copy to `~/.pi/agent/prompts/` instead for a global install available in every project. Filename minus `.md` becomes the slash command (`/catalyst`, `/add-skill`, `/add-template`, `/learn`), with `$ARGUMENTS` in the body expanding to whatever you type after the command name.
+Or copy to `~/.pi/agent/prompts/` instead for a global install available in every project. Filename minus `.md` becomes the slash command (`/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn`), with `$ARGUMENTS` in the body expanding to whatever you type after the command name.
 
 **Caveat**: project-level `.pi/prompts/*.md` files only load once the project has been marked trusted — check `/settings` or `~/.pi/agent/trust.json` if a command doesn't show up in autocomplete.
 
@@ -44,7 +44,7 @@ Pi will state its fan-out tasks, run a batched read-only `bash` call, consolidat
 
 ## Next steps
 
-- Check `catalyst-skills/` for a playbook matching your ticket type.
+- Check `.catalyst/skills/` for a playbook matching your ticket type.
 - Adapt `agent-commands/pi/add-skill.md`'s pattern to add new prompts for recurring ticket types.
 - Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` (from Claude Code, if you also use it) for a tool not yet covered.

@@ -1,6 +1,6 @@
 # Example: Bug Fix — "Export button silently fails for large date ranges"
 
-This walkthrough applies `catalyst-skills/bug-fix.md` to a real-shaped ticket, start to finish, so you can see the pattern applied without needing to open any other file. It uses a GitHub issue (fetched here via the GitHub MCP server) as the tracker — the same walkthrough applies unchanged if the ticket comes from Jira, Azure DevOps, or Linear instead.
+This walkthrough applies `.catalyst/skills/bug-fix.md` to a real-shaped ticket, start to finish, so you can see the pattern applied without needing to open any other file. It uses a GitHub issue (fetched here via the GitHub MCP server) as the tracker — the same walkthrough applies unchanged if the ticket comes from Jira, Azure DevOps, or Linear instead.
 
 ## The Ticket
 

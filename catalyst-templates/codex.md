@@ -12,33 +12,19 @@ Codex CLI also has a `~/.codex/config.toml` file for behavioral settings (approv
 
 For this pattern, use the project-root `AGENTS.md` if the orchestration approach should apply to one repo's ticket work; use `~/.codex/AGENTS.md` if you want it applied across every repo you run Codex against.
 
-## Instruction Text to Paste
+## Installing the Pattern
 
-Into `AGENTS.md`:
+The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers. Do not copy a per-tool copy — there isn't one.
 
-```markdown
-# Ticket Orchestration Pattern
+- **Recommended:** run `/catalyst-install` (from `agent-commands/codex/catalyst-install.md`, installed to
+  `~/.codex/prompts/`). It appends the block from `.catalyst/install.md` into `AGENTS.md` (project or
+  `~/.codex/AGENTS.md` global) automatically, idempotently, and reports what it changed.
+- **Manual:** append the full content of `.catalyst/install.md` to the project-root `AGENTS.md` (or
+  `~/.codex/AGENTS.md`), preserving any existing content above it.
 
-When given a ticket (URL, ID, or pasted text) from any tracker — GitHub Issues, Jira, Azure DevOps,
-Linear, etc. — do not begin editing files immediately. Work through these phases explicitly, in order:
-
-1. FAN OUT — Identify the independent things that need investigating: related code locations, existing
-   test status, related/duplicate tickets, relevant docs, and recent history of the affected files. State
-   this task list before running anything. Execute each lookup using read-only commands (grep/rg, cat,
-   git log, running the test suite) before making any change.
-
-2. REDUCE — Consolidate what was found. Remove duplicates and irrelevant matches. State the leading root
-   cause or the concrete requirement in one or two sentences.
-
-3. VERIFY — For each significant finding, ask a skeptical question and check it against the real file or
-   test output again — do not just restate the FAN OUT summary. Explicitly mark each finding VALID or FALSE
-   POSITIVE, and drop false positives from further consideration.
-
-4. SYNTHESIZE — Using only verified findings, write out a concrete implementation plan: files to change,
-   tests to add, and risks to check. Present this plan and stop — do not apply patches or run write commands
-   until the plan is confirmed, unless explicitly told to proceed autonomously (e.g. `--full-auto` was
-   requested for this task).
-```
+`.catalyst/orchestration.md` is the on-demand reference the block points at for depth (node types, safety
+rules, anti-patterns, worked example).
 
 ## How Codex CLI Handles Parallel Task Execution
 

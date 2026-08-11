@@ -1,6 +1,6 @@
 # Worktree Workflow
 
-An optional working-mode layer on top of `ORCHESTRATION-PROMPT.md`: instead of editing files in your main checkout, do each ticket's implementation in a dedicated **git worktree** — a separate working directory linked to the same repo, on its own branch. This keeps `main` clean, lets several tickets be implemented in parallel without conflicting working trees, and gives every PR a branch that is trivially linkable back to its ticket.
+An optional working-mode layer on top of `.catalyst/orchestration.md`: instead of editing files in your main checkout, do each ticket's implementation in a dedicated **git worktree** — a separate working directory linked to the same repo, on its own branch. This keeps `main` clean, lets several tickets be implemented in parallel without conflicting working trees, and gives every PR a branch that is trivially linkable back to its ticket.
 
 This file is deliberately **tracker-agnostic** — it never assumes GitHub, Jira, Azure DevOps, or any other tracker. The only inputs it needs are the ticket ID and the ticket title, both of which any tracker provides. The signal for when cleanup happens comes from your tracker's own merge notification, not from a tool-specific API call.
 
@@ -110,7 +110,7 @@ Each can be worked, tested, committed, and pushed independently with no working-
 
 ## Worked example
 
-**Ticket:** bug #4521, "Login times out after 5 minutes," worked with `catalyst-skills/bug-fix.md`.
+**Ticket:** bug #4521, "Login times out after 5 minutes," worked with `.catalyst/skills/bug-fix.md`.
 
 1. **FAN OUT → REDUCE → VERIFY** run read-only in the main checkout. The `bug-fix` skill is selected, so the branch prefix is `bug/`. Title slugified deterministically: `login-times-out-after-5-minutes` (well under 40 chars).
 2. **SYNTHESIZE** presents the plan; the user confirms.
@@ -129,7 +129,7 @@ Each can be worked, tested, committed, and pushed independently with no working-
 
 ## Where this fits in the library
 
-- `ORCHESTRATION-PROMPT.md` — the core pattern; this file is the working-mode layer for its SYNTHESIZE/implementation phase.
+- `.catalyst/orchestration.md` — the core pattern; this file is the working-mode layer for its SYNTHESIZE/implementation phase.
 - `SUBAGENT-ARCHITECTURE.md` — logical isolation per phase; this file is physical isolation per ticket, and the two compose.
-- `catalyst-skills/bug-fix.md`, `catalyst-skills/feature-implementation.md` — the skills whose Implementation Checklists reference this workflow.
-- `catalyst-skills/code-review.md` — explicitly out of scope: reviews are read-only, no worktree.
+- `.catalyst/skills/bug-fix.md`, `.catalyst/skills/feature-implementation.md` — the skills whose Implementation Checklists reference this workflow.
+- `.catalyst/skills/code-review.md` — explicitly out of scope: reviews are read-only, no worktree.

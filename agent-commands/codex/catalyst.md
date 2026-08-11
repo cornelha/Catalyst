@@ -1,7 +1,6 @@
 Apply the Catalyst orchestration pattern to a ticket, right now, in this session.
 
-Reference: Read ORCHESTRATION-PROMPT.md for the pattern.
-If a matching skill exists in catalyst-skills/, use it. Otherwise apply the general pattern from ORCHESTRATION-PROMPT.md directly.
+The four-phase pattern is below — no need to read the reference file. If a matching skill exists in .catalyst/skills/, read that ONE file and follow it; otherwise apply the pattern below directly.
 
 Ticket / task: $ARGUMENTS
 (NOTE: OpenAI has deprecated Codex CLI custom prompts in favor of "Skills" — see the caveat in agent-commands/README.md. This file works today if your Codex CLI version still supports `~/.codex/prompts/`, but check current Codex docs before relying on it long-term.)

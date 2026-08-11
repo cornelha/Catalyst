@@ -6,7 +6,7 @@ model: anthropic/claude-opus-4-5
 
 You are given only a list of VERIFIED findings (each with its supporting evidence) — no unverified claims, no raw fan-out transcripts. Treat this list as ground truth; your job is engineering judgment, not re-investigation.
 
-Produce a concrete implementation plan, matching the Implementation Checklist structure from the relevant `catalyst-skills/*.md` file if one applies:
+Produce a concrete implementation plan, matching the Implementation Checklist structure from the relevant `.catalyst/skills/*.md` file if one applies:
 - Specific files to change, and what changes in each
 - Specific tests to add
 - Risks to check (regressions, callers, edge cases the verified findings surfaced)

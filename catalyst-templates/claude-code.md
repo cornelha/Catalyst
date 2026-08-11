@@ -4,39 +4,20 @@
 
 Claude Code reads instructions from a `CLAUDE.md` file at the repo root (or `~/.claude/CLAUDE.md` for global instructions across all projects). It also supports per-project custom slash commands as markdown files under `.claude/commands/`.
 
-Two ways to install this pattern:
+## Installing the Pattern
 
-**Option A — Persistent project instruction (recommended for teams working the same ticket tracker repeatedly, whichever tracker that is):**
-Paste the block below into `CLAUDE.md` at the repo root. Claude Code loads this automatically at the start of every session in that repo.
+The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers. Do not copy a per-tool copy — there isn't one.
 
-**Option B — On-demand slash command:**
-Save the block below as `.claude/commands/catalyst.md` in the repo. Invoke it with `/catalyst <ticket-url>` whenever you want to apply the pattern, without it running on every session.
+- **Recommended:** run `/catalyst-install` (from `.claude/commands/catalyst-install.md`). It appends the
+  block from `.catalyst/install.md` into `CLAUDE.md` (or `~/.claude/CLAUDE.md`) automatically, idempotently,
+  and reports what it changed.
+- **Manual:** append the full content of `.catalyst/install.md` to `CLAUDE.md` at the repo root (or
+  `~/.claude/CLAUDE.md` for global), preserving any existing content above it.
 
-## Instruction Text to Paste
-
-```markdown
-## Ticket Orchestration Pattern
-
-When given a ticket (URL or ID) from any tracker — GitHub Issues, Jira, Azure DevOps, Linear, etc. — do not
-read it and immediately start coding. Follow this sequence:
-
-1. FAN OUT — Decompose the ticket into independent analysis tasks (e.g. search codebase for related code,
-   check for failing tests, search the tracker for related/duplicate tickets, read relevant docs, check git
-   history). List these tasks explicitly before running them. Run them in parallel using multiple tool calls
-   in a single turn wherever they don't depend on each other's output.
-
-2. REDUCE — Consolidate findings. Remove duplicates and noise. State the leading root-cause or core
-   requirement in one or two sentences.
-
-3. VERIFY — For each significant finding, ask a skeptical question and check it against the actual code or
-   tests (not your own summary). State a verdict: valid or false positive. Drop false positives.
-
-4. SYNTHESIZE — Using only verified findings, produce a concrete implementation plan (files to change, tests
-   to add, risks to check). Stop here and ask for confirmation before writing code, unless explicitly told to
-   proceed automatically.
-
-Never skip straight to implementation on an unverified finding.
-```
+Either way, the `# Ticket Orchestration (Catalyst)` block is what Claude Code loads every session, and
+`.catalyst/orchestration.md` is the on-demand reference it points at for depth (node types, safety rules,
+anti-patterns, worked example).
 
 ## How Claude Code Handles Parallelism
 

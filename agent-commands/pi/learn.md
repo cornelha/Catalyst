@@ -3,10 +3,10 @@ description: Review session lessons and turn them into new or updated catalyst s
 argument-hint: "[topic/area to focus on]"
 ---
 
-Review what you learned about this repo during this session, and turn the durable lessons into new or updated skills in catalyst-skills/ so future sessions start smarter.
+Review what you learned about this repo during this session, and turn the durable lessons into new or updated skills in .catalyst/skills/ so future sessions start smarter.
 
-Reference: Read ORCHESTRATION-PROMPT.md for the pattern (fan out, reduce, verify, synthesize).
-Reference: Read every existing file in catalyst-skills/ before proposing anything — a lesson is only worth a skill if it is NOT already covered by an existing skill.
+Reference: Read .catalyst/orchestration.md for the pattern (fan out, reduce, verify, synthesize).
+Reference: Read every existing file in .catalyst/skills/ before proposing anything — a lesson is only worth a skill if it is NOT already covered by an existing skill.
 
 Optional focus: $ARGUMENTS (a topic, ticket type, or area of the repo to limit the review to; if empty, review the whole session).
 
@@ -17,14 +17,14 @@ Review what actually happened in this session: which tasks took longer than they
 
 STEP 2 — DISTILL
 For each candidate lesson, decide which of three buckets it belongs in:
-- NEW SKILL — a recurring, repo-specific pattern that no existing catalyst-skills/ file covers (e.g. "how this repo does migrations", "the build is slow, run only the affected project's tests"). These become new files.
+- NEW SKILL — a recurring, repo-specific pattern that no existing .catalyst/skills/ file covers (e.g. "how this repo does migrations", "the build is slow, run only the affected project's tests"). These become new files.
 - UPDATE — a lesson that refines or corrects an existing skill's Analysis Tasks, Verification Questions, or Implementation Checklist. These become edits to the existing file.
 - DISCARD — anything generic (true of any repo), one-off, or already fully covered. Discard it explicitly and don't record it.
 
 Keep a lesson only if all three hold: it is specific to THIS repo, it will recur, and recording it would make a future session measurably faster or more correct.
 
 STEP 3 — DRAFT
-For each NEW SKILL, write the full `catalyst-skills/<name>.md` with the exact structure and tone of the existing files:
+For each NEW SKILL, write the full `.catalyst/skills/<name>.md` with the exact structure and tone of the existing files:
 1. Problem Pattern — when a ticket matches this skill
 2. Analysis Tasks — independent, parallelizable investigation tasks (FAN OUT)
 3. Deduplication — how to consolidate/filter findings (REDUCE)
@@ -39,3 +39,6 @@ Present a complete plan to the user: for each NEW SKILL, its name and one-senten
 
 STEP 5 — WRITE
 After approval, create the approved new files and apply the approved edits exactly as planned. Do not modify any other files. If a skill's name collides with an existing file, treat it as an UPDATE and merge rather than overwriting.
+
+STEP 6 — REGENERATE NATIVE SKILLS
+If this repo ships native skills generated from .catalyst/skills/ (currently the GitHub Copilot skills under agent-skills/github-copilot/), re-run scripts/generate-copilot-skills.ps1 (or .sh) so the new/updated playbooks propagate, and mention that they were regenerated.

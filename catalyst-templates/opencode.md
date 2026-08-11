@@ -6,37 +6,20 @@ OpenCode (the open-source terminal-based AI coding agent) reads project configur
 
 Two ways to install this pattern:
 
-**Option A — `AGENTS.md` (simplest):** create/edit `AGENTS.md` at the repo root with the instruction block below. OpenCode loads it automatically every session.
+**Option A — `AGENTS.md` (simplest):** append the canonical block from `.catalyst/install.md` to `AGENTS.md` at the repo root (or run `/catalyst-install` — see `agent-commands/opencode/catalyst-install.md`). OpenCode loads it automatically every session.
 
-**Option B — explicit config reference:** add an `instructions` entry in `opencode.json` pointing at a dedicated file (e.g. `docs/catalyst-orchestration.md`), useful if you want this pattern kept separate from other agent instructions.
+**Option B — explicit config reference:** add an `instructions` entry in `opencode.json` pointing at `.catalyst/install.md`, useful if you want this pattern kept separate from other agent instructions. OpenCode loads the file's full contents into every session, and `.catalyst/install.md` contains only the instruction block — no explanatory header — so the whole file is safe to load without wasting tokens.
 
 ```jsonc
 {
-  "instructions": ["docs/catalyst-orchestration.md"]
+  "instructions": [".catalyst/install.md"]
 }
 ```
 
-## Instruction Text to Paste
-
-```markdown
-# Ticket Orchestration
-
-When given a ticket from any tracker (GitHub Issues, Jira, Azure DevOps, Linear, etc.), do not start editing files immediately. Work through these phases:
-
-1. FAN OUT — Identify independent analysis tasks (code search, test status, related tickets, docs, git
-   history). State the task list, then run each one using available read-only tools (search/grep, file read,
-   git log). Where the tool interface allows issuing multiple tool calls in one step, do so — don't
-   artificially serialize independent lookups.
-
-2. REDUCE — Consolidate findings, dropping duplicates and irrelevant matches. State the leading root cause
-   or requirement in one or two sentences.
-
-3. VERIFY — For each significant finding, ask a skeptical question and re-check it against the real file or
-   test, not your own earlier summary. Mark each VALID or FALSE POSITIVE and drop false positives.
-
-4. SYNTHESIZE — Using only verified findings, produce a concrete implementation plan (files, changes, tests,
-   risks). Stop and wait for confirmation before editing files, unless told to proceed automatically.
-```
+The instruction block lives once in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers — the file is exactly that block and nothing else, so there is no per-tool
+copy and no header to strip. `.catalyst/orchestration.md` is the on-demand
+reference the block points at for depth (node types, safety rules, anti-patterns, worked example).
 
 ## How OpenCode Handles Parallel Task Execution
 

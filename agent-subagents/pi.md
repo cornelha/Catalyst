@@ -21,7 +21,7 @@ Since Pi has no built-in restriction on what a `bash` call can do, and its own d
 
 This maps onto Catalyst's roles more manually:
 
-- Run the **orchestrator** role in your main interactive `pi` session, using `ORCHESTRATION-PROMPT.md` and the relevant `catalyst-skills/*.md` file directly.
+- Run the **orchestrator** role in your main interactive `pi` session, using `.catalyst/orchestration.md` and the relevant `.catalyst/skills/*.md` file directly.
 - For each FAN OUT task, spawn a separate `pi -p "..."` subprocess scoped to a read-only instruction (no `write`/`edit` mentioned in its prompt), running the fan-out analyst's instructions from `agent-subagents/claude-code/catalyst-fan-out-analyst.md`. Launch these as background shell jobs so they run concurrently, then `wait` for all of them before REDUCE.
 - For VERIFY, spawn one `pi -p "..."` instance per finding with the verifier's instructions and only that finding as input.
 - For SYNTHESIZE, spawn one `pi -p "..."` instance with the synthesizer's instructions and only the verified findings list as input.

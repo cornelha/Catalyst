@@ -4,8 +4,7 @@ description: Apply the Catalyst fan-out/reduce/verify/synthesize pattern to a ti
 ---
 Apply the Catalyst orchestration pattern to this ticket: ${input:ticket:Paste the ticket URL, ID, or description}
 
-Reference: Read ORCHESTRATION-PROMPT.md for the pattern.
-If a matching skill exists in catalyst-skills/, use it. Otherwise apply the general pattern from ORCHESTRATION-PROMPT.md directly.
+The four-phase pattern is below — no need to read the reference file. If a matching skill exists in .catalyst/skills/, read that ONE file and follow it; otherwise apply the pattern below directly.
 
 Before FAN OUT: if the ticket was given as a bare ID (e.g. #4521 or 4521, not a URL or pasted
 description), resolve it to full ticket content first — pass the numeric ID only (strip any `#`

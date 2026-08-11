@@ -1,21 +1,14 @@
 ---
-description: Install the Catalyst orchestration pattern into AGENTS.md if it isn't there yet
+description: Install the Catalyst orchestration pattern into this project's always-loaded instructions
 argument-hint: ""
 ---
-Install the Catalyst orchestration pattern into this project's `AGENTS.md` so it applies automatically every session (idempotent — safe to re-run). Pi concatenates every `AGENTS.md` it finds, so a project-level file works.
+Install the Catalyst orchestration pattern into this project's always-loaded instructions so it applies automatically in every session, not just via `/catalyst`.
 
-Steps:
-1. Read `catalyst-templates/pi.md` and find the "Instruction Text to Paste" section. Copy the content *inside* the ```markdown fence (not the fence itself).
-2. Read `AGENTS.md` (create it if it doesn't exist).
-3. If `AGENTS.md` already contains the sentinel `<!-- catalyst-orchestration -->`, do nothing and report "Catalyst pattern already installed in AGENTS.md."
-4. Otherwise append this block to the end of `AGENTS.md`:
+1. Check that `.catalyst/install.md` exists in this repo. If it does not, tell the user to copy the `.catalyst/` folder from the Catalyst library into the project root first, then re-run this command.
+2. Read `.catalyst/install.md` — it contains the canonical instruction block, delimited by `<!-- catalyst:start -->` and `<!-- catalyst:end -->` markers. The file is exactly that block — no explanatory header — so append its full content (markers included, for idempotency).
+3. Read the project's `AGENTS.md` (create it if it doesn't exist). If you prefer a global install, use `~/.pi/agent/AGENTS.md` instead — ask the user which they want if it's not obvious. Pi concatenates every `AGENTS.md` it finds, so a project-root file and a global file both apply together if you have both.
+4. If `AGENTS.md` already contains the block between the markers, make no changes and report that Catalyst is already installed.
+5. Otherwise append the block from step 2 (markers included) to `AGENTS.md` (or the global file), preserving any existing content above it.
+6. Report exactly what you changed and where. Do not modify any other files.
 
-```markdown
-<!-- catalyst-orchestration -->
-
-(the Instruction Text to Paste content you copied from catalyst-templates/pi.md goes here)
-```
-
-5. Confirm the marker and pattern are now present.
-
-Do not modify any other files and do not rewrite the rest of AGENTS.md.
+$ARGUMENTS

@@ -14,42 +14,26 @@ For an orchestration pattern you want applied to every ticket regardless of file
 
 **Setup steps:**
 1. Create the folder `.cursor/rules/` at the repo root if it doesn't exist.
-2. Create a file `.cursor/rules/catalyst-orchestration.mdc`.
-3. Paste the frontmatter + instruction block below.
-4. Restart or reload the Cursor window so it picks up the new rule (Cursor indexes `.cursor/rules/` on project load).
+2. Run `/catalyst-install` (from `agent-commands/cursor/catalyst-install.md`), or manually append the
+   canonical block from `.catalyst/install.md` into `AGENTS.md` at the repo root. Cursor applies
+   `AGENTS.md` automatically to every Agent/Composer session.
+3. For an always-applied rule instead, create `.cursor/rules/catalyst-orchestration.mdc` with the
+   frontmatter below followed by the block from `.catalyst/install.md`.
+4. Restart or reload the Cursor window so it picks up the new rule (Cursor indexes `.cursor/rules/` on
+   project load).
 
-## Instruction Text to Paste
-
-Into `.cursor/rules/catalyst-orchestration.mdc`:
+The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers. Do not copy a per-tool copy — there isn't one.
 
 ```markdown
 ---
 description: Ticket orchestration pattern — fan out, reduce, verify, synthesize
 alwaysApply: true
 ---
-
-# Ticket Orchestration Pattern
-
-When given a ticket (URL, ID, or pasted text) from any tracker — GitHub Issues, Jira, Azure DevOps,
-Linear, etc. — in Agent/Composer mode, do not begin editing files immediately. Work through these
-phases explicitly:
-
-1. FAN OUT — Identify independent analysis tasks: related code locations, existing test status,
-   related/duplicate tickets, relevant docs, recent history of the affected files. State the task list
-   before running anything. Use codebase search, file reads, and terminal commands (git log, running
-   tests) to gather each one.
-
-2. REDUCE — Consolidate findings. Remove duplicates and irrelevant matches. State the leading root cause
-   or requirement in one or two sentences.
-
-3. VERIFY — For each significant finding, ask a skeptical question and re-check it against the actual
-   file or test output — do not just restate the FAN OUT summary. Mark each finding VALID or FALSE
-   POSITIVE and drop false positives.
-
-4. SYNTHESIZE — Using only verified findings, produce a concrete implementation plan (files, changes,
-   tests, risks). Present the plan and stop — do not apply edits until the plan is confirmed, unless
-   the session is explicitly running in an auto-apply / YOLO mode.
 ```
+Then append the full content of `.catalyst/install.md` below that frontmatter. `.catalyst/orchestration.md`
+is the on-demand reference the block points at for depth (node types, safety rules, anti-patterns, worked
+example).
 
 ## How Cursor Handles Parallel Task Execution
 

@@ -9,11 +9,21 @@
 ## Step 1 — Install the core pattern
 
 ```bash
-mkdir -p .cursor/rules
-cp catalyst-templates/cursor.md .cursor/rules/catalyst-orchestration.mdc
+cp .catalyst/install.md AGENTS.md
 ```
 
-Open `catalyst-templates/cursor.md` and check the frontmatter block near the top (`description`, `alwaysApply: true`) — copy that plus the instruction body into the new `.mdc` file so Cursor treats it as an always-applied rule. Reload the Cursor window afterward so it picks up the new rule.
+Or, if you already have an `AGENTS.md`, append `.catalyst/install.md`'s content to it rather than overwriting. Cursor auto-loads `AGENTS.md` into every Agent/Composer session in the repo. Or run `/catalyst-install` (after Step 2) and it will append the same block for you, idempotently.
+
+For an always-applied `.cursor/rules/*.mdc` rule instead (equivalent behavior, different file): create `.cursor/rules/catalyst-orchestration.mdc` with the frontmatter below, then append `.catalyst/install.md`'s content beneath it:
+
+```markdown
+---
+description: Ticket orchestration pattern — fan out, reduce, verify, synthesize
+alwaysApply: true
+---
+```
+
+Reload the Cursor window afterward so it picks up the new rule.
 
 ## Step 2 — Commands
 
@@ -22,7 +32,7 @@ mkdir -p .cursor/commands
 cp agent-commands/cursor/*.md .cursor/commands/
 ```
 
-This gives you `/catalyst`, `/add-skill`, `/add-template`, and `/learn` in Agent/Composer chat. Type `/` to see them listed alongside any other commands you already have.
+This gives you `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, and `/learn` in Agent/Composer chat. Type `/` to see them listed alongside any other commands you already have.
 
 ## Step 3 — Subagents (optional, requires Cursor v2.4+)
 
@@ -51,7 +61,7 @@ Watch it state its fan-out tasks, run them (codebase search, file reads, termina
 
 ## Next steps
 
-- Check `catalyst-skills/` for a playbook matching your ticket type.
+- Check `.catalyst/skills/` for a playbook matching your ticket type.
 - Run `/add-skill <name>` to add a new one.
 - Run `/learn` to turn this session's lessons into new or updated skills.
 - Run `/add-template <tool>` for a tool not yet covered.

@@ -8,31 +8,19 @@ Cline (VS Code extension) supports custom instructions in two places:
 
 For a pattern you want applied consistently to ticket work (from any tracker — GitHub Issues, Jira, Azure DevOps, Linear) in one specific repo, use `.clinerules`. For a pattern you want on all repos, use the global Custom Instructions field.
 
-## Instruction Text to Paste
+## Installing the Pattern
 
-Into `.clinerules` (or the global Custom Instructions field):
+The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
+`<!-- catalyst:end -->` markers. Do not copy a per-tool copy — there isn't one.
 
-```markdown
-# Ticket Orchestration Rules
+- **Recommended:** run `/catalyst-install.md` (from `agent-commands/cline/catalyst-install.md`). It appends
+  the block from `.catalyst/install.md` into `.clinerules` (or the global Custom Instructions field)
+  automatically, idempotently, and reports what it changed.
+- **Manual:** append the full content of `.catalyst/install.md` to `.clinerules` at the repo root (or the
+  global Custom Instructions field), preserving any existing content above it.
 
-When given a task derived from a ticket (GitHub issue, Jira ticket, Azure DevOps work item, or any other
-tracker), follow this sequence before editing any files:
-
-1. FAN OUT: Break the ticket into independent analysis tasks (related code search, test status, related
-   tickets, docs, git history). State the task list first. Execute each task using read-only tools
-   (search, read file, list files) — issue them back-to-back without waiting on unrelated results between them.
-
-2. REDUCE: Consolidate results into a short list of findings, removing duplicates and noise. State one
-   root-cause or core-requirement sentence.
-
-3. VERIFY: For each finding, ask "assume this is wrong — what would prove it?" and check the actual file/test
-   content again. Mark each finding VALID or FALSE POSITIVE. Discard false positives.
-
-4. SYNTHESIZE: Build a step-by-step implementation plan from verified findings only. Present the plan and
-   wait for approval before using any file-editing tool.
-
-Do not use write/edit tools until the plan has been presented and confirmed.
-```
+`.catalyst/orchestration.md` is the on-demand reference the block points at for depth (node types, safety
+rules, anti-patterns, worked example).
 
 ## How Cline Handles Parallel Task Execution
 

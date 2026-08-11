@@ -1,6 +1,6 @@
 # Example: Feature Implementation — "Allow users to schedule recurring report emails"
 
-This walkthrough applies `catalyst-skills/feature-implementation.md` to a real-shaped ticket, start to finish, so you can see the pattern applied without needing to open any other file. It uses a GitHub issue (fetched here via the GitHub MCP server) as the tracker — the same walkthrough applies unchanged if the ticket comes from Jira, Azure DevOps, or Linear instead.
+This walkthrough applies `.catalyst/skills/feature-implementation.md` to a real-shaped ticket, start to finish, so you can see the pattern applied without needing to open any other file. It uses a GitHub issue (fetched here via the GitHub MCP server) as the tracker — the same walkthrough applies unchanged if the ticket comes from Jira, Azure DevOps, or Linear instead.
 
 ## The Ticket
 

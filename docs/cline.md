@@ -9,10 +9,10 @@
 
 ```bash
 mkdir -p .clinerules
-cp catalyst-templates/cline.md .clinerules/catalyst-orchestration.md
+cp .catalyst/install.md .clinerules/catalyst-orchestration.md
 ```
 
-Cline combines every `.md`/`.txt` file in `.clinerules/` into one rule set applied to every message, so this makes the fan-out/reduce/verify/synthesize instruction persistent across your whole project.
+Cline combines every `.md`/`.txt` file in `.clinerules/` into one rule set applied to every message, so this makes the fan-out/reduce/verify/synthesize instruction persistent across your whole project. Or run `/catalyst-install.md` (after Step 2) and it will append the same block for you, idempotently.
 
 ## Step 2 — Commands (Workflows)
 
@@ -21,7 +21,7 @@ mkdir -p .clinerules/workflows
 cp agent-commands/cline/*.md .clinerules/workflows/
 ```
 
-This installs four Workflows — `catalyst.md`, `add-skill.md`, `add-template.md`, `learn.md`. Invoke them by typing the filename with its extension in chat, e.g. `/catalyst.md`, followed by your ticket text in the same message. Unlike `.clinerules`, workflows run once and complete — they don't persist across every message.
+This installs five Workflows — `catalyst.md`, `catalyst-install.md`, `add-skill.md`, `add-template.md`, `learn.md`. Invoke them by typing the filename with its extension in chat, e.g. `/catalyst.md`, followed by your ticket text in the same message. Unlike `.clinerules`, workflows run once and complete — they don't persist across every message.
 
 ## Step 3 — Subagents (optional, no drop-in files)
 
@@ -48,7 +48,7 @@ Cline wraps the workflow content in explicit instructions for that message, work
 
 ## Next steps
 
-- Check `catalyst-skills/` for a playbook matching your ticket type.
+- Check `.catalyst/skills/` for a playbook matching your ticket type.
 - Copy `agent-commands/cline/add-skill.md`'s pattern to create new workflows as you notice recurring ticket types.
 - Run `/learn.md` to turn this session's lessons into new or updated skills.
 - Run the Claude Code `/add-template <tool>` command (from this repo, if you also use Claude Code) to cover a tool not yet in `catalyst-templates/`.

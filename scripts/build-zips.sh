@@ -14,16 +14,24 @@ STAGE="$ROOT/.build-stage"
 rm -rf "$STAGE" "$DIST"
 mkdir -p "$DIST"
 
+# Refresh the generated Copilot skills from the canonical .catalyst/skills/ playbooks
+# before packaging, so the zips always ship self-contained, spec-compliant SKILL.md files.
+"$ROOT/scripts/generate-copilot-skills.sh"
+
+# Extract the installable instruction: .catalyst/install.md holds exactly the block
+# between the start/end markers (no explanatory header), and that is what ships.
+get_install_block() {
+  awk '/^[[:space:]]*<!-- catalyst:start -->[[:space:]]*$/{flag=1}flag{print}/^[[:space:]]*<!-- catalyst:end -->[[:space:]]*$/{flag=0}' "$ROOT/.catalyst/install.md"
+}
+
 stage_common() {
-  # Meta files referenced by every tool's agents/commands, so every bundle
-  # ships them so Catalyst can evolve in-place: ORCHESTRATION-PROMPT.md is the
-  # core pattern definition, catalyst-templates/ feeds /add-template, and
-  # catalyst-skills/ feeds /add-skill and /learn.
+  # The whole .catalyst/ folder (install.md, orchestration.md, skills/) plus
+  # SUBAGENT-ARCHITECTURE.md and WORKTREE-WORKFLOW.md are referenced by every
+  # tool's agents/commands, so every bundle ships them.
   local dir="$1"
-  mkdir -p "$dir/catalyst-skills" "$dir/catalyst-templates"
-  cp "$ROOT"/catalyst-skills/*.md "$dir/catalyst-skills/"
-  cp "$ROOT"/catalyst-templates/*.md "$dir/catalyst-templates/"
-  cp "$ROOT/ORCHESTRATION-PROMPT.md" "$dir/"
+  mkdir -p "$dir/.catalyst/skills"
+  cp "$ROOT/.catalyst/install.md" "$ROOT/.catalyst/orchestration.md" "$dir/.catalyst/"
+  cp "$ROOT"/.catalyst/skills/*.md "$dir/.catalyst/skills/"
   cp "$ROOT/SUBAGENT-ARCHITECTURE.md" "$dir/"
   cp "$ROOT/WORKTREE-WORKFLOW.md" "$dir/"
 }
@@ -68,91 +76,97 @@ d="$STAGE/claude-code"
 mkdir -p "$d/.claude/commands" "$d/.claude/agents" "$d/_manual"
 cp "$ROOT"/.claude/commands/{catalyst,catalyst-install,add-skill,add-template,learn}.md "$d/.claude/commands/"
 cp "$ROOT"/agent-subagents/claude-code/*.md "$d/.claude/agents/"
-cp "$ROOT/catalyst-templates/claude-code.md" "$d/_manual/CLAUDE.md.append.md"
+get_install_block > "$d/_manual/CLAUDE.md.append.md"
 stage_common "$d"
-deploy_note "$d" "- **Optional, recommended:** append \`_manual/CLAUDE.md.append.md\` to your project's \`CLAUDE.md\` (or \`~/.claude/CLAUDE.md\` for every repo) — or just run \`/catalyst-install\` to add it automatically, no restart needed.
+deploy_note "$d" "- **Optional, recommended:** append \`_manual/CLAUDE.md.append.md\` to your project's \`CLAUDE.md\` (or \`~/.claude/CLAUDE.md\` for every repo) so the pattern applies automatically, not just via \`/catalyst\`.
 - \`/catalyst\`, \`/add-skill\`, \`/add-template\` work immediately, no restart needed.
-- Restart Claude Code after unzipping so it picks up \`.claude/agents/*\`.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+- Restart Claude Code after unzipping so it picks up \`.claude/agents/*\`."
 zip_it "claude-code" "$d"
 
 # --- cursor ---
 d="$STAGE/cursor"
 mkdir -p "$d/.cursor/rules" "$d/.cursor/commands" "$d/.cursor/agents"
-cp "$ROOT/catalyst-templates/cursor.md" "$d/.cursor/rules/catalyst-orchestration.mdc"
+# Generate the always-applied rule from the canonical install block, not the template
+# (the template is a tool-specific reference doc; the rule is the install block + frontmatter).
+{ echo "---"
+  echo "description: Ticket orchestration pattern - fan out, reduce, verify, synthesize"
+  echo "alwaysApply: true"
+  echo "---"
+  echo ""
+  get_install_block
+} > "$d/.cursor/rules/catalyst-orchestration.mdc"
 cp "$ROOT"/agent-commands/cursor/*.md "$d/.cursor/commands/"
 cp "$ROOT"/agent-subagents/cursor/*.md "$d/.cursor/agents/"
 stage_common "$d"
 deploy_note "$d" "- Reload the Cursor window after unzipping so it picks up the new rule, commands, and agents.
-- Requires Cursor v2.4+ for \`.cursor/agents/\` to work as subagents; everything else works on any recent version.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+- Requires Cursor v2.4+ for \`.cursor/agents/\` to work as subagents; everything else works on any recent version."
 zip_it "cursor" "$d"
 
 # --- cline ---
 d="$STAGE/cline"
 mkdir -p "$d/.clinerules/workflows"
-cp "$ROOT/catalyst-templates/cline.md" "$d/.clinerules/catalyst-orchestration.md"
+# Generate the .clinerules rule from the canonical install block.
+get_install_block > "$d/.clinerules/catalyst-orchestration.md"
 cp "$ROOT"/agent-commands/cline/*.md "$d/.clinerules/workflows/"
 cp "$ROOT/agent-subagents/cline.md" "$d/cline-subagent-guidance.md"
 stage_common "$d"
 deploy_note "$d" "- Cline has no native per-role subagent file format. Read \`cline-subagent-guidance.md\` for the Cline SDK / spawned-CLI alternatives.
-- Invoke workflows with the extension included: \`/catalyst.md\`, \`/add-skill.md\`, \`/add-template.md\`.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+- Invoke workflows with the extension included: \`/catalyst.md\`, \`/add-skill.md\`, \`/add-template.md\`."
 zip_it "cline" "$d"
 
 # --- codex ---
 d="$STAGE/codex"
 mkdir -p "$d/.codex/agents" "$d/_manual/codex-prompts"
-cp "$ROOT/catalyst-templates/codex.md" "$d/_manual/AGENTS.md.append.md"
+cp "$ROOT/catalyst-templates/codex.md" "$d/_manual/codex-template.md"
+get_install_block > "$d/_manual/AGENTS.md.append.md"
 cp "$ROOT"/agent-commands/codex/*.md "$d/_manual/codex-prompts/"
 cp "$ROOT"/agent-subagents/codex/*.toml "$d/.codex/agents/"
 stage_common "$d"
-deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` (or \`~/.codex/AGENTS.md\` globally) — create it if it doesn't exist yet — or just run \`/catalyst-install\` to add it automatically.
-- Copy \`_manual/codex-prompts/*.md\` into \`~/.codex/prompts/\` (a home-directory path, so it can't be pre-placed by this zip) to get \`/catalyst\`, \`/catalyst-install\`, \`/add-skill\`, \`/add-template\`.
-- \`.codex/agents/*.toml\` is already in place for subagents, but Codex won't spawn them without being asked explicitly.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` (or \`~/.codex/AGENTS.md\` globally) — create it if it doesn't exist yet.
+- Copy \`_manual/codex-prompts/*.md\` into \`~/.codex/prompts/\` (a home-directory path, so it can't be pre-placed by this zip) to get \`/catalyst\`, \`/add-skill\`, \`/add-template\`.
+- \`.codex/agents/*.toml\` is already in place for subagents, but Codex won't spawn them without being asked explicitly."
 zip_it "codex" "$d"
 
 # --- opencode ---
 d="$STAGE/opencode"
 mkdir -p "$d/.opencode/commands" "$d/.opencode/agents" "$d/_manual"
-cp "$ROOT/catalyst-templates/opencode.md" "$d/_manual/AGENTS.md.append.md"
+cp "$ROOT/catalyst-templates/opencode.md" "$d/_manual/opencode-template.md"
+get_install_block > "$d/_manual/AGENTS.md.append.md"
 cp "$ROOT"/agent-commands/opencode/*.md "$d/.opencode/commands/"
 cp "$ROOT"/agent-subagents/opencode/*.md "$d/.opencode/agents/"
 stage_common "$d"
-deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` — create it if it doesn't exist yet — or just run \`/catalyst-install\` to add it automatically.
+deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` — create it if it doesn't exist yet.
 - Restart your OpenCode session after unzipping so it picks up the commands/agents.
-- Known upstream bug: subagents invoked via the Task tool may ignore their own \`model:\` frontmatter — verify on your installed version before relying on the cost/quality split.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+- Known upstream bug: subagents invoked via the Task tool may ignore their own \`model:\` frontmatter — verify on your installed version before relying on the cost/quality split."
 zip_it "opencode" "$d"
 
 # --- pi ---
 d="$STAGE/pi"
 mkdir -p "$d/.pi/prompts" "$d/_manual"
-cp "$ROOT/catalyst-templates/pi.md" "$d/_manual/AGENTS.md.append.md"
+cp "$ROOT/catalyst-templates/pi.md" "$d/_manual/pi-template.md"
+get_install_block > "$d/_manual/AGENTS.md.append.md"
 cp "$ROOT"/agent-commands/pi/*.md "$d/.pi/prompts/"
 cp "$ROOT/agent-subagents/pi.md" "$d/pi-subagent-guidance.md"
 stage_common "$d"
-deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` (or \`~/.pi/agent/AGENTS.md\` globally) — create it if it doesn't exist yet — or just run \`/catalyst-install\` to add it automatically. Pi concatenates every \`AGENTS.md\` it finds, so global and project-level files both apply.
-- \`.pi/prompts/*.md\` is already in place for \`/catalyst\`, \`/catalyst-install\`, \`/add-skill\`, \`/add-template\` — restart your pi session and mark the project trusted if the commands don't show up in autocomplete.
-- Pi has no native per-role subagent file format. Read \`pi-subagent-guidance.md\` for the extension-based or CLI-spawn alternatives.
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+deploy_note "$d" "- Append \`_manual/AGENTS.md.append.md\` to your project's \`AGENTS.md\` (or \`~/.pi/agent/AGENTS.md\` globally) — create it if it doesn't exist yet. Pi concatenates every \`AGENTS.md\` it finds, so global and project-level files both apply.
+- \`.pi/prompts/*.md\` is already in place for \`/catalyst\`, \`/add-skill\`, \`/add-template\` — restart your pi session and mark the project trusted if the commands don't show up in autocomplete.
+- Pi has no native per-role subagent file format. Read \`pi-subagent-guidance.md\` for the extension-based or CLI-spawn alternatives."
 zip_it "pi" "$d"
 
 # --- github-copilot ---
 d="$STAGE/github-copilot"
 mkdir -p "$d/.github/skills/bug-fix" "$d/.github/skills/code-review" "$d/.github/skills/feature-implementation" "$d/.github/prompts" "$d/.github/agents" "$d/_manual"
-cp "$ROOT/catalyst-templates/github-copilot.md" "$d/_manual/copilot-instructions.md.append.md"
+cp "$ROOT/catalyst-templates/github-copilot.md" "$d/_manual/copilot-template.md"
+get_install_block > "$d/_manual/copilot-instructions.md.append.md"
 cp "$ROOT/agent-skills/github-copilot/bug-fix/SKILL.md" "$d/.github/skills/bug-fix/"
 cp "$ROOT/agent-skills/github-copilot/code-review/SKILL.md" "$d/.github/skills/code-review/"
 cp "$ROOT/agent-skills/github-copilot/feature-implementation/SKILL.md" "$d/.github/skills/feature-implementation/"
 cp "$ROOT"/agent-commands/github-copilot/*.prompt.md "$d/.github/prompts/"
 cp "$ROOT"/agent-subagents/github-copilot/*.agent.md "$d/.github/agents/"
 stage_common "$d"
-deploy_note "$d" "- Append \`_manual/copilot-instructions.md.append.md\` to \`.github/copilot-instructions.md\` — create it if it doesn't exist yet — or just run \`/catalyst-install\` to add it automatically.
-- \`/catalyst\`, \`/catalyst-install\`, \`/add-skill\`, \`/add-template\` prompt files only work in Copilot Chat (VS Code, Visual Studio, JetBrains) — Copilot CLI has no \`.prompt.md\` support yet. On CLI, invoke \`catalyst-orchestrator\` directly as a custom agent instead.
-- Skills and agents are auto-discovered by both Copilot Chat and Copilot CLI (\`/skills list\` in the CLI to confirm).
-- The bundle ships the meta library (\`ORCHESTRATION-PROMPT.md\`, \`catalyst-templates/\`, \`catalyst-skills/\`) so \`/add-skill\`, \`/add-template\`, and \`/learn\` can grow Catalyst in-place."
+deploy_note "$d" "- Append \`_manual/copilot-instructions.md.append.md\` to \`.github/copilot-instructions.md\` — create it if it doesn't exist yet.
+- \`/catalyst\`, \`/add-skill\`, \`/add-template\` prompt files only work in Copilot Chat (VS Code, Visual Studio, JetBrains) — Copilot CLI has no \`.prompt.md\` support yet. On CLI, invoke \`catalyst-orchestrator\` directly as a custom agent instead.
+- Skills and agents are auto-discovered by both Copilot Chat and Copilot CLI (\`/skills list\` in the CLI to confirm)."
 zip_it "github-copilot" "$d"
 
 rm -rf "$STAGE"
