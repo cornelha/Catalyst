@@ -30,7 +30,7 @@ Cline has no native "one markdown file per named subagent" mechanism like the ot
 - **Cline SDK agent teams** (if you're using the newer Cline SDK runtime) — native support for delegating to specialist team members, each with its own model/tools/prompt.
 - **Spawning separate CLI instances** (Claude Code CLI or Cline CLI, run as subprocesses with `--max-turns` and permission limits) — more manual, works with tools you already have.
 
-Both map the same four roles (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`) from `SUBAGENT-ARCHITECTURE.md` onto Cline's actual mechanisms — read that file first for the role definitions to reuse.
+Both map the same five roles (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, `catalyst-code-reviewer`) from `SUBAGENT-ARCHITECTURE.md` onto Cline's actual mechanisms — read that file first for the role definitions to reuse.
 
 ## Step 4 — Git worktrees (optional)
 
@@ -44,7 +44,7 @@ In chat:
 /catalyst.md Fix login timeout handling — https://github.com/org/repo/issues/4521
 ```
 
-Cline wraps the workflow content in explicit instructions for that message, works through fan-out (batched read-only tool calls), reduce, verify, and synthesize, and stops before editing any files until you confirm the plan.
+Cline wraps the workflow content in explicit instructions for that message, works through fan-out (batched read-only tool calls), reduce, verify, and synthesize, and stops before editing any files until you confirm the plan. After implementation it runs a final review pass (bugs, style, accuracy) before you open the PR.
 
 ## Next steps
 

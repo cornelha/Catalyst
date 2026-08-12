@@ -36,14 +36,14 @@ This gives you `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, 
 
 ## Step 3 — Subagents (optional, requires Cursor v2.4+)
 
-For large or high-stakes tickets, split the four phases into isolated subagents instead of running everything in one session. Read `SUBAGENT-ARCHITECTURE.md` first, then:
+For large or high-stakes tickets, split the pattern into isolated subagents instead of running everything in one session. Read `SUBAGENT-ARCHITECTURE.md` first, then:
 
 ```bash
 mkdir -p .cursor/agents
 cp agent-subagents/cursor/*.md .cursor/agents/
 ```
 
-This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. In Agent Mode, describe the ticket and use Cursor's "Parallelize" flow, or just ask Cursor to use `catalyst-orchestrator` directly.
+This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, and `catalyst-code-reviewer`. In Agent Mode, describe the ticket and use Cursor's "Parallelize" flow, or just ask Cursor to use `catalyst-orchestrator` directly.
 
 ## Step 4 — Git worktrees (optional)
 
@@ -57,7 +57,7 @@ In Agent/Composer chat:
 /catalyst Fix login timeout handling — https://github.com/org/repo/issues/4521
 ```
 
-Watch it state its fan-out tasks, run them (codebase search, file reads, terminal commands, several within the same turn), consolidate, verify against the real files, and present a plan before touching anything.
+Watch it state its fan-out tasks, run them (codebase search, file reads, terminal commands, several within the same turn), consolidate, verify against the real files, and present a plan before touching anything. After you approve the implementation it runs a final review pass (bugs, style, accuracy) before you open the PR.
 
 ## Next steps
 

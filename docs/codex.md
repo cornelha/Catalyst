@@ -30,7 +30,7 @@ mkdir -p .codex/agents
 cp agent-subagents/codex/*.toml .codex/agents/
 ```
 
-This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer` as custom agents. Codex doesn't spawn them automatically just because the files exist — ask explicitly, e.g. "spawn catalyst-fan-out-analyst to check X." Concurrency is capped by `agents.max_threads` (default 6), and subagents can't escalate beyond the parent's `sandbox_mode`.
+This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, and `catalyst-code-reviewer` as custom agents. Codex doesn't spawn them automatically just because the files exist — ask explicitly, e.g. "spawn catalyst-fan-out-analyst to check X." Concurrency is capped by `agents.max_threads` (default 6), and subagents can't escalate beyond the parent's `sandbox_mode`.
 
 ## Step 4 — Git worktrees (optional)
 
@@ -44,7 +44,7 @@ codex "Using our AGENTS.md orchestration pattern, work GitHub issue #4521: Fix l
 
 Or, with prompts installed: `/catalyst` (paste the ticket text if argument substitution doesn't work on your installed version — see the note in `agent-commands/codex/catalyst.md`).
 
-Codex will state its fan-out tasks, run batched read-only shell commands, consolidate, re-verify against the actual files, and present a plan before applying any patch (unless running in an auto-approval mode).
+Codex will state its fan-out tasks, run batched read-only shell commands, consolidate, re-verify against the actual files, and present a plan before applying any patch (unless running in an auto-approval mode). After implementation it runs a final review pass (bugs, style, accuracy) before you open the PR.
 
 ## Next steps
 

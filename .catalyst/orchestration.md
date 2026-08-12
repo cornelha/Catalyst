@@ -18,8 +18,8 @@ every message of every session, so nothing should ever be added outside the mark
 dedicated git worktree (one worktree per ticket, branch named `{feature|bug}/{ticketid}_{summary-slug}`) so
 `main` stays clean and parallel tickets don't conflict. `SUBAGENT-ARCHITECTURE.md` splits the phases into
 named subagents (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`,
-`catalyst-synthesizer`) for isolated contexts and per-phase model sizing. Both are tracker-agnostic, like
-this pattern.
+`catalyst-synthesizer`, `catalyst-code-reviewer`) for isolated contexts and per-phase model sizing. Both
+are tracker-agnostic, like this pattern.
 
 ---
 

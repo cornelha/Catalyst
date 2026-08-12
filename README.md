@@ -59,7 +59,7 @@ This appends the canonical block from `.catalyst/install.md` into `CLAUDE.md` (o
 /catalyst Fix login timeout handling — https://dev.azure.com/org/project/_workitems/edit/4521
 ```
 
-This runs the four phases in order — stating fan-out tasks before executing them, consolidating findings, verifying each one against real code, and stopping at a plan for your confirmation before any file is touched.
+This runs the four phases in order — stating fan-out tasks before executing them, consolidating findings, verifying each one against real code, and stopping at a plan for your confirmation before any file is touched — then, once you approve the implementation, runs a fifth review pass over the written code (bugs, style, accuracy against the ticket) before you open the PR.
 
 **Adding a new ticket-type skill** to the library:
 

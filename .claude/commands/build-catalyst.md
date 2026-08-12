@@ -13,7 +13,7 @@ DO BUILD:
 - CANONICAL SOURCE: the installable block and the full pattern reference, plus per-ticket-type playbooks
 - AGENT TEMPLATES: tool-specific instructions for Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, Pi
 - COMMANDS: per-tool slash-command counterparts of /catalyst, /catalyst-install, /add-skill, /add-template, /learn
-- SUBAGENTS: per-tool definitions of catalyst-orchestrator, catalyst-fan-out-analyst, catalyst-verifier, catalyst-synthesizer
+- SUBAGENTS: per-tool definitions of catalyst-orchestrator, catalyst-fan-out-analyst, catalyst-verifier, catalyst-synthesizer, catalyst-code-reviewer
 - EXAMPLES: real ticket walkthroughs applying each skill
 - SCRIPTS: build-zips.* (packaging) and generate-copilot-skills.* (regenerating native skills from canonical playbooks)
 

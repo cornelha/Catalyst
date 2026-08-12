@@ -1,6 +1,6 @@
 # Agent Subagents
 
-Named, purpose-built subagents implementing the Catalyst pattern's four phases (FAN OUT, VERIFY, SYNTHESIZE — REDUCE handled inline by the orchestrator, see `SUBAGENT-ARCHITECTURE.md` for why), coordinated by a `catalyst-orchestrator`. Read `SUBAGENT-ARCHITECTURE.md` first — it explains the roles, the model-assignment principle, and when this is worth using over running the pattern inline in one session.
+Named, purpose-built subagents implementing the Catalyst pattern (FAN OUT, VERIFY, SYNTHESIZE — REDUCE handled inline by the orchestrator, post-implementation REVIEW handled by the code-reviewer, see `SUBAGENT-ARCHITECTURE.md` for why), coordinated by a `catalyst-orchestrator`. Read `SUBAGENT-ARCHITECTURE.md` first — it explains the roles, the model-assignment principle, and when this is worth using over running the pattern inline in one session.
 
 | Tool | Source folder | Copy files to | Format |
 |---|---|---|---|

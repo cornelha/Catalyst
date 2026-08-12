@@ -40,7 +40,7 @@ pi "Using our AGENTS.md orchestration pattern, work GitHub issue #4521: Fix logi
 
 Or, with prompts installed: `/catalyst <ticket text or URL>`.
 
-Pi will state its fan-out tasks, run a batched read-only `bash` call, consolidate, re-verify against the actual files, and present a plan before using `edit`/`write` to apply any change.
+Pi will state its fan-out tasks, run a batched read-only `bash` call, consolidate, re-verify against the actual files, and present a plan before using `edit`/`write` to apply any change. After implementation it runs a final review pass (bugs, style, accuracy) before you open the PR.
 
 ## Next steps
 

@@ -21,13 +21,13 @@ Nothing to copy — `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-templa
 
 ## Step 3 — Subagents (optional)
 
-For large or high-stakes tickets, split the four phases into isolated, purpose-built subagents instead of running everything in one session. Read `SUBAGENT-ARCHITECTURE.md` first for the reasoning, then:
+For large or high-stakes tickets, split the pattern into isolated, purpose-built subagents instead of running everything in one session. Read `SUBAGENT-ARCHITECTURE.md` first for the reasoning, then:
 
 ```bash
 cp agent-subagents/claude-code/*.md .claude/agents/
 ```
 
-This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. Restart your Claude Code session afterward — subagent files are loaded at session start, so edits on disk won't be picked up until you do.
+This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, and `catalyst-code-reviewer`. Restart your Claude Code session afterward — subagent files are loaded at session start, so edits on disk won't be picked up until you do.
 
 ## Step 4 — Git worktrees (optional)
 
@@ -41,7 +41,7 @@ Point `/catalyst` at a real ticket:
 /catalyst Fix login timeout handling — https://github.com/org/repo/issues/4521
 ```
 
-Watch it work through FAN OUT (parallel tool calls in one turn), REDUCE, VERIFY, and SYNTHESIZE, then stop and ask you to confirm before writing any code. If you installed the subagents in Step 3, you can instead ask explicitly for orchestrator-led delegation: "Use catalyst-orchestrator to work this ticket," and Claude Code will spawn the analyst/verifier/synthesizer subagents itself.
+Watch it work through FAN OUT (parallel tool calls in one turn), REDUCE, VERIFY, and SYNTHESIZE, then stop and ask you to confirm before writing any code. Once you confirm and it implements, it runs a fifth review pass over the written code (bugs, style, accuracy against the ticket) before the PR. If you installed the subagents in Step 3, you can instead ask explicitly for orchestrator-led delegation: "Use catalyst-orchestrator to work this ticket," and Claude Code will spawn the analyst/verifier/synthesizer/code-reviewer subagents itself.
 
 ## Next steps
 

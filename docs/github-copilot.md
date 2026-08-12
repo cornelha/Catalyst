@@ -21,7 +21,7 @@ cp -r agent-skills/github-copilot/* .github/skills/
 cp -r .catalyst . 
 ```
 
-This installs `bug-fix`, `code-review`, and `feature-implementation` as native Copilot Agent Skills — auto-discovered by both Copilot Chat and Copilot CLI (`/skills list` in the CLI to confirm). Each skill is **self-contained**: its `SKILL.md` carries the full Analysis Tasks, Verification Questions, and Implementation Checklist, so it works standalone per the agentskills.io specification (metadata + instructions, `<500` lines, no dependency on files outside the skill folder). The `cp -r .catalyst .` step is still required because the `catalyst-orchestrator`, `catalyst-synthesizer`, and `/catalyst`/`/add-skill` commands reference `.catalyst/skills/*.md` at your project's root — but the *skills themselves* no longer depend on it.
+This installs `bug-fix`, `code-review`, and `feature-implementation` as native Copilot Agent Skills — auto-discovered by both Copilot Chat and Copilot CLI (`/skills list` in the CLI to confirm). Each skill is **self-contained**: its `SKILL.md` carries the full Analysis Tasks, Verification Questions, and Implementation Checklist, so it works standalone per the agentskills.io specification (metadata + instructions, `<500` lines, no dependency on files outside the skill folder). The `cp -r .catalyst .` step is still required because the `catalyst-orchestrator`, `catalyst-synthesizer`, `catalyst-code-reviewer`, and `/catalyst`/`/add-skill` commands reference `.catalyst/skills/*.md` at your project's root — but the *skills themselves* no longer depend on it.
 
 **Regenerating after you evolve the toolkit:** `.catalyst/skills/<name>.md` is the canonical, user-editable source of each playbook. When you change it (by hand, or via `/add-skill`/`/learn`), refresh the Copilot skills by re-running the generator in this repo:
 
@@ -42,14 +42,14 @@ This installs `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, a
 
 ## Step 4 — Subagents (optional)
 
-For large or high-stakes tickets, split the four phases into isolated custom agents. Read `SUBAGENT-ARCHITECTURE.md` first, then:
+For large or high-stakes tickets, split the pattern into isolated custom agents. Read `SUBAGENT-ARCHITECTURE.md` first, then:
 
 ```bash
 mkdir -p .github/agents
 cp agent-subagents/github-copilot/*.agent.md .github/agents/
 ```
 
-This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, and `catalyst-synthesizer`. The orchestrator should use subagents for the FAN OUT phase; standard Copilot Chat execution remains sequential within one session, so use Copilot CLI **Fleet mode** (or equivalent subagent delegation) when you want true parallel fan-out.
+This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, and `catalyst-code-reviewer`. The orchestrator should use subagents for the FAN OUT phase; standard Copilot Chat execution remains sequential within one session, so use Copilot CLI **Fleet mode** (or equivalent subagent delegation) when you want true parallel fan-out.
 
 ## Step 5 — Git worktrees (optional)
 
@@ -63,7 +63,7 @@ In Copilot Chat:
 /catalyst
 ```
 
-Fill in the ticket when prompted (a GitHub issue URL or pasted description). Copilot will state its fan-out tasks, run them, consolidate, re-verify each finding against the real files, and present a plan before proposing code.
+Fill in the ticket when prompted (a GitHub issue URL or pasted description). Copilot will state its fan-out tasks, run them, consolidate, re-verify each finding against the real files, and present a plan before proposing code. After you approve the implementation it runs a final review pass (bugs, style, accuracy) before you open the PR.
 
 ## Next steps
 

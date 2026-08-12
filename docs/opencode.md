@@ -24,14 +24,14 @@ This installs `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, a
 
 ## Step 3 — Subagents (optional)
 
-For large or high-stakes tickets, split the four phases into isolated subagents. Read `SUBAGENT-ARCHITECTURE.md` first, then:
+For large or high-stakes tickets, split the pattern into isolated subagents. Read `SUBAGENT-ARCHITECTURE.md` first, then:
 
 ```bash
 mkdir -p .opencode/agents
 cp agent-subagents/opencode/*.md .opencode/agents/
 ```
 
-This installs `catalyst-orchestrator` (a primary agent you can switch to directly) and `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer` (subagents it delegates to).
+This installs `catalyst-orchestrator` (a primary agent you can switch to directly) and `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, `catalyst-code-reviewer` (subagents it delegates to).
 
 **Known caveat**: there's a currently open upstream bug where subagents invoked via the Task tool ignore their own `model:` frontmatter and inherit the parent's model instead. The model assignments in these files are correct as written — confirm they're actually being honored in your installed version before relying on the cost/quality split between roles.
 
@@ -45,7 +45,7 @@ For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ti
 /catalyst Fix login timeout handling — https://github.com/org/repo/issues/4521
 ```
 
-Watch it state its fan-out tasks, batch them together rather than interleaving with analysis, consolidate, re-verify against the real files, and present a plan before editing anything. Or switch to `catalyst-orchestrator` directly to run the full subagent-delegated version.
+Watch it state its fan-out tasks, batch them together rather than interleaving with analysis, consolidate, re-verify against the real files, and present a plan before editing anything. After you approve and it implements, it runs a final review pass over the written code (bugs, style, accuracy) before you open the PR. Or switch to `catalyst-orchestrator` directly to run the full subagent-delegated version.
 
 ## Next steps
 

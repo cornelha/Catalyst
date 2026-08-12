@@ -1,6 +1,6 @@
 # Subagents in Cline
 
-Cline is the one tool in this library without a native "drop a markdown file with frontmatter into a folder" mechanism for named, per-role subagents. There's nothing to copy-paste here — instead, two real mechanisms exist, and this file explains how to apply the Catalyst orchestrator/fan-out/verify/synthesize roles to each.
+Cline is the one tool in this library without a native "drop a markdown file with frontmatter into a folder" mechanism for named, per-role subagents. There's nothing to copy-paste here — instead, two real mechanisms exist, and this file explains how to apply the Catalyst orchestrator/fan-out/verify/synthesize/review roles to each.
 
 ## Option A — Cline SDK "agent teams"
 

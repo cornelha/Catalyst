@@ -1,6 +1,6 @@
 # Subagents in Pi
 
-Pi is, like Cline, a tool without a native "drop a markdown file with frontmatter into a folder" mechanism for named, per-role subagents built into core. Pi's own project philosophy is direct about this: "No sub-agents. There's many ways to do this. Spawn pi instances via tmux, or build your own with extensions, or install a package that does it your way." There's nothing to copy-paste into core Pi — instead, two real mechanisms exist, and this file explains how to apply the Catalyst orchestrator/fan-out/verify/synthesize roles to each.
+Pi is, like Cline, a tool without a native "drop a markdown file with frontmatter into a folder" mechanism for named, per-role subagents built into core. Pi's own project philosophy is direct about this: "No sub-agents. There's many ways to do this. Spawn pi instances via tmux, or build your own with extensions, or install a package that does it your way." There's nothing to copy-paste into core Pi — instead, two real mechanisms exist, and this file explains how to apply the Catalyst orchestrator/fan-out/verify/synthesize/review roles to each.
 
 ## Option A — the `pi-subagents` extension
 
