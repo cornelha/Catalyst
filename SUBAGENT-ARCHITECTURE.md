@@ -21,12 +21,13 @@ Named subagents fix both: each phase gets an isolated context (no rot) and its o
 | **`catalyst-fan-out-analyst`** | Runs exactly one independent, read-only analysis task (code search, test check, tracker query, doc read, git history) and returns a short factual summary — not a transcript. | Once per FAN OUT task, in parallel | Fast/cheap — narrow, mechanical, high-volume work. This is where token savings are largest: N parallel cheap agents instead of N sequential expensive turns. |
 | **`catalyst-verifier`** | Given one finding and a skeptical question to check — not the analyst's reasoning trail — re-checks it against real code/tests and returns VALID or FALSE POSITIVE with cited evidence. | Once per significant finding (or batched, tool-dependent) | Mid-to-high — catching a false positive requires real judgment, not just pattern matching. |
 | **`catalyst-synthesizer`** | Takes only verified findings and produces the concrete implementation plan (files, tests, risks). | Once, after VERIFY completes | Highest available — this is the actual engineering judgment step; underpowering it undermines the whole pattern. |
+| **`catalyst-code-reviewer`** | After implementation, reviews the written code against the ticket for bugs, style (repo skills first, else industry best practice), and accuracy. Returns a compact structured report — no prose. | Once, after implementation, before the PR | High — post-implementation review needs real judgment, but its output must be token-lean (structured verdict + findings). |
 
 **REDUCE is usually not a separate subagent.** Consolidating a handful of fan-out results is cheap enough that spawning an isolated agent for it just adds latency and orchestration overhead without meaningfully reducing context rot. Have the orchestrator do REDUCE inline. The exception: if FAN OUT produced a large number of parallel analyst outputs (a big, ambiguous ticket touching many subsystems), it's reasonable to add a `catalyst-deduplicator` subagent whose only job is consolidating those raw outputs into one short findings list before they ever reach the orchestrator's own context — check the per-tool files for whether this is worth wiring up for your case.
 
 ## Naming convention
 
-Prefix every Catalyst-managed agent with `catalyst-` (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, optionally `catalyst-deduplicator`). This keeps them easy to find in a tool's agent list, avoids colliding with a user's own custom agents, and makes it obvious at a glance which agents belong to this pattern versus the rest of a user's setup.
+Prefix every Catalyst-managed agent with `catalyst-` (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, `catalyst-code-reviewer`, optionally `catalyst-deduplicator`). This keeps them easy to find in a tool's agent list, avoids colliding with a user's own custom agents, and makes it obvious at a glance which agents belong to this pattern versus the rest of a user's setup.
 
 ## What the orchestrator passes and expects back
 
@@ -35,11 +36,12 @@ To keep the isolation benefit real (not just theoretical), be deliberate about t
 - **To a fan-out analyst**: the single task description, nothing else. Not the whole ticket, not other analysts' findings.
 - **To the verifier**: the finding plus the specific skeptical question from the relevant `.catalyst/skills/*.md` file's Verification Questions section — not the analyst's reasoning, not the REDUCE summary's framing, just "here's a claim, here's how to check it."
 - **To the synthesizer**: only the list of verified findings (VALID verdicts with their evidence), never the false positives, never the raw fan-out transcripts.
-- **Back from every subagent**: a short structured result (finding + evidence, or verdict + citation, or a plan) — never the subagent's full internal transcript. If a subagent's output is bloating the orchestrator's context, that's a sign it's over-returning, not that the pattern isn't working.
+- **To the code reviewer**: the ticket (requirements/acceptance criteria) plus the changed files/diff — enough to judge accuracy, without the analysis trail.
+- **Back from every subagent**: a short structured result (finding + evidence, or verdict + citation, or a plan, or a review report) — never the subagent's full internal transcript. The code-reviewer in particular must return only its structured report (verdict + one-line findings), never prose. If a subagent's output is bloating the orchestrator's context, that's a sign it's over-returning, not that the pattern isn't working.
 
 ## Model-assignment principle, generalized
 
-Regardless of which tool you're in, the same cost curve applies: **cheap/fast models for high-volume mechanical work (fan-out), capable models for judgment work (verify, synthesize), a mid-tier model for coordination (orchestrator).** The exact model names differ per tool and change over time — the per-tool files in `agent-subagents/` set a sensible default, but treat the specific model name as the one thing you should feel free to override immediately based on what's available and what your budget looks like.
+Regardless of which tool you're in, the same cost curve applies: **cheap/fast models for high-volume mechanical work (fan-out), capable models for judgment work (verify, synthesize, review), a mid-tier model for coordination (orchestrator).** The exact model names differ per tool and change over time — the per-tool files in `agent-subagents/` set a sensible default, but treat the specific model name as the one thing you should feel free to override immediately based on what's available and what your budget looks like.
 
 ## When to use the full subagent split vs. running inline
 

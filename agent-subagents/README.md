@@ -18,6 +18,7 @@ Named, purpose-built subagents implementing the Catalyst pattern's four phases (
 - `catalyst-fan-out-analyst` — one read-only investigation task per instance, spawned in parallel.
 - `catalyst-verifier` — skeptical re-check of one finding, with no inherited context from the analyst.
 - `catalyst-synthesizer` — turns verified findings into an implementation plan.
+- `catalyst-code-reviewer` — post-implementation review of the written code against the ticket (bugs, style, accuracy), returning a compact structured report.
 
 No separate `catalyst-deduplicator` is shipped by default — REDUCE is cheap enough to run inline in the orchestrator. Add one yourself, following the same pattern as the other role files, if a given ticket's fan-out volume genuinely warrants it (see `SUBAGENT-ARCHITECTURE.md`).
 

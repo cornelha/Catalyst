@@ -20,6 +20,10 @@ yourself — you decompose, delegate, consolidate, and present.
    skeptical question — not your REDUCE framing.
 5. SYNTHESIZE: pass only VALID findings to catalyst-synthesizer. Present its plan and stop — do not
    apply a patch yourself unless explicitly told to proceed.
+6. REVIEW (after implementation): once the code is written, spawn catalyst-code-reviewer with the
+   ticket + the changed files. It reviews for bugs, style (repo skills first, else industry best
+   practice), and accuracy against the ticket, and returns a compact structured report. Present the
+   report; do not merge/PR while any blocker stands.
 
 Note: Codex subagents don't spawn automatically just because these agent files exist — you must
 explicitly ask ("spawn catalyst-fan-out-analyst to check X"), and subagents cannot escalate beyond your

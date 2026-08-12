@@ -6,12 +6,13 @@ Pi is, like Cline, a tool without a native "drop a markdown file with frontmatte
 
 A third-party Pi extension (`tintinweb/pi-subagents`) adds Claude-Code-style autonomous subagents to Pi: custom agent types defined via YAML frontmatter files at `.pi/agents/<name>.md` (project) or a global equivalent, each with its own system prompt, model, thinking level, and tool restrictions, run in foreground or background, with parallel execution, a live widget, and mid-run steering.
 
-To apply Catalyst's roles here, define four agent files once the extension is installed:
+To apply Catalyst's roles here, define five agent files once the extension is installed:
 
 - **`catalyst-orchestrator`** — the primary session. Give it the same responsibilities as `agent-subagents/claude-code/catalyst-orchestrator.md` (decompose, delegate, consolidate, present, never analyze/verify/synthesize directly).
 - **`catalyst-fan-out-analyst`** — an agent definition with read-only tools and a fast/cheap model, given one FAN OUT task at a time. Use the same system prompt as `agent-subagents/claude-code/catalyst-fan-out-analyst.md`.
 - **`catalyst-verifier`** — an agent definition with read-only tools and a mid-to-high capability model, given only a finding + skeptical question, never the analyst's reasoning trail. Same system prompt as the Claude Code verifier file.
 - **`catalyst-synthesizer`** — an agent definition with edit-capable tools and your highest-capability model, given only verified findings. Same system prompt as the Claude Code synthesizer file.
+- **`catalyst-code-reviewer`** — a read-only agent definition with a high-capability model, given the ticket and the implemented changes after SYNTHESIZE/implementation, reviewing for bugs, style (repo skills first, else industry best practice), and accuracy against the ticket. Returns a compact structured report. Same system prompt as the Claude Code code-reviewer file.
 
 Check the `pi-subagents` extension's own README for its current YAML schema (model/tool/thinking-level keys) before assuming field names — it's a third-party package that moves independently of Pi core.
 
@@ -25,6 +26,7 @@ This maps onto Catalyst's roles more manually:
 - For each FAN OUT task, spawn a separate `pi -p "..."` subprocess scoped to a read-only instruction (no `write`/`edit` mentioned in its prompt), running the fan-out analyst's instructions from `agent-subagents/claude-code/catalyst-fan-out-analyst.md`. Launch these as background shell jobs so they run concurrently, then `wait` for all of them before REDUCE.
 - For VERIFY, spawn one `pi -p "..."` instance per finding with the verifier's instructions and only that finding as input.
 - For SYNTHESIZE, spawn one `pi -p "..."` instance with the synthesizer's instructions and only the verified findings list as input.
+- After implementation, spawn one `pi -p "..."` instance with the code-reviewer's instructions (`agent-subagents/claude-code/catalyst-code-reviewer.md`) and the ticket + changed files as input; review for bugs, style, and accuracy and return the structured report.
 
 This is more manual than Option A, but works today with nothing installed beyond Pi itself, and gives you the same context-isolation and per-role model-selection benefits (pass a different model flag per spawned instance).
 
