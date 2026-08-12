@@ -53,7 +53,7 @@ This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-ver
 
 ## Step 5 — Git worktrees (optional)
 
-For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), opened as its own folder/workspace in your IDE. The instructions, skills, and prompts you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
+For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`; with no ticket ID, drop the `{ticketid}_` prefix and use `{feature|bug}/{summary-slug}` / `../<repo>-{summary-slug}`), opened as its own folder/workspace in your IDE. The instructions, skills, and prompts you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
 
 ## Try it
 

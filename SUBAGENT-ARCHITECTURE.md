@@ -59,4 +59,4 @@ See `agent-subagents/<tool>/` for each tool's actual agent-definition format, or
 
 ## If you also use git worktrees
 
-`WORKTREE-WORKFLOW.md` is the tracker-agnostic companion to this file: one worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`), created at SYNTHESIZE once the orchestrator's plan is confirmed, all implementation happening inside it. FAN OUT/VERIFY subagents read the main checkout; only implementation moves into the worktree. Review tickets (`code-review.md`) stay read-only and never create a worktree.
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic companion to this file: one worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`; with no ticket ID, drop the `{ticketid}_` prefix and use `{feature|bug}/{summary-slug}` / `../<repo>-{summary-slug}`), created at SYNTHESIZE once the orchestrator's plan is confirmed, all implementation happening inside it. FAN OUT/VERIFY subagents read the main checkout; only implementation moves into the worktree. Review tickets (`code-review.md`) stay read-only and never create a worktree.

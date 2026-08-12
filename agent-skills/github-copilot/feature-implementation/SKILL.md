@@ -59,7 +59,7 @@ Drop any finding that fails its question. Keep only VALID verdicts with cited ev
 - [ ] Update docs/schema/API spec to describe the new feature
 - [ ] Note in the PR which design doc/ticket criteria were satisfied and cite the pattern file(s) followed
 
-**Working in a git worktree?** This skill yields the `feature/` branch prefix. Create the worktree at `../<repo>-<ticketid>` on branch `feature/{ticketid}_{summary-slug}` once the plan is confirmed, and do the implementation/tests/PR inside it. Tracker-agnostic: nothing here depends on which tracker the ticket came from.
+**Working in a git worktree?** This skill yields the `feature/` branch prefix. Create the worktree at `../<repo>-<ticketid>` on branch `feature/{ticketid}_{summary-slug}` once the plan is confirmed, and do the implementation/tests/PR inside it. If the ticket has no ID (a bare description), use `feature/{summary-slug}` and `../<repo>-{summary-slug}` instead. Tracker-agnostic: nothing here depends on which tracker the ticket came from.
 
 ## Worked Example
 

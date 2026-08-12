@@ -25,4 +25,4 @@ Only using verified findings, produce a concrete implementation plan: files to c
 
 Stop after the plan and ask for confirmation before applying any patch.
 
-WORKTREES (after confirmation): if the repo uses git worktrees and this is a bug/feature ticket (not a code review), propose creating one at `../<repo>-<ticketid>` on branch `{feature|bug}/{ticketid}_{summary-slug}` (prefix from the skill used; slug = lowercase title, non-alphanumerics → `-`, truncate to 40 chars) and do the implementation inside it — see WORKTREE-WORKFLOW.md. Cleanup is user-triggered after the PR merges.
+WORKTREES (after confirmation): if the repo uses git worktrees and this is a bug/feature ticket (not a code review), propose creating one at `../<repo>-<ticketid>` on branch `{feature|bug}/{ticketid}_{summary-slug}` (prefix from the skill used; slug = lowercase title, non-alphanumerics → `-`, truncate to 40 chars) and do the implementation inside it — see WORKTREE-WORKFLOW.md. If the ticket has no ID (bare description), use `{feature|bug}/{summary-slug}` and `../<repo>-{summary-slug}` instead. Cleanup is user-triggered after the PR merges.

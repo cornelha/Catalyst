@@ -2,7 +2,7 @@
 
 An optional working-mode layer on top of `.catalyst/orchestration.md`: instead of editing files in your main checkout, do each ticket's implementation in a dedicated **git worktree** — a separate working directory linked to the same repo, on its own branch. This keeps `main` clean, lets several tickets be implemented in parallel without conflicting working trees, and gives every PR a branch that is trivially linkable back to its ticket.
 
-This file is deliberately **tracker-agnostic** — it never assumes GitHub, Jira, Azure DevOps, or any other tracker. The only inputs it needs are the ticket ID and the ticket title, both of which any tracker provides. The signal for when cleanup happens comes from your tracker's own merge notification, not from a tool-specific API call.
+This file is deliberately **tracker-agnostic** — it never assumes GitHub, Jira, Azure DevOps, or any other tracker. It needs the ticket ID and the ticket title when both exist, but it also works when the ticket is given as a bare description with **no ID at all** (see "No ticket ID" below) — the only input it truly requires is a title/description to slug. The signal for when cleanup happens comes from your tracker's own merge notification, not from a tool-specific API call.
 
 ## When to use it
 
@@ -23,12 +23,14 @@ Every implementation worktree gets a branch named:
 
 - **`{feature|bug}`** — derived from the skill the pattern selected during FAN OUT, never guessed: the `feature-implementation.md` skill yields `feature/`, the `bug-fix.md` skill yields `bug/`.
 - **`{ticketid}`** — the tracker's ticket ID, verbatim (e.g. `4521`). Strip any `#` prefix or URL wrapper, but otherwise don't alter it.
-- **`{summary-slug}`** — a deterministic slug of the ticket title:
+- **`{summary-slug}`** — a deterministic slug of the ticket title (or of the user's description when no title/ID exists):
   1. lowercase the title
   2. replace every non-alphanumeric run (spaces, punctuation, etc.) with a single `-`
   3. truncate to **40 characters**, splitting on word boundaries (never mid-word) and trimming any trailing `-`
 
 **Why deterministic:** the same ticket must produce the same branch every run, because the branch name is the linkage between the worktree, the ticket, and the PR. It lets a later cleanup step find the branch (and the PR for it) purely from the ticket ID, and lets `git branch -d` in cleanup need no lookup at all.
+
+**No ticket ID:** if the ticket was given as a bare description with no ID (e.g. the user pasted "Fix login timeout" with no ticket reference), omit the `{ticketid}_` component entirely — use `{feature|bug}/{summary-slug}`. The slug is still deterministic from the description, so the branch is still reproducible. You lose the ID linkage, but there is no ID to link to, so nothing is lost. If the description also lacks a usable title (empty input), ask the user for a short name to slug before creating the worktree.
 
 **Examples:**
 
@@ -37,6 +39,7 @@ Every implementation worktree gets a branch named:
 | bug-fix | #4521 | Login times out after 5 minutes | `bug/4521_login-times-out-after-5-minutes` |
 | feature-implementation | #6034 | Allow users to schedule recurring report emails | `feature/6034_allow-users-to-schedule-recurring-report` |
 | bug-fix | #5190 | Export button silently fails for large date ranges | `bug/5190_export-button-silently-fails-for-large` |
+| bug-fix | *(none)* | Fix login timeout | `bug/fix-login-timeout` |
 
 ## Worktree path convention
 
@@ -47,6 +50,8 @@ The **branch** contains a `/`, so it cannot be used directly as a flat directory
 ```
 
 A sibling directory of the main checkout (e.g. `../catalyst-4521` when the repo is `catalyst`). A sibling keeps the main repo free of untracked directories — nothing inside the repo needs a `.gitignore` entry, and agent search/indexing tools never walk it. The worktree path is a local filesystem concern and never leaves your machine; only the branch name is shared (via push).
+
+**No ticket ID:** with no ID, use the slug in place of the ticket ID — `../<repo>-{summary-slug}` (e.g. `../catalyst-login-times-out`). Same flat-sibling rule; `git worktree add` works exactly as with an ID.
 
 ## Lifecycle
 

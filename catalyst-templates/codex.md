@@ -52,7 +52,7 @@ Instruct Codex explicitly to batch fan-out lookups into one combined command (or
 
 ## Git Worktrees
 
-`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`). In Codex CLI, this is a plain shell step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then run Codex from inside the worktree directory. `AGENTS.md` lives in the repo and travels with the branch, so the pattern applies in the worktree with no reinstallation. Keep the main checkout read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
+`WORKTREE-WORKFLOW.md` is the tracker-agnostic reference for doing implementation in a dedicated git worktree per ticket (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`; with no ticket ID, drop the `{ticketid}_` prefix and use `{feature|bug}/{summary-slug}` / `../<repo>-{summary-slug}`). In Codex CLI, this is a plain shell step: `git worktree add ../<repo>-<ticketid> -b <branch>` at SYNTHESIZE, then run Codex from inside the worktree directory. `AGENTS.md` lives in the repo and travels with the branch, so the pattern applies in the worktree with no reinstallation. Keep the main checkout read-only during FAN OUT/VERIFY and untouched afterwards. Cleanup is user-triggered after the PR merges (`git worktree remove` + `git branch -d`); nothing here depends on which tracker you use.
 
 ## Known Limitations
 
