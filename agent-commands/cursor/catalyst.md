@@ -1,16 +1,16 @@
 Apply the Catalyst orchestration pattern to a ticket, right now, in this session.
 
-The four-phase pattern is below — no need to read the reference file. If a matching skill exists in .catalyst/skills/, read that ONE file and follow it; otherwise apply the pattern below directly.
+The four-phase pattern is below — no need to read the reference file. If a matching skill exists in .catalyst/skills/, read that ONE file and follow it; otherwise apply the pattern below directly. If the work turns ambiguous — or you need the deeper rules (node types, node output contracts, safety rules, anchors, when to skip the graph) — read `.catalyst/orchestration.md` for the on-demand reference.
 
 Ticket / task: treat whatever text was typed after `/catalyst` when this command was invoked as the ticket URL, ID, or description to work.
 
 Execute in order, showing your work at each phase:
 
 PHASE 1 — FAN OUT
-State the independent analysis tasks you'll run. List them before running them. Then actually run them (search the codebase, read files, check git history, query the issue tracker via an available MCP server, etc.) — genuinely in parallel where the tooling allows, not narrated-as-parallel-but-actually-sequential.
+State the independent analysis tasks you'll run. List them before running them. Then actually run them (search the codebase, read files, check git history, query the issue tracker via an available MCP server, etc.) — genuinely in parallel where the tooling allows, not narrated-as-parallel-but-actually-sequential. If this ticket type is unfamiliar, cap the first run (e.g. 5-8 tasks) so an unknown ticket can't silently burn unbounded tokens.
 
 PHASE 2 — REDUCE
-Consolidate what you found. Remove duplicates and noise. State the root cause or core finding in one or two sentences.
+First count the results that came back against the number of fan-out tasks you launched — if any task returned nothing, flag the gap out loud before consolidating; never reduce on a silent partial set. Then consolidate what you found: remove duplicates and noise and state the root cause or core finding in one or two sentences.
 
 PHASE 3 — VERIFY
 For each significant finding, ask a skeptical question and check it against the actual code/tests — don't just re-assert your own analysis. State a verdict: valid or false positive.

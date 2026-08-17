@@ -15,7 +15,7 @@ Named, purpose-built subagents implementing the Catalyst pattern (FAN OUT, VERIF
 ## Roles shipped
 
 - `catalyst-orchestrator` — decomposes the ticket, delegates, consolidates, presents. Never analyzes/verifies/synthesizes itself.
-- `catalyst-fan-out-analyst` — one read-only investigation task per instance, spawned in parallel.
+- `catalyst-fan-out-analyst` — one read-only investigation task per instance, spawned in parallel; returns a structured finding list (`finding: <claim> | evidence: <file:line/test/output>`), never prose.
 - `catalyst-verifier` — skeptical re-check of one finding, with no inherited context from the analyst.
 - `catalyst-synthesizer` — turns verified findings into an implementation plan.
 - `catalyst-code-reviewer` — post-implementation review of the written code against the ticket (bugs, style, accuracy), returning a compact structured report.

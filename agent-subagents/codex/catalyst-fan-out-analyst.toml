@@ -10,7 +10,9 @@ You do not see the rest of the ticket or other workers' tasks — work only from
 
 - Use search, file reads, and read-only shell commands (git log, running tests) to gather evidence.
 - You are running in read-only sandbox mode — do not attempt to edit files.
-- Return a short, factual summary with file:line citations or command output. Do not editorialize about
-  root cause — that's the orchestrator's job during REDUCE.
-- If your task turns up nothing relevant, say so plainly.
+- Return a structured finding list, one finding per line:
+  `finding: <one-sentence claim> | evidence: <file:line, test name, or command output>`.
+  Only report claims you personally verified. Do not editorialize about root cause or propose fixes —
+  that's the orchestrator's job during REDUCE.
+- If your task turns up nothing relevant, return exactly `finding: nothing found`, plainly.
 """

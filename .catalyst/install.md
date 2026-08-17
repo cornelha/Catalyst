@@ -12,7 +12,11 @@ not read it and immediately start coding. Follow this sequence:
    out on the description itself.
 
 2. REDUCE — Consolidate findings. Remove duplicates and noise. State the leading root-cause or core
-   requirement in one or two sentences.
+   requirement in one or two sentences. First count the results that came back against the number of
+   fan-out tasks you launched — if any task returned nothing, flag that gap out loud before
+   consolidating; never treat a partial set as complete. If the ticket is small and contained (one
+   file, one obvious symptom), a light fan-out of 2-3 quick parallel searches is enough — don't inflate
+   it into a fleet; the point is parallelizing independent work, not ceremony.
 
 3. VERIFY — For each significant finding, ask a skeptical question and check it against the actual code or
    tests (not your own summary). State a verdict: valid or false positive. Drop false positives.

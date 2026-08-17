@@ -53,7 +53,7 @@ ANALYZE:
   └─ Check the tracker for related tickets
 ```
 
-**Output structure for each parallel task:**
+**Output structure for each parallel task — the node contract:**
 ```json
 {
   "task": "Find failing auth tests",
@@ -64,9 +64,19 @@ ANALYZE:
 }
 ```
 
+Every FAN OUT node has a bounded output: one finding per line, each with a short claim plus its
+evidence (file:line, test name, or command output). No prose dumps, no root-cause theories at this
+stage — thinking belongs to VERIFY, not to the data gatherers. A defined output shape is what lets
+REDUCE consume N parallel results without a human in the middle; if a node returns unstructured free
+text, ask it to re-return in the shape above before consolidating.
+
 ### PHASE 2: REDUCE (Consolidate)
 
 Consolidate parallel results:
+- **Count your inputs first** — compare how many results actually came back against how many FAN OUT
+  tasks you launched. If any node silently returned nothing, **flag the gap out loud** (which task,
+  how many missing) before consolidating — never reduce on a partial set and present it as complete.
+  This is the fan-in guard against silent node failure (see "Silent node failure" in Anti-Patterns).
 - **Remove duplicates** (same finding reported multiple ways)
 - **Remove noise** (unrelated results, low signal)
 - **Organize by severity/priority**
@@ -235,6 +245,12 @@ When you see work to do, ask: **What kind of node is this?**
    - Verifier reusing analyzer's reasoning
    - Defeats purpose of independent validation
 
+6. **Silent node failure**
+   - One dead FAN OUT node turns into a report that looks complete but is missing a whole angle
+   - In a chain, failure stops everything — annoying but obvious; in a graph it just vanishes
+   - Fix: at every merge (REDUCE), count received results against the number of tasks launched and
+     flag the gap. Never synthesize on a partial set and call it done.
+
 ---
 
 ## Worked Example
@@ -362,6 +378,50 @@ ANALYZE phase can query:
 
 This gives agent structured code knowledge instead of just grep results
 ```
+
+---
+
+## Anchors — Ground Truth That Cannot Be Argued With
+
+Topology alone does not buy truth. A graph whose nodes all read each other's reports — verifier leaning
+on the analyst's summary, audit comparing numbers against the same system that produced them — fails
+exactly like a single loop does, only later and with more green lights on the way down.
+
+A graph is only as honest as the things inside it that refuse to move. Anchor every phase in evidence
+that cannot be talked out of existence:
+
+- **Tests that actually ran** — "the test passes/fails" is only a verdict after the command ran. A
+  passing test you did not execute and a failing one you did not witness are both speculation.
+- **Code actually read** — a finding citing `AuthService.cs:142` is anchor-grade only if the file was
+  opened and the line was read, not if it came from a grep echo or the analyst's paraphrase.
+- **Spec/external ground truth** — acceptance criteria text, documented behavior, and API contracts are
+  anchors when quoted verbatim; a paraphrase of a document is not.
+- **Frozen rules** — some rules must stay off-limits even when an optimizer (or a deadline) would be
+  tempted to weaken them: never skip VERIFY to save time, never implement on an unverified finding,
+  never reduce a checked gap into silence. These are the anchors that keep the graph honest.
+
+The three checkers in VERIFY (is it correct, is it current, is it real) exist precisely to defend the
+anchors: they verify *against* the ground truth above, never *against* the agent's own output.
+
+---
+
+## When to Skip the Graph (and a First-Run CAP)
+
+A graph buys **breadth** — independent work done at once. It does **not** buy better judgment, and its
+coordination is pure overhead when the work is narrow. Skip it when:
+
+- The task is small or isolated — adding one function, fixing one bug. A single agent is faster and
+  cheaper; the four-phase ceremony adds nothing.
+- You want to approve every step — a graph's whole point is running wide without you; a tight leash
+  works against it.
+- The steps genuinely depend on each other — if you cannot find two tasks with no data edge between
+  them, run it as a loop, not a graph.
+- You do not yet know what you are looking for — exploratory work wants one steerable agent, not a
+  fleet locked into a plan.
+
+When you do run it: **cap the first run.** Set a hard limit on FAN OUT task count (e.g. "max 5-8
+tasks this first run") so a graph can never silently spend unbounded tokens on an unfamiliar ticket
+type. Widen only once a capped run has proven its shape and its cost.
 
 ---
 

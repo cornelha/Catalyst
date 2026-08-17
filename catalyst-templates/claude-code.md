@@ -16,8 +16,9 @@ The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- 
   `~/.claude/CLAUDE.md` for global), preserving any existing content above it.
 
 Either way, the `# Ticket Orchestration (Catalyst)` block is what Claude Code loads every session, and
-`.catalyst/orchestration.md` is the on-demand reference it points at for depth (node types, safety rules,
-anti-patterns, worked example).
+`.catalyst/orchestration.md` ships alongside it as the canonical pattern reference. The `/catalyst`
+command points to it for on-demand depth when the work turns ambiguous — node types, node output
+contracts, safety rules, anti-patterns, anchors, and the worked example.
 
 ## How Claude Code Handles Parallelism
 

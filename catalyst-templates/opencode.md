@@ -18,8 +18,10 @@ Two ways to install this pattern:
 
 The instruction block lives once in `.catalyst/install.md`, delimited by `<!-- catalyst:start -->` /
 `<!-- catalyst:end -->` markers — the file is exactly that block and nothing else, so there is no per-tool
-copy and no header to strip. `.catalyst/orchestration.md` is the on-demand
-reference the block points at for depth (node types, safety rules, anti-patterns, worked example).
+copy and no header to strip. `.catalyst/orchestration.md`
+ships alongside it as the canonical pattern reference. The `/catalyst` command points to it for on-demand
+depth when the work turns ambiguous — node types, node output contracts, safety rules, anti-patterns,
+anchors, and the worked example.
 
 ## How OpenCode Handles Parallel Task Execution
 

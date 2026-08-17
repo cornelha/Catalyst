@@ -25,8 +25,7 @@ The instruction block lives once, in `.catalyst/install.md`, delimited by `<!-- 
 - **Manual:** append the full content of `.catalyst/install.md` to the project-root `AGENTS.md` (or
   `~/.pi/agent/AGENTS.md`), preserving any existing content above it.
 
-`.catalyst/orchestration.md` is the on-demand reference the block points at for depth (node types, safety
-rules, anti-patterns, worked example).
+`.catalyst/orchestration.md` ships alongside it as the canonical pattern reference. The `/catalyst` command points to it for on-demand depth when the work turns ambiguous — node types, node output contracts, safety rules, anti-patterns, anchors, and the worked example.
 
 ## How Pi Handles Parallel Task Execution
 

@@ -18,12 +18,12 @@ Named subagents fix both: each phase gets an isolated context (no rot) and its o
 | Role | Job | Spawned | Model guidance |
 |---|---|---|---|
 | **`catalyst-orchestrator`** | Reads the ticket, decomposes it into FAN OUT tasks, delegates each phase to the roles below, aggregates their (short) outputs, and presents the final plan. Never does deep analysis itself. | Once per ticket | Mid-tier — its job is coordination and judgment about *what* to delegate, not raw analysis, but it does need to reason about consolidation and final plan quality. |
-| **`catalyst-fan-out-analyst`** | Runs exactly one independent, read-only analysis task (code search, test check, tracker query, doc read, git history) and returns a short factual summary — not a transcript. | Once per FAN OUT task, in parallel | Fast/cheap — narrow, mechanical, high-volume work. This is where token savings are largest: N parallel cheap agents instead of N sequential expensive turns. |
+| **`catalyst-fan-out-analyst`** | Runs exactly one independent, read-only analysis task (code search, test check, tracker query, doc read, git history) and returns a structured finding list — `finding: <claim> | evidence: <file:line/test/command output>`, one per line, no prose, no transcript. | Once per FAN OUT task, in parallel | Fast/cheap — narrow, mechanical, high-volume work. This is where token savings are largest: N parallel cheap agents instead of N sequential expensive turns. |
 | **`catalyst-verifier`** | Given one finding and a skeptical question to check — not the analyst's reasoning trail — re-checks it against real code/tests and returns VALID or FALSE POSITIVE with cited evidence. | Once per significant finding (or batched, tool-dependent) | Mid-to-high — catching a false positive requires real judgment, not just pattern matching. |
 | **`catalyst-synthesizer`** | Takes only verified findings and produces the concrete implementation plan (files, tests, risks). | Once, after VERIFY completes | Highest available — this is the actual engineering judgment step; underpowering it undermines the whole pattern. |
 | **`catalyst-code-reviewer`** | After implementation, reviews the written code against the ticket for bugs, style (repo skills first, else industry best practice), and accuracy. Returns a compact structured report — no prose. | Once, after implementation, before the PR | High — post-implementation review needs real judgment, but its output must be token-lean (structured verdict + findings). |
 
-**REDUCE is usually not a separate subagent.** Consolidating a handful of fan-out results is cheap enough that spawning an isolated agent for it just adds latency and orchestration overhead without meaningfully reducing context rot. Have the orchestrator do REDUCE inline. The exception: if FAN OUT produced a large number of parallel analyst outputs (a big, ambiguous ticket touching many subsystems), it's reasonable to add a `catalyst-deduplicator` subagent whose only job is consolidating those raw outputs into one short findings list before they ever reach the orchestrator's own context — check the per-tool files for whether this is worth wiring up for your case.
+**REDUCE is usually not a separate subagent.** Consolidating a handful of fan-out results is cheap enough that spawning an isolated agent for it just adds latency and orchestration overhead without meaningfully reducing context rot. Have the orchestrator do REDUCE inline — but *first* count the returned results against the number of fan-out tasks launched and flag any silent gap out loud (a fan-out that lost a node yields a report that looks complete and isn't). Only spawn a `catalyst-deduplicator` subagent instead if FAN OUT produced a large number of parallel analyst outputs (a big, ambiguous ticket touching many subsystems), whose only job is consolidating those raw outputs into one short findings list before they ever reach the orchestrator's own context — check the per-tool files for whether this is worth wiring up for your case.
 
 ## Naming convention
 
@@ -42,6 +42,17 @@ To keep the isolation benefit real (not just theoretical), be deliberate about t
 ## Model-assignment principle, generalized
 
 Regardless of which tool you're in, the same cost curve applies: **cheap/fast models for high-volume mechanical work (fan-out), capable models for judgment work (verify, synthesize, review), a mid-tier model for coordination (orchestrator).** The exact model names differ per tool and change over time — the per-tool files in `agent-subagents/` set a sensible default, but treat the specific model name as the one thing you should feel free to override immediately based on what's available and what your budget looks like.
+
+**Run it capped.** On an unfamiliar ticket type, cap the first run's FAN OUT at 5-8 tasks (say so when you do), then widen only once a capped run proved its shape and cost. A graph's whole point is running wide without you — the cap is what keeps that from becoming "running away without you."
+
+## Anchors — ground truth that cannot be argued with
+
+Topology alone does not buy truth. The subagent split isolates context, but if every isolated context reads the *same* generated report, the graph is consistent and still wrong — it fails like a single loop, just later and more expensively. Anchor the pattern in evidence that refuses to move:
+
+- **Tests that actually ran** — a verdict citing a passing/failing test only counts if the test was executed in that subagent's context, not if it was "expected to pass."
+- **Code actually read** — evidence is anchor-grade only when the verifier/reviewer opened the real file at the cited line, not when it accepted the analyst's paraphrase.
+- **External ground truth** — acceptance criteria quoted verbatim, spec/docs text, and API contracts are anchors; a paraphrased memory of them is not.
+- **Frozen rules** — never skip VERIFY to save time, never implement on an unverified finding, never reduce a checked gap into silence. These are off-limits exactly because an optimizer would be tempted to bend them.
 
 ## When to use the full subagent split vs. running inline
 

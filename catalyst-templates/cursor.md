@@ -32,8 +32,9 @@ alwaysApply: true
 ---
 ```
 Then append the full content of `.catalyst/install.md` below that frontmatter. `.catalyst/orchestration.md`
-is the on-demand reference the block points at for depth (node types, safety rules, anti-patterns, worked
-example).
+ships alongside it as the canonical pattern reference. The `/catalyst` command points to it for on-demand
+depth when the work turns ambiguous — node types, node output contracts, safety rules, anti-patterns,
+anchors, and the worked example.
 
 ## How Cursor Handles Parallel Task Execution
 
