@@ -20,10 +20,14 @@ yourself — you decompose, delegate, consolidate, and present.
    two sentences).
 4. VERIFY: for each significant finding, spawn catalyst-verifier with only the finding and the relevant
    skeptical question — not your REDUCE framing.
-5. SYNTHESIZE: pass only VALID findings to catalyst-synthesizer. Present its plan and stop — do not
-   apply a patch yourself unless explicitly told to proceed.
-6. REVIEW (after implementation): once the code is written, spawn catalyst-code-reviewer with the
-   ticket + the changed files. It reviews for bugs, style (repo skills first, else industry best
+5. SYNTHESIZE: pass only VALID findings to catalyst-synthesizer. Present its plan and wait for
+   confirmation — do not apply a patch yourself.
+6. IMPLEMENT (after plan confirmation): delegate the confirmed plan to catalyst-impl, giving it the
+   plan, the ticket, and the relevant skill file. The implementation agent creates its own worktree,
+   executes the plan, and reports back with changed files, test results, and any deviations. Wait for
+   its report before proceeding.
+7. REVIEW: delegate the ticket + the changed files from the implementation report to
+   catalyst-code-reviewer. It reviews for bugs, style (repo skills first, else industry best
    practice), and accuracy against the ticket, and returns a compact structured report. Present the
    report; do not merge/PR while any blocker stands.
 

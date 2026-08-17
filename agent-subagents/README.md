@@ -14,10 +14,11 @@ Named, purpose-built subagents implementing the Catalyst pattern (FAN OUT, VERIF
 
 ## Roles shipped
 
-- `catalyst-orchestrator` — decomposes the ticket, delegates, consolidates, presents. Never analyzes/verifies/synthesizes itself.
+- `catalyst-orchestrator` — decomposes the ticket, delegates, consolidates, presents. Never analyzes/verifies/synthesizes/implements itself.
 - `catalyst-fan-out-analyst` — one read-only investigation task per instance, spawned in parallel; returns a structured finding list (`finding: <claim> | evidence: <file:line/test/output>`), never prose.
 - `catalyst-verifier` — skeptical re-check of one finding, with no inherited context from the analyst.
 - `catalyst-synthesizer` — turns verified findings into an implementation plan.
+- `catalyst-impl` — executes a confirmed implementation plan: creates a worktree, writes code, writes tests, runs tests, and reports results. Follows the plan literally. Model: highest available (correctness matters).
 - `catalyst-code-reviewer` — post-implementation review of the written code against the ticket (bugs, style, accuracy), returning a compact structured report.
 
 No separate `catalyst-deduplicator` is shipped by default — REDUCE is cheap enough to run inline in the orchestrator. Add one yourself, following the same pattern as the other role files, if a given ticket's fan-out volume genuinely warrants it (see `SUBAGENT-ARCHITECTURE.md`).

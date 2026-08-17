@@ -55,15 +55,15 @@ A sibling directory of the main checkout (e.g. `../catalyst-4521` when the repo 
 
 ## Lifecycle
 
-### 1. CREATE — at SYNTHESIZE, after the plan is confirmed, before any edit
+### 1. CREATE — delegated to `catalyst-impl` after the plan is confirmed
 
-FAN OUT, REDUCE, and VERIFY all stay read-only in the main checkout — they read code and produce findings, they don't modify anything. Only when the SYNTHESIZE plan has been presented **and confirmed** do you create the worktree and do the implementation there:
+FAN OUT, REDUCE, and VERIFY all stay read-only in the main checkout — they read code and produce findings, they don't modify anything. When the SYNTHESIZE plan has been presented **and confirmed**, the orchestrator delegates to a `catalyst-impl` subagent, which creates the worktree and does the implementation there:
 
 ```bash
 git worktree add ../<repo>-<ticketid> -b <branch>
 ```
 
-Create the worktree from the default branch (`main`, `master`, or whatever the repo's default is — use `git symbolic-ref refs/remotes/origin/HEAD` if you need to discover it), never from a dirty or half-finished branch. If the worktree already exists, reuse it rather than creating a second one.
+The implementation agent creates the worktree from the default branch (`main`, `master`, or whatever the repo's default is — use `git symbolic-ref refs/remotes/origin/HEAD` if you need to discover it), never from a dirty or half-finished branch. If the worktree already exists, it reuses it rather than creating a second one.
 
 ### 2. WORK — in the worktree
 
@@ -105,7 +105,7 @@ Each can be worked, tested, committed, and pushed independently with no working-
 
 ## Safety rules
 
-1. **Create at SYNTHESIZE, never earlier.** Fan-out/verify read the main checkout; only confirmed plans get a worktree.
+1. **Create at IMPLEMENT, not earlier.** Fan-out/verify read the main checkout; only confirmed plans get a worktree, created by the `catalyst-impl` subagent.
 2. **Base off the default branch.** Never branch off a dirty or in-progress branch.
 3. **Branch name is deterministic and derived from the skill, never guessed.** `feature/` or `bug/` comes from the selected skill; the slug comes from the title by the fixed rule.
 4. **All implementation happens in the worktree, never in `main`.**
@@ -119,13 +119,14 @@ Each can be worked, tested, committed, and pushed independently with no working-
 
 1. **FAN OUT → REDUCE → VERIFY** run read-only in the main checkout. The `bug-fix` skill is selected, so the branch prefix is `bug/`. Title slugified deterministically: `login-times-out-after-5-minutes` (well under 40 chars).
 2. **SYNTHESIZE** presents the plan; the user confirms.
-3. **CREATE:**
+3. **IMPLEMENT:** the orchestrator delegates to `catalyst-impl`, which creates the worktree:
    ```bash
    git worktree add ../catalyst-4521 -b bug/4521_login-times-out-after-5-minutes
    ```
-4. **WORK** inside `../catalyst-4521`: add the failing test, fix `AuthService.cs:142` and the `RefreshMiddleware.cs` race, run the auth test suite, commit, push, open the PR.
-5. The PR goes through review in the tracker. The user gets the merge notification.
-6. **REMOVE** (user-triggered, after merge):
+4. **WORK** inside `../catalyst-4521`: the implementation agent adds the failing test, fixes `AuthService.cs:142` and the `RefreshMiddleware.cs` race, runs the auth test suite, and reports back with changed files and test results.
+5. The orchestrator delegates the implemented code to `catalyst-code-reviewer`, which produces the structured review report.
+6. The PR goes through review in the tracker. The user gets the merge notification.
+7. **REMOVE** (user-triggered, after merge):
    ```bash
    git worktree remove ../catalyst-4521
    git branch -d bug/4521_login-times-out-after-5-minutes
