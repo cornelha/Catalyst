@@ -73,12 +73,14 @@ zip_it() {
 
 # --- claude-code ---
 d="$STAGE/claude-code"
-mkdir -p "$d/.claude/commands" "$d/.claude/agents" "$d/_manual"
+mkdir -p "$d/.claude/commands" "$d/.claude/agents" "$d/.claude-plugin" "$d/_manual"
 cp "$ROOT"/.claude/commands/{catalyst,catalyst-install,add-skill,add-template,learn}.md "$d/.claude/commands/"
 cp "$ROOT"/agent-subagents/claude-code/*.md "$d/.claude/agents/"
+cp "$ROOT"/.claude-plugin/plugin.json "$ROOT"/.claude-plugin/marketplace.json "$d/.claude-plugin/"
 get_install_block > "$d/_manual/CLAUDE.md.append.md"
 stage_common "$d"
-deploy_note "$d" "- **Optional, recommended:** append \`_manual/CLAUDE.md.append.md\` to your project's \`CLAUDE.md\` (or \`~/.claude/CLAUDE.md\` for every repo) so the pattern applies automatically, not just via \`/catalyst\`.
+deploy_note "$d" "- **Option A — Marketplace (recommended):** with this bundle unzipped into your project root, run \`/plugin marketplace add .\` then \`/plugin install catalyst\` inside Claude Code.
+- **Option B — Manual:** append \`_manual/CLAUDE.md.append.md\` to your project's \`CLAUDE.md\` (or \`~/.claude/CLAUDE.md\` for every repo) so the pattern applies automatically, not just via \`/catalyst\`.
 - \`/catalyst\`, \`/add-skill\`, \`/add-template\` work immediately, no restart needed.
 - Restart Claude Code after unzipping so it picks up \`.claude/agents/*\`."
 zip_it "claude-code" "$d"

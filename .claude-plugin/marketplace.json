@@ -1,0 +1,25 @@
+{
+  "marketplace": {
+    "name": "Catalyst Marketplace",
+    "description": "Private agent marketplace for {org} — orchestration patterns, skills, and templates for AI coding agents",
+    "repository": "https://github.com/{org}/catalyst",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "id": "catalyst",
+      "name": "Catalyst",
+      "description": "Ticket orchestration pattern — fan out, reduce, verify, synthesize. Works across Claude Code, Cursor, Cline, Codex CLI, Copilot, OpenCode, and Pi.",
+      "version": "0.1.0",
+      "author": "{org}",
+      "repository": "https://github.com/{org}/catalyst",
+      "manifest": ".claude-plugin/plugin.json",
+      "tools": ["claude-code", "copilot-cli"],
+      "tags": ["orchestration", "tickets", "verification", "multi-agent", "code-review"],
+      "install": {
+        "claude-code": "/plugin marketplace add https://github.com/{org}/catalyst && /plugin install catalyst",
+        "copilot-cli": "copilot plugin marketplace add https://github.com/{org}/catalyst && copilot plugin install catalyst"
+      }
+    }
+  ]
+}

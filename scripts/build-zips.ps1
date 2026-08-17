@@ -60,14 +60,16 @@ function Build-Zip {
 
 # --- claude-code ---
 $d = Join-Path $Stage "claude-code"
-New-Dirs @("$d\.claude\commands", "$d\.claude\agents", "$d\_manual")
+New-Dirs @("$d\.claude\commands", "$d\.claude\agents", "$d\.claude-plugin", "$d\_manual")
 Copy-Item (Join-Path $Root ".claude\commands\catalyst.md"), (Join-Path $Root ".claude\commands\catalyst-install.md"), (Join-Path $Root ".claude\commands\add-skill.md"), (Join-Path $Root ".claude\commands\add-template.md"), (Join-Path $Root ".claude\commands\learn.md") "$d\.claude\commands\"
 Copy-Item (Join-Path $Root "agent-subagents\claude-code\*.md") "$d\.claude\agents\"
+Copy-Item (Join-Path $Root ".claude-plugin\plugin.json"), (Join-Path $Root ".claude-plugin\marketplace.json") "$d\.claude-plugin\"
 $installBlock = Get-InstallBlock
 Set-Content -Path "$d\_manual\CLAUDE.md.append.md" -Value ($installBlock + "`n") -Encoding UTF8
 Copy-Common $d
 Write-DeployNote $d @"
-- **Optional, recommended:** append ``_manual/CLAUDE.md.append.md`` to your project's ``CLAUDE.md`` (or ``~/.claude/CLAUDE.md`` for every repo) so the pattern applies automatically, not just via ``/catalyst``.
+- **Option A — Marketplace (recommended):** with this bundle unzipped into your project root, run ``/plugin marketplace add .`` then ``/plugin install catalyst`` inside Claude Code.
+- **Option B — Manual:** append ``_manual/CLAUDE.md.append.md`` to your project's ``CLAUDE.md`` (or ``~/.claude/CLAUDE.md`` for every repo) so the pattern applies automatically, not just via ``/catalyst``.
 - ``/catalyst``, ``/add-skill``, ``/add-template`` work immediately, no restart needed.
 - Restart Claude Code after unzipping so it picks up ``.claude/agents/*``.
 "@

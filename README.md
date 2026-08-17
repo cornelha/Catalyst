@@ -32,16 +32,34 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 - **`docs/`** — one getting-started guide per tool, walking through installing the pattern, the commands, and (where supported) the subagents together, end to end.
 - Every file is standalone by design — open one skill file and one template file, point an agent at a ticket, and it works without cross-referencing anything else in the repo.
 
-## Getting Started
+## Installation
 
-There's nothing to install. This is a markdown reference library.
+**Marketplace** (Claude Code / Copilot CLI):
 
-```bash
-git clone <this-repo>
-cd catalyst
+```
+/plugin marketplace add https://github.com/{org}/catalyst
+/plugin install catalyst
 ```
 
-Then open the getting-started guide for your tool in `docs/` — it walks through installing the core pattern, the commands, and (where supported) the subagents, together, with a first ticket to try it on. In short: run the tool's `/catalyst-install` command (or manually append `.catalyst/install.md` to your agent's instruction file), copy the commands for your tool from `agent-commands/`, and you're set.
+**Zip bundles** (all 7 tools):
+
+```bash
+git clone https://github.com/{org}/catalyst.git && cd catalyst
+./scripts/build-zips.sh
+unzip dist/catalyst-<tool>.zip -d /path/to/your/project
+```
+
+**Manual** (copy files for your tool):
+
+```bash
+git clone https://github.com/{org}/catalyst.git
+```
+
+See [`docs/installation.md`](docs/installation.md) for the full per-tool guide covering global and per-project installation for all 7 tools.
+
+## Getting Started
+
+Open the getting-started guide for your tool in `docs/` — it walks through installing the core pattern, the commands, and (where supported) the subagents, together, with a first ticket to try it on. In short: run the tool's `/catalyst-install` command (or manually append `.catalyst/install.md` to your agent's instruction file), copy the commands for your tool from `agent-commands/`, and you're set.
 
 ## Usage
 
