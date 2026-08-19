@@ -8,7 +8,7 @@ Ticket orchestration pattern for coding agents — fan out, reduce, verify, synt
 
 ```bash
 # Add the marketplace
-/plugin marketplace add {org}/catalyst
+/plugin marketplace add cornelha/catalyst
 
 # Install the plugin
 /plugin install catalyst@catalyst-marketplace
@@ -18,7 +18,7 @@ Ticket orchestration pattern for coding agents — fan out, reduce, verify, synt
 
 ```bash
 # Clone the repo
-git clone https://github.com/{org}/catalyst.git ~/.claude/plugins/catalyst
+git clone https://github.com/cornelha/catalyst.git ~/.claude/plugins/catalyst
 
 # Add as local marketplace
 /plugin marketplace add ~/.claude/plugins/catalyst

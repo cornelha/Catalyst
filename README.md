@@ -34,11 +34,11 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 
 ## Installation
 
-**Marketplace** (Claude Code / Copilot CLI):
+**Marketplace** (Claude Code):
 
 ```
-/plugin marketplace add https://github.com/{org}/catalyst
-/plugin install catalyst
+/plugin marketplace add cornelha/catalyst
+/plugin install catalyst@catalyst-marketplace
 ```
 
 **Zip bundles** (all 7 tools):
