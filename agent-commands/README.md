@@ -1,16 +1,16 @@
 # Agent Commands
 
-Copy/paste command counterparts of Catalyst's five Claude Code slash commands (`/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn`), reformatted for each agent tool's actual custom-command mechanism, verified against each tool's official docs. Pick the folder for your tool and drop its files into the path shown below.
+Copy/paste command counterparts of Catalyst's Claude Code slash commands (`/catalyst`, `/catalyst-install`, `/catalyst-testcases`, `/add-skill`, `/add-template`, `/learn`), reformatted for each agent tool's actual custom-command mechanism, verified against each tool's official docs. Pick the folder for your tool and drop its files into the path shown below.
 
 | Tool | Source folder | Copy files to | Invoke with |
 |---|---|---|---|
-| **Claude Code** | `.claude/commands/` (already at repo root — nothing to copy) | *(n/a — already installed)* | `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` |
-| **Cursor** | `agent-commands/cursor/` | `.cursor/commands/` in your repo (or `~/.cursor/commands/` for global) | `/catalyst <ticket>` in Agent/Composer chat |
-| **Cline** | `agent-commands/cline/` | `.clinerules/workflows/` in your repo | `/catalyst.md <ticket>` in chat |
-| **GitHub Copilot** | `agent-commands/github-copilot/` | `.github/prompts/` in your repo | `/catalyst` in Copilot Chat (VS Code / Visual Studio / JetBrains) — prompts for the ticket input |
-| **OpenCode** | `agent-commands/opencode/` | `.opencode/commands/` in your repo (or `~/.config/opencode/commands/` for global) | `/catalyst <ticket>` |
-| **Codex CLI** | `agent-commands/codex/` | `~/.codex/prompts/` (top-level files only, no subfolders) | `/catalyst <ticket>` — **see deprecation note below** |
-| **Pi** | `agent-commands/pi/` | `.pi/prompts/` in your repo (or `~/.pi/agent/prompts/` for global) | `/catalyst <ticket>` |
+| **Claude Code** | `.claude/commands/` (already at repo root — nothing to copy) | *(n/a — already installed)* | `/catalyst`, `/catalyst-install`, `/catalyst-testcases`, `/add-skill`, `/add-template`, `/learn` |
+| **Cursor** | `agent-commands/cursor/` | `.cursor/commands/` in your repo (or `~/.cursor/commands/` for global) | `/catalyst <ticket>`, `/catalyst-testcases <ticket>` in Agent/Composer chat |
+| **Cline** | `agent-commands/cline/` | `.clinerules/workflows/` in your repo | `/catalyst.md <ticket>`, `/catalyst-testcases.md <ticket>` in chat |
+| **GitHub Copilot** | `agent-commands/github-copilot/` | `.github/prompts/` in your repo | `/catalyst`, `/catalyst-testcases` in Copilot Chat (VS Code / Visual Studio / JetBrains) — prompts for the ticket input |
+| **OpenCode** | `agent-commands/opencode/` | `.opencode/commands/` in your repo (or `~/.config/opencode/commands/` for global) | `/catalyst <ticket>`, `/catalyst-testcases <ticket>` |
+| **Codex CLI** | `agent-commands/codex/` | `~/.codex/prompts/` (top-level files only, no subfolders) | `/catalyst <ticket>`, `/catalyst-testcases <ticket>` — **see deprecation note below** |
+| **Pi** | `agent-commands/pi/` | `.pi/prompts/` in your repo (or `~/.pi/agent/prompts/` for global) | `/catalyst <ticket>`, `/catalyst-testcases <ticket>` |
 
 `/catalyst-install` (available in every tool above) appends the canonical instruction block from `.catalyst/install.md` into the tool's always-loaded instruction file (`CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, or `.clinerules`) — idempotently, so re-running it never duplicates the block.
 

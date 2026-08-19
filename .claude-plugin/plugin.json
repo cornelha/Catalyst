@@ -33,6 +33,11 @@
       "description": "Build deployable zip bundles for all supported tools"
     },
     {
+      "name": "catalyst-testcases",
+      "path": ".claude/commands/catalyst-testcases.md",
+      "description": "Generate test cases from a ticket's acceptance criteria, in the tracker's native format"
+    },
+    {
       "name": "learn",
       "path": ".claude/commands/learn.md",
       "description": "Review session lessons and distill durable skills"
