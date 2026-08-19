@@ -1,0 +1,1 @@
+.catalyst/skills/bug-fix.md
