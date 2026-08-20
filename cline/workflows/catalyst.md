@@ -1,21 +1,13 @@
----
-agent: catalyst-orchestrator
-description: Apply the Catalyst fan-out/reduce/verify/synthesize pattern to a ticket
----
-Apply the Catalyst orchestration pattern to this ticket: ${input:ticket:Paste the ticket URL, ID, or description}
+Apply the Catalyst orchestration pattern to a ticket, right now, in this session.
 
 The four-phase pattern is below — no need to read the reference file. If a matching skill exists in .catalyst/skills/, read that ONE file and follow it; otherwise apply the pattern below directly. If the work turns ambiguous — or you need the deeper rules (node types, node output contracts, safety rules, anchors, when to skip the graph) — read `.catalyst/orchestration.md` for the on-demand reference.
 
-Before FAN OUT: if the ticket was given as a bare ID (e.g. #4521 or 4521, not a URL or pasted
-description), resolve it to full ticket content first — pass the numeric ID only (strip any `#`
-or URL wrapper) to the tracker's configured MCP tool. Do this before decomposing into FAN OUT
-tasks below. If the ticket is a bare description with no ID or URL, skip tracker resolution and
-work from the description itself.
+Ticket / task: use whatever text the user included in the same chat message as `/catalyst.md` as the ticket URL, ID, or description to work.
 
 Execute in order, showing your work at each phase:
 
 PHASE 1 — FAN OUT
-State the independent analysis tasks you'll run. List them before running them. Then actually run them (search the codebase, read files, check git history, check related issues, etc.). For this phase, the orchestrator must delegate investigation work to subagents whenever possible rather than doing all analysis inline in the main session. If this ticket type is unfamiliar, cap the first run (e.g. 5-8 tasks) so an unknown ticket can't silently burn unbounded tokens.
+State the independent analysis tasks you'll run. List them before running them. Then run each one using read-only tools (search, read file, list files, terminal commands like git log or a tracker MCP query) — issue them back-to-back without pausing to analyze between each. If this ticket type is unfamiliar, cap the first run (e.g. 5-8 tasks) so an unknown ticket can't silently burn unbounded tokens.
 
 PHASE 2 — REDUCE
 First count the results that came back against the number of fan-out tasks you launched — if any task returned nothing, flag the gap out loud before consolidating; never reduce on a silent partial set. Then consolidate what you found: remove duplicates and noise and state the root cause or core finding in one or two sentences.
@@ -26,7 +18,7 @@ For each significant finding, ask a skeptical question and check it against the 
 PHASE 4 — SYNTHESIZE
 Only using verified findings, produce a concrete implementation plan: files to change, tests to add, risks to check.
 
-Stop after the plan and ask for confirmation before writing any code.
+Do not use write/edit tools until the plan has been presented and confirmed.
 
 WORKTREES (after confirmation): if the repo uses git worktrees and this is a bug/feature ticket (not a code review), propose creating one at `../<repo>-<ticketid>` on branch `{feature|bug}/{ticketid}_{summary-slug}` (prefix from the skill used; slug = lowercase title, non-alphanumerics → `-`, truncate to 40 chars) and do the implementation inside it — see WORKTREE-WORKFLOW.md. If the ticket has no ID (bare description), use `{feature|bug}/{summary-slug}` and `../<repo>-{summary-slug}` instead. Cleanup is user-triggered after the PR merges.
 

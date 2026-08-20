@@ -1,15 +1,31 @@
 {
-  "name": "catalyst-marketplace",
-  "owner": {
-    "name": "Catalyst"
+  "marketplace": {
+    "name": "Catalyst Marketplace",
+    "description": "Private agent marketplace for cornelha — orchestration patterns, skills, and templates for AI coding agents",
+    "repository": "https://github.com/cornelha/catalyst",
+    "version": "0.1.0"
   },
-  "description": "Orchestration patterns, skills, and templates for AI coding agents",
   "plugins": [
     {
-      "name": "catalyst",
-      "source": ".",
-      "description": "Ticket orchestration pattern — fan out, reduce, verify, synthesize. Decomposes tickets into parallel investigation tasks, consolidates findings, skeptically re-verifies each against real code, and only then produces an implementation plan.",
-      "version": "0.1.0"
+      "id": "catalyst",
+      "name": "Catalyst",
+      "description": "Ticket orchestration pattern — fan out, reduce, verify, synthesize. Works across Claude Code, Cursor, Cline, Codex CLI, Copilot, OpenCode, and Pi.",
+      "version": "0.1.0",
+      "author": "cornelha",
+      "repository": "https://github.com/cornelha/catalyst",
+      "manifest": ".claude-plugin/plugin.json",
+      "tools": ["claude-code", "copilot-cli", "cursor", "opencode", "oh-my-pi", "cline", "pi", "codex"],
+      "tags": ["orchestration", "tickets", "verification", "multi-agent", "code-review"],
+      "install": {
+        "claude-code": "/plugin marketplace add https://github.com/cornelha/catalyst && /plugin install catalyst",
+        "copilot-cli": "copilot plugin marketplace add https://github.com/cornelha/catalyst && copilot plugin install catalyst",
+        "cursor": "cursor-agent plugin marketplace add https://github.com/cornelha/catalyst",
+        "opencode": "bunx opencode-marketplace install https://github.com/cornelha/catalyst/tree/main/opencode",
+        "oh-my-pi": "omp plugin marketplace add https://github.com/cornelha/catalyst && omp plugin install catalyst@catalyst",
+        "cline": "mkdir -p .clinerules/workflows && cp cline/workflows/*.md .clinerules/workflows/ && cp cline/rules/*.mdc .clinerules/",
+        "pi": "cp .catalyst/install.md AGENTS.md && mkdir -p .pi/prompts && cp pi/prompts/*.md .pi/prompts/",
+        "codex": "cp .catalyst/install.md AGENTS.md && mkdir -p ~/.codex/prompts && cp agent-commands/codex/*.md ~/.codex/prompts/"
+      }
     }
   ]
 }

@@ -34,17 +34,35 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 
 ## Installation
 
-**Marketplace** (Claude Code):
+**Marketplace** (Claude Code, Copilot CLI, Cursor, OpenCode):
 
 ```
-/plugin marketplace add cornelha/catalyst
-/plugin install catalyst@catalyst-marketplace
+# Claude Code / Copilot CLI
+/plugin marketplace add https://github.com/cornelha/catalyst
+/plugin install catalyst
+
+# Cursor
+cursor-agent plugin marketplace add https://github.com/cornelha/catalyst
+# then install "catalyst" from the Customize → Marketplace panel
+
+# OpenCode (via opencode-marketplace)
+bunx opencode-marketplace install https://github.com/cornelha/catalyst/tree/main/opencode
+
+# oh-my-pi (omp native marketplace)
+omp plugin marketplace add https://github.com/cornelha/catalyst
+omp plugin install catalyst@catalyst
+
+# Cline (workflows + rule)
+mkdir -p .clinerules/workflows && cp cline/workflows/*.md .clinerules/workflows/ && cp cline/rules/*.mdc .clinerules/
+
+# Pi (earendil-works/pi)
+cp .catalyst/install.md AGENTS.md && mkdir -p .pi/prompts && cp pi/prompts/*.md .pi/prompts/
 ```
 
 **Zip bundles** (all 7 tools):
 
 ```bash
-git clone https://github.com/{org}/catalyst.git && cd catalyst
+git clone https://github.com/cornelha/catalyst.git && cd catalyst
 ./scripts/build-zips.sh
 unzip dist/catalyst-<tool>.zip -d /path/to/your/project
 ```
@@ -52,7 +70,7 @@ unzip dist/catalyst-<tool>.zip -d /path/to/your/project
 **Manual** (copy files for your tool):
 
 ```bash
-git clone https://github.com/{org}/catalyst.git
+git clone https://github.com/cornelha/catalyst.git
 ```
 
 See [`docs/installation.md`](docs/installation.md) for the full per-tool guide covering global and per-project installation for all 7 tools.

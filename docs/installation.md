@@ -16,7 +16,7 @@ Every tool supports both global (user-wide, `~`) and per-project (`.`) installat
 **Add the marketplace (once per machine):**
 
 ```
-/plugin marketplace add https://github.com/{org}/catalyst
+/plugin marketplace add https://github.com/cornelha/catalyst
 ```
 
 **Install the plugin (per-project):**
@@ -43,7 +43,7 @@ This copies the commands, agents, skills, and instruction block into the right l
 **Add the marketplace (once per machine):**
 
 ```bash
-copilot plugin marketplace add https://github.com/{org}/catalyst
+copilot plugin marketplace add https://github.com/cornelha/catalyst
 ```
 
 **Install the plugin (per-project):**
@@ -63,6 +63,42 @@ copilot plugin install catalyst --global
 - Run `/skills list` in Copilot CLI to confirm Catalyst skills are loaded.
 - In Copilot Chat (VS Code / Visual Studio / JetBrains), type `/catalyst` to confirm prompt files are available.
 
+### Cursor
+
+Cursor reads the repo-root `.cursor-plugin/marketplace.json`. Add the marketplace, then install the plugin from the **Customize** panel (or interactively via the `cursor-agent` CLI):
+
+```bash
+cursor-agent plugin marketplace add https://github.com/cornelha/catalyst
+```
+
+- In Cursor, open **Customize → Marketplace**, find **catalyst**, and click **Install** (choose project or user scope).
+- Commands (`/catalyst`, `/catalyst-install`, etc.), agents, and the always-on orchestration rule are installed automatically.
+
+> Note: `cursor-agent plugin install` is not yet available as a non-interactive CLI command; install from the Customize panel after adding the marketplace.
+
+### OpenCode
+
+OpenCode has no native git marketplace, but the `opencode-marketplace` CLI installs commands and agents from a GitHub repo by convention. It reads the `opencode/` directory in this repo:
+
+```bash
+bunx opencode-marketplace install https://github.com/cornelha/catalyst/tree/main/opencode
+```
+
+- Add `--scope project` to install into `.opencode/` (project-local) instead of `~/.config/opencode/` (global).
+- Updates: `bunx opencode-marketplace update catalyst`.
+
+### oh-my-pi
+
+oh-my-pi (omp) has a Claude-compatible marketplace. It reads the repo-root `.omp-plugin/marketplace.json`. Add the marketplace, then install the plugin:
+
+```bash
+omp plugin marketplace add https://github.com/cornelha/catalyst
+omp plugin install catalyst@catalyst
+```
+
+- Run `omp plugin marketplace list` to confirm the registered marketplace name, then adjust the `@marketplace` suffix if yours differs.
+- Commands (`/catalyst`, etc.) and agents are installed from the `oh-my-pi/` directory in this repo.
+
 ---
 
 ## Track 2: Manual Install (All 7 Tools)
@@ -74,7 +110,7 @@ For tools without a native marketplace, install by copying files from the repo o
 Build the per-tool bundles:
 
 ```bash
-git clone https://github.com/{org}/catalyst.git
+git clone https://github.com/cornelha/catalyst.git
 cd catalyst
 ./scripts/build-zips.sh
 ```
@@ -92,7 +128,7 @@ Each bundle contains a `DEPLOY.md` with tool-specific post-install steps. The bu
 Clone the repo and copy files for your tool:
 
 ```bash
-git clone https://github.com/{org}/catalyst.git
+git clone https://github.com/cornelha/catalyst.git
 ```
 
 Then follow the steps for your tool below.
@@ -144,7 +180,7 @@ Append `.catalyst/install.md` to `~/.claude/CLAUDE.md`.
 In Cursor, go to **Settings > Rules > Add Rule > paste GitHub URL:**
 
 ```
-https://raw.githubusercontent.com/{org}/catalyst/main/.catalyst/install.md
+https://raw.githubusercontent.com/cornelha/catalyst/main/.catalyst/install.md
 ```
 
 ### Cline
@@ -193,8 +229,34 @@ Append `.catalyst/install.md` content to `~/.codex/AGENTS.md`.
 **Via npx** (if supported by your version):
 
 ```bash
-npx skills add https://github.com/{org}/catalyst
+npx skills add https://github.com/cornelha/catalyst
 ```
+
+### Cline
+
+Cline has no git marketplace for consumers (its curated marketplace is submission-based), and its native plugin system is TypeScript. The Catalyst markdown content installs as Cline workflows and an always-on rule:
+
+```bash
+mkdir -p .clinerules/workflows
+cp cline/workflows/*.md .clinerules/workflows/
+cp cline/rules/*.mdc .clinerules/
+```
+
+- Workflows appear as `/<filename>` commands (e.g. `/catalyst.md`).
+- The `catalyst-orchestration` rule applies the pattern to every session.
+
+### Pi
+
+Pi (`earendil-works/pi`) loads prompts from `.pi/prompts/` and concatenates every `AGENTS.md` it finds:
+
+```bash
+cp .catalyst/install.md AGENTS.md
+mkdir -p .pi/prompts
+cp pi/prompts/*.md .pi/prompts/
+```
+
+- Project-level prompts require the project to be marked trusted (`/settings` or `~/.pi/agent/trust.json`).
+- For a global install, copy to `~/.pi/agent/prompts/` and `~/.pi/agent/AGENTS.md` instead.
 
 ### GitHub Copilot
 
