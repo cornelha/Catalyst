@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Ticket orchestration pattern for coding agents — fan out, reduce, verify, synthesize. Decomposes tickets into parallel investigation tasks, consolidates findings, skeptically re-verifies each against real code, and only then produces an implementation plan.",
   "author": {
     "name": "cornelha"

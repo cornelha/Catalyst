@@ -4,18 +4,24 @@
     "name": "cornelha"
   },
   "metadata": {
-    "description": "Ticket orchestration pattern (Catalyst) — fan out, reduce, verify, synthesize.",
-    "version": "0.2.0"
+    "description": "Ticket orchestration pattern (Catalyst) \u2014 fan out, reduce, verify, synthesize.",
+    "version": "0.3.0"
   },
   "plugins": [
     {
       "name": "catalyst",
-      "description": "Ticket orchestration pattern — fan out, reduce, verify, synthesize. Works across Claude Code, Cursor, Cline, Codex CLI, Copilot, OpenCode, and Pi.",
+      "description": "Ticket orchestration pattern \u2014 fan out, reduce, verify, synthesize. Works across Claude Code, Cursor, Cline, Codex CLI, Copilot, OpenCode, and Pi.",
       "source": "./oh-my-pi",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "repository": "https://github.com/cornelha/catalyst",
       "license": "MIT",
-      "keywords": ["orchestration", "tickets", "verification", "multi-agent", "code-review"]
+      "keywords": [
+        "orchestration",
+        "tickets",
+        "verification",
+        "multi-agent",
+        "code-review"
+      ]
     }
   ]
 }
