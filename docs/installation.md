@@ -297,7 +297,7 @@ Regardless of tool or method, you get:
 |---|---|---|
 | **Core pattern** | The instruction block pasted into your agent's always-loaded config | `.catalyst/install.md` |
 | **Orchestration reference** | Full pattern with node types, anti-patterns, anchors | `.catalyst/orchestration.md` |
-| **Slash commands** | `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` | Tool-specific paths (see above) |
+| **Slash commands** | `/catalyst`, `/catalyst-explain`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` | Tool-specific paths (see above) |
 | **Subagents** | Orchestrator, fan-out analyst, verifier, synthesizer, code-reviewer | Tool-specific paths (see above) |
 | **Skills** | Bug fix, code review, feature implementation playbooks | `.catalyst/skills/` |
 | **Worktree workflow** | Optional isolated git worktrees per ticket | `WORKTREE-WORKFLOW.md` |

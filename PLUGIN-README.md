@@ -44,7 +44,7 @@ Once installed, use the `/catalyst` command with a ticket description:
 The plugin provides:
 
 - **Skills**: `bug-fix`, `code-review`, `feature-implementation`
-- **Commands**: `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/build-catalyst`, `/catalyst-testcases`, `/learn`
+- **Commands**: `/catalyst`, `/catalyst-explain`, `/catalyst-install`, `/add-skill`, `/add-template`, `/build-catalyst`, `/catalyst-testcases`, `/learn`
 - **Agents**: `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, `catalyst-code-reviewer`
 
 ## Updating

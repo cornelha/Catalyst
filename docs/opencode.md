@@ -20,7 +20,7 @@ mkdir -p .opencode/commands
 cp agent-commands/opencode/*.md .opencode/commands/
 ```
 
-This installs `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, and `/learn`. Commands are loaded at startup — restart your OpenCode session after adding these files before they'll appear.
+This installs `/catalyst`, `/catalyst-explain`, `/catalyst-install`, `/add-skill`, `/add-template`, and `/learn`. Commands are loaded at startup — restart your OpenCode session after adding these files before they'll appear.
 
 ## Step 3 — Subagents (optional)
 
@@ -43,9 +43,10 @@ For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ti
 
 ```
 /catalyst Fix login timeout handling — https://github.com/org/repo/issues/4521
+/catalyst-explain How does the Receipt service work?
 ```
 
-Watch it state its fan-out tasks, batch them together rather than interleaving with analysis, consolidate, re-verify against the real files, and present a plan before editing anything. After you approve and it implements, it runs a final review pass over the written code (bugs, style, accuracy) before you open the PR. Or switch to `catalyst-orchestrator` directly to run the full subagent-delegated version.
+`/catalyst` states its fan-out tasks, batches them, consolidates, re-verifies against real files, and presents a plan before editing anything. After approval it implements and runs a final review pass (bugs, style, accuracy). `/catalyst-explain` runs the same diamond pattern as pure research — no edits — producing cited tables and mermaid diagrams, with binaries/unknown refs deeply researched and gaps marked `UNKNOWN`. Or switch to `catalyst-orchestrator` directly to run the full subagent-delegated version.
 
 ## Next steps
 

@@ -24,7 +24,7 @@ Target audience: developers and teams using AI coding agents against a ticket-ba
 - **`.catalyst/skills/`** — per-ticket-type playbooks (`bug-fix.md`, `feature-implementation.md`, `code-review.md`), each with a problem pattern, parallelizable analysis tasks, deduplication guidance, skeptical verification questions, an implementation checklist, and one fully worked example.
 - **`catalyst-templates/`** — tool-specific setup instructions for applying the pattern in seven agents: Claude Code, Cursor, Cline, Codex CLI, GitHub Copilot, OpenCode, and Pi. Each covers exact config file locations, how to install via `/catalyst-install`, how that tool actually handles (or fakes) parallel execution, a worked ticket walkthrough, known limitations, and phrasing to correct the tool if it skips a phase. The instruction text itself is *not* duplicated here — it lives once in `.catalyst/install.md`.
 - **`examples/`** — standalone, realistic ticket walkthroughs showing the full four-phase pattern applied end to end, independent of any specific agent tool.
-- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
+- **`agent-commands/`** — copy-paste slash-command counterparts of `/catalyst`, `/catalyst-explain`, `/catalyst-install`, `/add-skill`, `/add-template`, `/learn` for Cursor, Cline, GitHub Copilot, OpenCode, Codex CLI, and Pi, each in that tool's actual custom-command format (Claude Code's originals live in `.claude/commands/`).
 - **`SUBAGENT-ARCHITECTURE.md`** — an optional layer on top of the core pattern: splits FAN OUT/VERIFY/SYNTHESIZE into named, purpose-built subagents (`catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, `catalyst-code-reviewer`) coordinated by an orchestrator, so each phase can run in an isolated context on a model sized to its job — cheap/fast for fan-out, high-capability for verify/synthesize/review — cutting both token cost and context rot versus running the whole pattern in one growing session. Includes the anchors principle (all roles ground verdicts in evidence that actually happened — tests run, files read — never in a paraphrase) and a first-run CAP.
 - **`agent-subagents/`** — ready-to-copy subagent definitions implementing that architecture for Claude Code, Cursor, OpenCode, GitHub Copilot, and Codex CLI (each in that tool's real agent-definition format — markdown+frontmatter for most, TOML for Codex), plus guidance docs for Cline and Pi, neither of which has a native per-role agent file format in core.
 - **`agent-skills/`** — native skill-discovery wrappers for tools that support one (currently GitHub Copilot's `SKILL.md`/`.github/skills/<name>/` format). Each Copilot skill is **self-contained** per the agentskills.io specification (its `SKILL.md` carries the full playbook instructions), generated from the canonical `.catalyst/skills/*.md` files by `scripts/generate-copilot-skills.ps1`/`.sh` — so you evolve the canonical playbook once and regenerate the native skills.
@@ -96,6 +96,15 @@ This appends the canonical block from `.catalyst/install.md` into `CLAUDE.md` (o
 ```
 
 This runs the four phases in order — stating fan-out tasks before executing them, consolidating findings, verifying each one against real code, and stopping at a plan for your confirmation before any file is touched — then, once you approve the implementation, runs a fifth review pass over the written code (bugs, style, accuracy against the ticket) before you open the PR.
+
+**Explaining architecture or planning a feature**, research-only (no edits):
+
+```
+/catalyst-explain How does the Receipt service work?
+/catalyst-explain Where should the new Receiving feature live based on current architecture?
+```
+
+This runs the same diamond pattern (fan-out > reduce > verify > synthesize) as pure research — tables and mermaid diagrams, every claim cited `file:line`, binaries/unknown refs deeply researched, and gaps marked `UNKNOWN`. No files are edited unless you explicitly ask to write the result to markdown.
 
 **Adding a new ticket-type skill** to the library:
 

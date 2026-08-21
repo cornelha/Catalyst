@@ -1,20 +1,28 @@
 {
   "name": "catalyst",
-  "version": "0.3.0",
-  "description": "Ticket orchestration pattern for coding agents — fan out, reduce, verify, synthesize. Decomposes tickets into parallel investigation tasks, consolidates findings, skeptically re-verifies each against real code, and only then produces an implementation plan.",
+  "version": "0.4.0",
+  "description": "Ticket orchestration pattern for coding agents \u2014 fan out, reduce, verify, synthesize. Decomposes tickets into parallel investigation tasks, consolidates findings, skeptically re-verifies each against real code, and only then produces an implementation plan.",
   "author": {
     "name": "cornelha"
   },
   "repository": "https://github.com/cornelha/catalyst",
   "license": "MIT",
-  "keywords": ["orchestration", "tickets", "verification", "multi-agent", "code-review", "bug-fix"],
+  "keywords": [
+    "orchestration",
+    "tickets",
+    "verification",
+    "multi-agent",
+    "code-review",
+    "bug-fix"
+  ],
   "commands": [
-    "./.claude/commands/catalyst.md",
-    "./.claude/commands/catalyst-install.md",
     "./.claude/commands/add-skill.md",
     "./.claude/commands/add-template.md",
     "./.claude/commands/build-catalyst.md",
+    "./.claude/commands/catalyst-explain.md",
+    "./.claude/commands/catalyst-install.md",
     "./.claude/commands/catalyst-testcases.md",
+    "./.claude/commands/catalyst.md",
     "./.claude/commands/learn.md"
   ],
   "agents": [
