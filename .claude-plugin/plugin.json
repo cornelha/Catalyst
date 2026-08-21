@@ -1,108 +1,27 @@
 {
   "name": "catalyst",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Ticket orchestration pattern for coding agents — fan out, reduce, verify, synthesize. Decomposes tickets into parallel investigation tasks, consolidates findings, skeptically re-verifies each against real code, and only then produces an implementation plan.",
-  "author": "cornelha",
+  "author": {
+    "name": "cornelha"
+  },
   "repository": "https://github.com/cornelha/catalyst",
   "license": "MIT",
   "keywords": ["orchestration", "tickets", "verification", "multi-agent", "code-review", "bug-fix"],
   "commands": [
-    {
-      "name": "catalyst",
-      "path": ".claude/commands/catalyst.md",
-      "description": "Run the full fan-out/reduce/verify/synthesize pattern on a ticket"
-    },
-    {
-      "name": "catalyst-install",
-      "path": ".claude/commands/catalyst-install.md",
-      "description": "Install the canonical orchestration pattern into CLAUDE.md"
-    },
-    {
-      "name": "add-skill",
-      "path": ".claude/commands/add-skill.md",
-      "description": "Add a new ticket-type skill to .catalyst/skills/"
-    },
-    {
-      "name": "add-template",
-      "path": ".claude/commands/add-template.md",
-      "description": "Add Catalyst support for a new agent tool"
-    },
-    {
-      "name": "build-catalyst",
-      "path": ".claude/commands/build-catalyst.md",
-      "description": "Build deployable zip bundles for all supported tools"
-    },
-    {
-      "name": "catalyst-testcases",
-      "path": ".claude/commands/catalyst-testcases.md",
-      "description": "Generate test cases from a ticket's acceptance criteria, in the tracker's native format"
-    },
-    {
-      "name": "learn",
-      "path": ".claude/commands/learn.md",
-      "description": "Review session lessons and distill durable skills"
-    }
+    "./.claude/commands/catalyst.md",
+    "./.claude/commands/catalyst-install.md",
+    "./.claude/commands/add-skill.md",
+    "./.claude/commands/add-template.md",
+    "./.claude/commands/build-catalyst.md",
+    "./.claude/commands/catalyst-testcases.md",
+    "./.claude/commands/learn.md"
   ],
   "agents": [
-    {
-      "name": "catalyst-orchestrator",
-      "path": ".claude/agents/catalyst-orchestrator.md",
-      "description": "Decomposes tickets, delegates to analyst/verifier/synthesizer, consolidates"
-    },
-    {
-      "name": "catalyst-fan-out-analyst",
-      "path": ".claude/agents/catalyst-fan-out-analyst.md",
-      "description": "Runs one read-only investigation task, returns structured findings"
-    },
-    {
-      "name": "catalyst-verifier",
-      "path": ".claude/agents/catalyst-verifier.md",
-      "description": "Skeptically re-checks one finding against actual code or tests"
-    },
-    {
-      "name": "catalyst-synthesizer",
-      "path": ".claude/agents/catalyst-synthesizer.md",
-      "description": "Turns verified findings into a concrete implementation plan"
-    },
-    {
-      "name": "catalyst-code-reviewer",
-      "path": ".claude/agents/catalyst-code-reviewer.md",
-      "description": "Post-implementation review of written code against the ticket"
-    }
-  ],
-  "skills": [
-    {
-      "name": "bug-fix",
-      "path": ".catalyst/skills/bug-fix.md",
-      "description": "Playbook for tickets that report something broken — crash, wrong output, regression, failing test"
-    },
-    {
-      "name": "code-review",
-      "path": ".catalyst/skills/code-review.md",
-      "description": "Playbook for reviewing a PR, diff, or set of changes before merge"
-    },
-    {
-      "name": "feature-implementation",
-      "path": ".catalyst/skills/feature-implementation.md",
-      "description": "Playbook for implementing new capability that does not currently exist"
-    }
-  ],
-  "files": [
-    {
-      "path": ".catalyst/install.md",
-      "description": "Canonical instruction block (paste into CLAUDE.md or any agent instruction file)"
-    },
-    {
-      "path": ".catalyst/orchestration.md",
-      "description": "Full fan-out/reduce/verify/synthesize pattern reference"
-    },
-    {
-      "path": "SUBAGENT-ARCHITECTURE.md",
-      "description": "Optional subagent layer: named roles, model assignment, when to use"
-    },
-    {
-      "path": "WORKTREE-WORKFLOW.md",
-      "description": "Optional worktree layer: isolated git worktrees per ticket"
-    }
+    "./agent-subagents/claude-code/catalyst-orchestrator.md",
+    "./agent-subagents/claude-code/catalyst-fan-out-analyst.md",
+    "./agent-subagents/claude-code/catalyst-verifier.md",
+    "./agent-subagents/claude-code/catalyst-synthesizer.md",
+    "./agent-subagents/claude-code/catalyst-code-reviewer.md"
   ]
 }
