@@ -8,7 +8,7 @@
       "name": "catalyst",
       "source": ".",
       "description": "Ticket orchestration pattern — fan out, reduce, verify, synthesize. Works across Claude Code, Cursor, Cline, Codex CLI, Copilot, OpenCode, and Pi.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "repository": "https://github.com/cornelha/catalyst",
       "license": "MIT",
       "keywords": ["orchestration", "tickets", "verification", "multi-agent", "code-review"]
