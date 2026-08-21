@@ -2,7 +2,6 @@
 name: catalyst-orchestrator
 description: Coordinates the Catalyst fan-out/reduce/verify/synthesize pattern for a ticket by delegating each phase to specialized subagents and aggregating their results.
 tools: ["search", "edit"]
-model: claude-opus-4-6
 user-invocable: true
 ---
 

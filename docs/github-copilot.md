@@ -51,6 +51,28 @@ cp agent-subagents/github-copilot/*.agent.md .github/agents/
 
 This installs `catalyst-orchestrator`, `catalyst-fan-out-analyst`, `catalyst-verifier`, `catalyst-synthesizer`, and `catalyst-code-reviewer`. The orchestrator should use subagents for the FAN OUT phase; standard Copilot Chat execution remains sequential within one session, so use Copilot CLI **Fleet mode** (or equivalent subagent delegation) when you want true parallel fan-out.
 
+### Model selection
+
+`catalyst-orchestrator` ships **without** a `model:` pin so it inherits whatever model you have selected in VS Code / Copilot CLI (`/model`, `~/.copilot/config`, or org policy). The other subagents keep pinned models tuned for their role (`haiku` for fan-out, `sonnet` for verify, `opus` for synthesize/review/impl) — override any of them the same way if you prefer.
+
+### Pin a model without losing it on update
+
+`cp` overwrites `.github/agents/*.agent.md` on every Catalyst update, so don't edit those files to pin a model. Instead create a **user-level** shadowing agent — Copilot resolves duplicates by filename stem and lowest level wins (`~/.copilot/agents/` shadows `.github/agents/`):
+
+```bash
+mkdir -p ~/.copilot/agents
+cat > ~/.copilot/agents/catalyst-orchestrator.agent.md <<'MD'
+---
+description: User pinned override for catalyst-orchestrator
+model: claude-sonnet-4-5
+---
+MD
+# or pin another subagent:
+# ~/.copilot/agents/catalyst-verifier.agent.md, etc.
+```
+
+This file survives `git pull` / plugin updates. Delete it to return to the default (inherited) model. See [Custom agents configuration](https://docs.github.com/en/copilot/reference/custom-agents-configuration) — `model: If unset, inherits the default model` and `The configuration file's name (minus .agent.md) is used for deduplication between levels so that the lowest level configuration takes precedence`.
+
 ## Step 5 — Git worktrees (optional)
 
 For parallel or isolated ticket work, read `WORKTREE-WORKFLOW.md` and do each ticket's implementation in its own worktree (branch `{feature|bug}/{ticketid}_{summary-slug}`, path `../<repo>-<ticketid>`; with no ticket ID, drop the `{ticketid}_` prefix and use `{feature|bug}/{summary-slug}` / `../<repo>-{summary-slug}`), opened as its own folder/workspace in your IDE. The instructions, skills, and prompts you installed above live in the repo, so they travel with the branch into the worktree automatically — no reinstallation. Cleanup is user-triggered after the PR merges.
